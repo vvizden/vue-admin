@@ -1,30 +1,55 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import { BaseLayout, AsideLayout, MainLayout } from '@/layout'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
-const routes = [
+/**
+ * constantRoutes
+ * a base page that does not have permission requirements
+ * all roles can be accessed
+ */
+export const constantRoutes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home
+    path: '/',
+    component: BaseLayout,
+    children: [
+      { path: '', name: 'Home', component: AsideLayout },
+      {
+        path: '403',
+        name: '403',
+        component: MainLayout,
+      },
+    ],
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: '/login',
+    name: 'Login',
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
-  }
-];
+      import(/* webpackChunkName: "login" */ '@/views/login/index'),
+  },
+]
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes
-});
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = []
 
-export default router;
+const createRouter = () =>
+  new VueRouter({
+    mode: 'history',
+    scrollBehavior: () => ({ y: 0 }),
+    base: process.env.BASE_URL,
+    routes: constantRoutes,
+  })
+
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router
