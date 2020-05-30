@@ -1,8 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { BaseLayout, AsideLayout, MainLayout } from '@/layout'
+// eslint-disable-next-line
+import { BaseLayout, AsideLayout, MainLayout } from '@/layouts'
+// import { generateChildRoutes } from '@/utils/route'
 
 Vue.use(VueRouter)
+
+/**
+ * concat asyncRoutes
+ * @param routes
+ */
+// eslint-disable-next-line
+export function concatAsyncRoutes(routes) {
+  return [
+    {
+      path: '/',
+      component: BaseLayout,
+      // children: generateChildRoutes(routes),
+    },
+    { path: '*', redirect: '/404', hidden: true },
+  ]
+}
 
 /**
  * constantRoutes
@@ -11,30 +29,12 @@ Vue.use(VueRouter)
  */
 export const constantRoutes = [
   {
-    path: '/',
-    component: BaseLayout,
-    children: [
-      { path: '', name: 'Home', component: AsideLayout },
-      {
-        path: '403',
-        name: '403',
-        component: MainLayout,
-      },
-    ],
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () =>
       import(/* webpackChunkName: "login" */ '@/views/login/index'),
   },
 ]
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = []
 
 const createRouter = () =>
   new VueRouter({

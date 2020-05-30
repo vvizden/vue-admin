@@ -1,37 +1,44 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getPermissions } from '@/api/user'
 import { setToken, removeToken } from '@/utils/auth'
-import router, { resetRouter } from '@/router'
+import { resetRouter } from '@/router'
 import {
   SET_TOKEN,
-  SET_INTRODUCTION,
+  SET_INFO,
   SET_NAME,
   SET_AVATAR,
-  SET_ROLES,
+  SET_MUNU_PERSSIONS,
+  SET_BUTTON_PERSSIONS,
 } from '../mutation-types'
 
 const state = {
   token: '',
-  name: '',
+  info: {},
+  username: '',
+  realname: '',
   avatar: '',
-  introduction: '',
-  roles: [],
+  menuPermissions: [],
+  buttonPermissions: [],
 }
 
 const mutations = {
   [SET_TOKEN]: (state, token) => {
     state.token = token
   },
-  [SET_INTRODUCTION]: (state, introduction) => {
-    state.introduction = introduction
+  [SET_INFO]: (state, info) => {
+    state.info = info
   },
-  [SET_NAME]: (state, name) => {
-    state.name = name
+  [SET_NAME]: (state, { username, realname }) => {
+    state.username = username
+    state.realname = realname
   },
   [SET_AVATAR]: (state, avatar) => {
     state.avatar = avatar
   },
-  [SET_ROLES]: (state, roles) => {
-    state.roles = roles
+  [SET_MUNU_PERSSIONS]: (state, menuPermissions) => {
+    state.menuPermissions = menuPermissions
+  },
+  [SET_BUTTON_PERSSIONS]: (state, buttonPermissions) => {
+    state.buttonPermissions = buttonPermissions
   },
 }
 
@@ -39,103 +46,65 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password })
-        .then((response) => {
-          const { data } = response
-          commit('SET_TOKEN', data.token)
-          setToken(data.token)
-          resolve()
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
-  },
+    return login({ username: username.trim(), password: password }).then(
+      (data) => {
+        const { result } = data
+        if (!result) {
+          return Promise.reject('vuex action user/login: request error')
+        }
+        const userInfo = result.userInfo
+        commit(SET_TOKEN, result.token)
+        commit(SET_INFO, userInfo)
+        commit(SET_NAME, userInfo)
+        commit(SET_AVATAR, userInfo.avatar)
+        setToken(result.token)
 
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token)
-        .then((response) => {
-          const { data } = response
-
-          if (!data) {
-            reject('Verification failed, please Login again.')
-          }
-
-          const { roles, name, avatar, introduction } = data
-
-          // roles must be a non-empty array
-          if (!roles || roles.length <= 0) {
-            reject('getInfo: roles must be a non-null array!')
-          }
-
-          commit('SET_ROLES', roles)
-          commit('SET_NAME', name)
-          commit('SET_AVATAR', avatar)
-          commit('SET_INTRODUCTION', introduction)
-          resolve(data)
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
+        return result
+      },
+    )
   },
 
   // user logout
-  logout({ commit, state, dispatch }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token)
-        .then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
-          resetRouter()
+  logout({ commit, state }) {
+    return logout(state.token).then(() => {
+      commit(SET_TOKEN, '')
+      commit(SET_MUNU_PERSSIONS, [])
+      commit(SET_BUTTON_PERSSIONS, [])
+      removeToken()
+      resetRouter()
+    })
+  },
 
-          // reset visited views and cached views
-          // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-          dispatch('tagsView/delAllViews', null, { root: true })
+  // get permissions
+  getPermissions({ commit, state }) {
+    return getPermissions({ token: state.token }).then((data) => {
+      const { result } = data
 
-          resolve()
-        })
-        .catch((error) => {
-          reject(error)
-        })
+      if (!result) {
+        return Promise.reject('vuex action user/getPermissions: request error')
+      }
+
+      const { menu, auth } = result
+
+      if (!menu || menu.length <= 0) {
+        return Promise.reject(
+          'vuex action user/getPermissions: menu must be a non-null array!',
+        )
+      }
+
+      commit(SET_MUNU_PERSSIONS, menu)
+      commit(SET_BUTTON_PERSSIONS, auth)
+      return result
     })
   },
 
   // remove token
   resetToken({ commit }) {
     return new Promise((resolve) => {
-      commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
+      commit(SET_TOKEN, '')
       removeToken()
       resolve()
     })
-  },
-
-  // dynamically modify permissions
-  async changeRoles({ commit, dispatch }, role) {
-    const token = role + '-token'
-
-    commit('SET_TOKEN', token)
-    setToken(token)
-
-    const { roles } = await dispatch('getInfo')
-
-    resetRouter()
-
-    // generate accessible routes map based on roles
-    const accessRoutes = await dispatch('permission/generateRoutes', roles, {
-      root: true,
-    })
-
-    // dynamically add accessible routes
-    router.addRoutes(accessRoutes)
-
-    // reset visited views and cached views
-    return dispatch('tagsView/delAllViews', null, { root: true })
   },
 }
 

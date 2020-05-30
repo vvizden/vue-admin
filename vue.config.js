@@ -8,12 +8,22 @@ module.exports = {
    */
   publicPath: '/',
   devServer: {
-    port: 9527,
+    port: 3001,
     open: true,
     overlay: {
       warnings: false,
       errors: true,
     },
     // before: require('./mock/mock-server.js'),
+    proxy: {
+      '/jeecg-boot': {
+        target: 'http://127.0.0.1:8080', // 请求本地 需要jeecg-boot后台项目
+        ws: false,
+        changeOrigin: true,
+        //   pathRewrite: {
+        //     '/jeecg-boot': ''  //默认所有请求都加了jeecg-boot前缀，需要去掉
+        //   }
+      },
+    },
   },
 }

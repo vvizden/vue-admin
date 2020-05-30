@@ -12,7 +12,7 @@ export default {
   name: 'MainLayout',
   components: {
     Footer: () =>
-      import(/* webpackChunkName: "layout" */ '../components/Footer'),
+      import(/* webpackChunkName: "layout" */ './components/Footer'),
   },
 }
 </script>

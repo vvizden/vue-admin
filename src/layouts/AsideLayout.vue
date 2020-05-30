@@ -14,9 +14,9 @@
 export default {
   name: 'AsideLayout',
   components: {
-    Aside: () => import(/* webpackChunkName: "layout" */ '../components/Aside'),
+    Aside: () => import(/* webpackChunkName: "layout" */ './components/Aside'),
     Footer: () =>
-      import(/* webpackChunkName: "layout" */ '../components/Footer'),
+      import(/* webpackChunkName: "layout" */ './components/Footer'),
   },
 }
 </script>

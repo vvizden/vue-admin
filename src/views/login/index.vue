@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { getCurrentTimeDesc } from '@/utils/time'
 import { validUsername } from '@/utils/validate'
 import settings from '@/settings'
 import variables from '@/styles/element-variables.scss'
@@ -126,22 +127,21 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          //   this.$store
-          //     .dispatch('user/login', this.loginForm)
-          //     .then(() => {
-          //       this.$router.push({
-          //         path: this.redirect || '/',
-          //         query: this.otherQuery,
-          //       })
-          //       this.loading = false
-          //     })
-          //     .finally(() => {
-          //       this.loading = false
-          //     })
-          this.$router.push({
-            path: '/',
-            query: {},
-          })
+          this.$store
+            .dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({
+                path: this.redirect || '/',
+                query: this.otherQuery,
+              })
+              this.$notify.success({
+                title: '欢迎',
+                message: `${getCurrentTimeDesc()}好，欢迎回来`,
+              })
+            })
+            .finally(() => {
+              this.loading = false
+            })
         }
       })
     },
