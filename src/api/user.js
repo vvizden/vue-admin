@@ -8,6 +8,13 @@ export function login(data) {
   })
 }
 
+export function logout() {
+  return request({
+    url: '/sys/logout',
+    method: 'post',
+  })
+}
+
 export function getPermissions(params) {
   return request({
     url: '/sys/permission/getUserPermissionByToken',
@@ -16,9 +23,9 @@ export function getPermissions(params) {
   })
 }
 
-export function logout() {
+export function getInfo() {
   return request({
-    url: '/sys/logout',
-    method: 'post',
+    url: '/api/user/info',
+    method: 'get',
   })
 }

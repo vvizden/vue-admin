@@ -25,7 +25,4 @@ export const UPDATE_VISITED_VIEW = 'UPDATE_VISITED_VIEW'
 
 export const SET_TOKEN = 'SET_TOKEN'
 export const SET_INFO = 'SET_INFO'
-export const SET_NAME = 'SET_NAME'
-export const SET_AVATAR = 'SET_AVATAR'
-export const SET_MUNU_PERSSIONS = 'SET_MUNU_PERSSIONS'
-export const SET_BUTTON_PERSSIONS = 'SET_BUTTON_PERSSIONS'
+export const SET_PERSSIONS = 'SET_PERSSIONS'

@@ -1,23 +1,15 @@
 import { login, logout, getPermissions } from '@/api/user'
-import { setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken } from '@/utils/auth'
+import Storage from '@/utils/storage'
 import { resetRouter } from '@/router'
-import {
-  SET_TOKEN,
-  SET_INFO,
-  SET_NAME,
-  SET_AVATAR,
-  SET_MUNU_PERSSIONS,
-  SET_BUTTON_PERSSIONS,
-} from '../mutation-types'
+import { SET_TOKEN, SET_INFO, SET_PERSSIONS } from '../mutation-types'
+
+const USER_INFO_KEY = 'user_info'
 
 const state = {
-  token: '',
-  info: {},
-  username: '',
-  realname: '',
-  avatar: '',
-  menuPermissions: [],
-  buttonPermissions: [],
+  token: getToken(),
+  info: Storage.get(USER_INFO_KEY, {}),
+  permissions: {},
 }
 
 const mutations = {
@@ -27,18 +19,8 @@ const mutations = {
   [SET_INFO]: (state, info) => {
     state.info = info
   },
-  [SET_NAME]: (state, { username, realname }) => {
-    state.username = username
-    state.realname = realname
-  },
-  [SET_AVATAR]: (state, avatar) => {
-    state.avatar = avatar
-  },
-  [SET_MUNU_PERSSIONS]: (state, menuPermissions) => {
-    state.menuPermissions = menuPermissions
-  },
-  [SET_BUTTON_PERSSIONS]: (state, buttonPermissions) => {
-    state.buttonPermissions = buttonPermissions
+  [SET_PERSSIONS]: (state, permissions) => {
+    state.permissions = permissions
   },
 }
 
@@ -55,9 +37,8 @@ const actions = {
         const userInfo = result.userInfo
         commit(SET_TOKEN, result.token)
         commit(SET_INFO, userInfo)
-        commit(SET_NAME, userInfo)
-        commit(SET_AVATAR, userInfo.avatar)
         setToken(result.token)
+        Storage.set(USER_INFO_KEY, userInfo)
 
         return result
       },
@@ -68,8 +49,8 @@ const actions = {
   logout({ commit, state }) {
     return logout(state.token).then(() => {
       commit(SET_TOKEN, '')
-      commit(SET_MUNU_PERSSIONS, [])
-      commit(SET_BUTTON_PERSSIONS, [])
+      commit(SET_INFO, {})
+      commit(SET_PERSSIONS, {})
       removeToken()
       resetRouter()
     })
@@ -84,7 +65,7 @@ const actions = {
         return Promise.reject('vuex action user/getPermissions: request error')
       }
 
-      const { menu, auth } = result
+      const { menu } = result
 
       if (!menu || menu.length <= 0) {
         return Promise.reject(
@@ -92,8 +73,7 @@ const actions = {
         )
       }
 
-      commit(SET_MUNU_PERSSIONS, menu)
-      commit(SET_BUTTON_PERSSIONS, auth)
+      commit(SET_PERSSIONS, result || {})
       return result
     })
   },
@@ -102,6 +82,8 @@ const actions = {
   resetToken({ commit }) {
     return new Promise((resolve) => {
       commit(SET_TOKEN, '')
+      commit(SET_INFO, {})
+      commit(SET_PERSSIONS, {})
       removeToken()
       resolve()
     })

@@ -130,10 +130,19 @@ export default {
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({
-                path: this.redirect || '/',
-                query: this.otherQuery,
-              })
+              this.$router
+                .push({
+                  path: this.redirect || '/',
+                  query: this.otherQuery,
+                })
+                .catch(() => {
+                  // console.warn(
+                  //   `login successfully, redirected from /login to ${this
+                  //     .redirect ||
+                  //     '/'} caught error, change vue-router version to 3.0.7, it's ok. And the catch also needs to be deleted`,
+                  //   error,
+                  // )
+                })
               this.$notify.success({
                 title: '欢迎',
                 message: `${getCurrentTimeDesc()}好，欢迎回来`,

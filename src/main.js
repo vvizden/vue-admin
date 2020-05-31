@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import Storage from 'vue-ls'
+// storage
+import Storage from '@/utils/storage'
 
 import 'normalize.css'
 
@@ -16,18 +17,9 @@ import store from './store'
 
 import './permission'
 
-Vue.use(Storage, {
-  // key prefix
-  namespace: 'vuejs__',
-  // name variable Vue.[ls] or this.[$ls],
-  name: 'ls',
-  // storage name session, local, memory
-  storage: 'local',
-})
-
 Vue.use(ElementUI, {
   // set element-ui default size
-  size: 'medium',
+  size: Storage.get('element_ui_size', 'medium'),
 })
 
 Vue.use(GlobalComponents)

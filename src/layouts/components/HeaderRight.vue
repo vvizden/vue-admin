@@ -22,12 +22,7 @@ export default {
   methods: {
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push({
-        path: '/login',
-        query: {
-          redirect: this.$route.fullPath,
-        },
-      })
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
   },
 }

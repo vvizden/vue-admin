@@ -16,9 +16,22 @@ export function concatAsyncRoutes(routes) {
     {
       path: '/',
       component: BaseLayout,
+      redirect: '/asideLayout',
       // children: generateChildRoutes(routes),
+      children: [
+        {
+          path: 'asideLayout',
+          name: 'AsideLayout',
+          component: AsideLayout,
+        },
+      ],
     },
-    { path: '*', redirect: '/404', hidden: true },
+    {
+      path: '*',
+      name: '404',
+      component: () => import(/* webpackChunkName: "fail" */ '@/views/404'),
+      hidden: true,
+    },
   ]
 }
 
@@ -38,7 +51,7 @@ export const constantRoutes = [
 
 const createRouter = () =>
   new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     scrollBehavior: () => ({ y: 0 }),
     base: process.env.BASE_URL,
     routes: constantRoutes,

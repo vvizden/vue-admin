@@ -3,7 +3,7 @@
     <Aside />
     <el-container class="is-vertical">
       <el-main>
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
       </el-main>
       <Footer />
     </el-container>
