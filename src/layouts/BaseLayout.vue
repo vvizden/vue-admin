@@ -21,5 +21,6 @@ export default {
 <style lang="scss" scoped>
 .base-layout {
   height: 100%;
+  overflow: hidden;
 }
 </style>

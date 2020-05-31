@@ -1,10 +1,8 @@
 import { login, logout, getPermissions } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import Storage from '@/utils/storage'
+import Storage, { USER_INFO_KEY } from '@/utils/storage'
 import { resetRouter } from '@/router'
 import { SET_TOKEN, SET_INFO, SET_PERSSIONS } from '../mutation-types'
-
-const USER_INFO_KEY = 'user_info'
 
 const state = {
   token: getToken(),
@@ -52,6 +50,7 @@ const actions = {
       commit(SET_INFO, {})
       commit(SET_PERSSIONS, {})
       removeToken()
+      Storage.remove(USER_INFO_KEY)
       resetRouter()
     })
   },
@@ -85,6 +84,7 @@ const actions = {
       commit(SET_INFO, {})
       commit(SET_PERSSIONS, {})
       removeToken()
+      Storage.remove(USER_INFO_KEY)
       resolve()
     })
   },

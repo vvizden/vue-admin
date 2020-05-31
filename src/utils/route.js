@@ -10,13 +10,20 @@ export function generateChildRoutes(data) {
       item.meta.url = URL
     }
 
-    console.log(item.component)
+    if (item.component.indexOf('layouts') === -1) {
+      item.component = `views/${item.component}`
+    }
+
+    if (item.component.indexOf('layouts/RouteView') !== -1) {
+      item.component = 'layouts/AsideLayout'
+    }
 
     let menu = {
       path: item.path,
       name: item.name,
       redirect: item.redirect,
-      component: () => import(`@/${item.component}`),
+      component: () =>
+        import(/* webpackChunkName: "menu" */ `@/${item.component}.vue`),
       hidden: item.hidden,
       meta: {
         title: item.meta.title,

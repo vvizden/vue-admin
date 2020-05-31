@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // storage
-import Storage from '@/utils/storage'
+import Storage, { ELEMENT_UI_SIZE_KEY } from '@/utils/storage'
 
 import 'normalize.css'
 
@@ -19,7 +19,7 @@ import './permission'
 
 Vue.use(ElementUI, {
   // set element-ui default size
-  size: Storage.get('element_ui_size', 'medium'),
+  size: Storage.get(ELEMENT_UI_SIZE_KEY, 'medium'),
 })
 
 Vue.use(GlobalComponents)

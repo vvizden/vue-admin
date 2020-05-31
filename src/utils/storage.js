@@ -5,7 +5,13 @@ import Storage from 'vue-ls'
 const NAMESPACE = 'vuejs__'
 
 // token key
-const TOKEN_KEY = 'Access-Token'
+export const TOKEN_KEY = 'Access-Token'
+// user info key
+export const USER_INFO_KEY = 'user_info'
+// sidebar collapse key
+export const SIDEBAR_COLLAPSE_KEY = 'sidebar_is_collapse'
+// element_ui_size key
+export const ELEMENT_UI_SIZE_KEY = 'element_ui_size'
 
 Vue.use(Storage, {
   // key prefix
@@ -21,7 +27,8 @@ function get(...params) {
   if (Vue.ls) {
     return Vue.ls.get(key, ...others)
   }
-  const value = localStorage.getItem(`${NAMESPACE}${key}`)
+  let value = localStorage.getItem(`${NAMESPACE}${key}`)
+  value = JSON.parse(value)
   const defaultValue = others[0]
   return value == null ? (defaultValue == null ? null : defaultValue) : value
 }
@@ -30,6 +37,9 @@ function set(...params) {
   const [key, ...others] = params
   if (Vue.ls) {
     return Vue.ls.set(key, ...others)
+  }
+  if (others.length > 0) {
+    others.splice(0, 1, JSON.stringify(others[1]))
   }
   return localStorage.setItem(`${NAMESPACE}${key}`, ...others)
 }

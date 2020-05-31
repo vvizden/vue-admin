@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // eslint-disable-next-line
 import { BaseLayout, AsideLayout, MainLayout } from '@/layouts'
-// import { generateChildRoutes } from '@/utils/route'
+import { generateChildRoutes } from '@/utils/route'
 
 Vue.use(VueRouter)
 
@@ -16,15 +16,16 @@ export function concatAsyncRoutes(routes) {
     {
       path: '/',
       component: BaseLayout,
-      redirect: '/asideLayout',
-      // children: generateChildRoutes(routes),
-      children: [
-        {
-          path: 'asideLayout',
-          name: 'AsideLayout',
-          component: AsideLayout,
-        },
-      ],
+      redirect: '/home',
+      hideInMenu: true,
+      children: generateChildRoutes(routes),
+      // children: [
+      //   {
+      //     path: 'aside-layout',
+      //     name: 'AsideLayout',
+      //     component: AsideLayout,
+      //   },
+      // ],
     },
     {
       path: '*',

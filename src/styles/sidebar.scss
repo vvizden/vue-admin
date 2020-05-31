@@ -8,15 +8,11 @@
 
   .sidebar-container {
     transition: width 0.28s;
-    width: $sideBarWidth !important;
+    width: 100%;
     background-color: $menuBg;
     height: 100%;
-    position: fixed;
+    padding: 0;
     font-size: 0px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
     overflow: hidden;
 
     // reset element-ui css
