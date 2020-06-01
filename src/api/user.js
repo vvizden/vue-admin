@@ -1,31 +1,13 @@
-import request from '@/utils/request'
+import $http from './index'
 
 export function login(data) {
-  return request({
-    url: '/sys/login',
-    method: 'post',
-    data,
-  })
+  return $http.post('/sys/login', data)
 }
 
 export function logout() {
-  return request({
-    url: '/sys/logout',
-    method: 'post',
-  })
+  return $http.post('/sys/logout')
 }
 
 export function getPermissions(params) {
-  return request({
-    url: '/sys/permission/getUserPermissionByToken',
-    method: 'get',
-    params,
-  })
-}
-
-export function getInfo() {
-  return request({
-    url: '/api/user/info',
-    method: 'get',
-  })
+  return $http.get('/sys/permission/getUserPermissionByToken', params)
 }

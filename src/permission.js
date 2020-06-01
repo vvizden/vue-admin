@@ -51,7 +51,10 @@ router.beforeEach(async (to, from, next) => {
           } catch (error) {
             // remove token and go to login page to re-login
             await store.dispatch('user/resetToken').catch((err) => {
-              console.error("store.dispatch('user/resetToke) catch error", err)
+              console.error(
+                "permission.js store.dispatch('user/resetToke) catch error",
+                err,
+              )
             })
 
             // Notification.error(error || '系统错误')

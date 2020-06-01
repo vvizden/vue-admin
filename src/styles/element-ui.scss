@@ -82,3 +82,15 @@
 .el-range-separator {
   box-sizing: content-box;
 }
+
+.el-scrollbar {
+  height: 100%;
+
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+}
+
+.el-main {
+  padding: 0;
+}

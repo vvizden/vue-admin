@@ -1,8 +1,6 @@
 <template>
   <el-container class="main-layout is-vertical">
-    <el-main>
-      <router-view></router-view>
-    </el-main>
+    <ViewLayout />
     <Footer />
   </el-container>
 </template>
@@ -13,6 +11,7 @@ export default {
   components: {
     Footer: () =>
       import(/* webpackChunkName: "layout" */ './components/Footer'),
+    ViewLayout: () => import(/* webpackChunkName: "layout" */ './ViewLayout'),
   },
 }
 </script>

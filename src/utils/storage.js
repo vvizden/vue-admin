@@ -22,8 +22,7 @@ Vue.use(Storage, {
   storage: 'local',
 })
 
-function get(...params) {
-  const [key, ...others] = params
+function get(key, ...others) {
   if (Vue.ls) {
     return Vue.ls.get(key, ...others)
   }
@@ -33,8 +32,7 @@ function get(...params) {
   return value == null ? (defaultValue == null ? null : defaultValue) : value
 }
 
-function set(...params) {
-  const [key, ...others] = params
+function set(key, ...others) {
   if (Vue.ls) {
     return Vue.ls.set(key, ...others)
   }

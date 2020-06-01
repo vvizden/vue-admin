@@ -2,7 +2,7 @@ import { validURL } from '@/utils/validate'
 
 export function generateChildRoutes(data) {
   const routes = []
-  for (var item of data) {
+  for (let item of data) {
     const URL = (item.meta.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) =>
       eval(s2),
     ) // URL支持{{ window.xxx }}占位符变量
@@ -10,12 +10,15 @@ export function generateChildRoutes(data) {
       item.meta.url = URL
     }
 
-    if (item.component.indexOf('layouts') === -1) {
-      item.component = `views/${item.component}`
-    }
-
-    if (item.component.indexOf('layouts/RouteView') !== -1) {
-      item.component = 'layouts/AsideLayout'
+    let componentPath = item.component
+    if (componentPath.indexOf('layouts/') === -1) {
+      if (componentPath.indexOf('view/') === -1) {
+        componentPath = `views/${componentPath}`
+      }
+    } else {
+      if (componentPath.indexOf('layouts/RouteView') !== -1) {
+        componentPath = 'layouts/AsideLayout'
+      }
     }
 
     let menu = {
@@ -23,7 +26,7 @@ export function generateChildRoutes(data) {
       name: item.name,
       redirect: item.redirect,
       component: () =>
-        import(/* webpackChunkName: "menu" */ `@/${item.component}.vue`),
+        import(/* webpackChunkName: "menu" */ `@/${componentPath}.vue`),
       hidden: item.hidden,
       meta: {
         title: item.meta.title,

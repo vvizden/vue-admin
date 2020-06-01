@@ -26,7 +26,7 @@ instance.interceptors.request.use(
   },
   (error) => {
     // do something with request error
-    console.log(error) // for debug
+    console.log('request.js request error', error) // for debug
     return Promise.reject(error)
   },
 )
@@ -98,8 +98,13 @@ instance.interceptors.response.use(
           })
           break
       }
+    } else {
+      Notification.error({
+        title: '系统错误',
+        message: error.message,
+      })
     }
-    console.log('request error', error) // for debug
+    console.log('request.js response error', error) // for debug
     return Promise.reject(error)
   },
 )

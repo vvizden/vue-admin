@@ -5,7 +5,7 @@
         {{ title }}
       </span>
     </div>
-    <div class="layout-header__item">中间功能</div>
+    <!-- <div class="layout-header__item">中间功能</div> -->
     <div class="layout-header__item right-item">
       <HeaderRight />
     </div>
