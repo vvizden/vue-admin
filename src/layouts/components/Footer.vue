@@ -1,5 +1,5 @@
 <template>
-  <el-footer class="layout-footer"><copyright /></el-footer>
+  <el-footer class="layout-footer"><v-copyright /></el-footer>
 </template>
 
 <script>

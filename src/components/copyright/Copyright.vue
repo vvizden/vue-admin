@@ -11,8 +11,10 @@
 </template>
 
 <script>
+import { NAME_PREFIX } from '../const/common'
+
 export default {
-  name: 'Copyright',
+  name: `${NAME_PREFIX}Copyright`,
 }
 </script>
 

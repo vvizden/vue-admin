@@ -17,12 +17,17 @@ import store from './store'
 
 import './permission'
 
+import $http from '@/api'
+
 Vue.use(ElementUI, {
   // set element-ui default size
   size: Storage.get(ELEMENT_UI_SIZE_KEY, 'medium'),
 })
 
 Vue.use(GlobalComponents)
+
+// http请求
+Vue.prototype.$http = $http
 
 Vue.config.productionTip = false
 

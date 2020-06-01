@@ -57,7 +57,7 @@
         </el-tab-pane>
       </el-tabs>
     </el-card>
-    <copyright class="copyright" />
+    <v-copyright class="copyright" />
   </div>
 </template>
 

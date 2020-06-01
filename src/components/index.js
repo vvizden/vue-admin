@@ -1,6 +1,7 @@
 import Copyright from './copyright'
+import Table from './element-ext/table'
 
-const VERSION = '1.0.0'
+const VERSION = '0.1.0'
 
 // eslint-disable-next-line no-unused-vars
 function install(Vue, options = {}) {
@@ -11,6 +12,7 @@ function install(Vue, options = {}) {
   install.installed = true // install components
 
   Vue.use(Copyright)
+  Vue.use(Table)
 }
 
-export default { VERSION, install, Copyright }
+export default { VERSION, install, Copyright, Table }
