@@ -1,7 +1,7 @@
 <template>
   <div class="header-right">
     <el-dropdown>
-      <el-avatar class="user-avatar">{{ realname }}</el-avatar>
+      <el-avatar size="medium" class="user-avatar">{{ realname }}</el-avatar>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item divided @click.native="logout">
           登出
@@ -29,11 +29,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-avatar {
-  cursor: pointer;
+.header-right {
+  line-height: 0;
+  .user-avatar {
+    cursor: pointer;
 
-  &:focus {
-    outline: none;
+    &:focus {
+      outline: none;
+    }
   }
 }
 </style>
