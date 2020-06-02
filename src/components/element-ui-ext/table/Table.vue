@@ -100,6 +100,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    showPopover: {
+      type: Boolean,
+      default: false,
+    },
     ...Table.props,
   },
   data() {
@@ -171,31 +175,42 @@ export default {
       childVNodes.push(<template slot="append">{appendVNode}</template>)
     }
 
-    const colCheckBoxes = this.columnsCheckGroup.map((checkbox) => {
-      return (
-        <el-checkbox key={checkbox.key} label={checkbox.key}>
-          {checkbox.value}
-        </el-checkbox>
+    let operationVNodes = []
+
+    if (this.showPopover) {
+      const colCheckBoxes = this.columnsCheckGroup.map((checkbox) => {
+        return (
+          <el-checkbox key={checkbox.key} label={checkbox.key}>
+            {checkbox.value}
+          </el-checkbox>
+        )
+      })
+
+      const popoverVNode = (
+        <el-popover {...this.customPopoverProps}>
+          <el-checkbox-group vModel={this.columnsCheckVal} min={1} size="mini">
+            {colCheckBoxes}
+          </el-checkbox-group>
+          <el-button slot="reference" type="primary" plain title="隐藏列">
+            隐藏列
+          </el-button>
+        </el-popover>
       )
-    })
+
+      operationVNodes.push(popoverVNode)
+    }
+
+    if (this.$scopedSlots.operation) {
+      operationVNodes.push(this.$scopedSlots.operation())
+    }
+
+    if (operationVNodes.length > 0) {
+      operationVNodes = <div class="table-operation">{operationVNodes}</div>
+    }
 
     return (
       <div class="table-plus">
-        <div class="table-operation">
-          {this.$scopedSlots.operation && this.$scopedSlots.operation()}
-          <el-popover {...this.customPopoverProps}>
-            <el-checkbox-group
-              vModel={this.columnsCheckVal}
-              min={1}
-              size="mini"
-            >
-              {colCheckBoxes}
-            </el-checkbox-group>
-            <el-button slot="reference" type="primary" plain title="隐藏列">
-              隐藏列
-            </el-button>
-          </el-popover>
-        </div>
+        {operationVNodes}
         <el-table {...this.tableProps}>{childVNodes}</el-table>
       </div>
     )
