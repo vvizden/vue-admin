@@ -191,13 +191,9 @@ export default {
             >
               {colCheckBoxes}
             </el-checkbox-group>
-            <el-button
-              slot="reference"
-              type="primary"
-              icon="el-icon-more"
-              circle
-              title="列隐藏"
-            ></el-button>
+            <el-button slot="reference" type="primary" plain title="隐藏列">
+              隐藏列
+            </el-button>
           </el-popover>
         </div>
         <el-table {...this.tableProps}>{childVNodes}</el-table>
