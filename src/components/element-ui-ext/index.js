@@ -1,5 +1,4 @@
-import Copyright from './copyright'
-import ElementUIExt from './element-ui-ext'
+import Table from './table'
 
 const VERSION = '0.1.0'
 
@@ -11,8 +10,7 @@ function install(Vue, options = {}) {
 
   install.installed = true // install components
 
-  Vue.use(Copyright)
-  Vue.use(ElementUIExt)
+  Vue.use(Table)
 }
 
-export default { VERSION, install, Copyright, ElementUIExt }
+export default { VERSION, install, Table }
