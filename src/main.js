@@ -21,7 +21,7 @@ import $http from '@/api'
 
 Vue.use(ElementUI, {
   // set element-ui default size
-  size: Storage.get(ELEMENT_UI_SIZE_KEY, 'medium'),
+  size: Storage.get(ELEMENT_UI_SIZE_KEY, 'small'),
 })
 
 Vue.use(GlobalComponents)

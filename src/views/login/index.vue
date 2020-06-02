@@ -148,6 +148,9 @@ export default {
                 message: `${getCurrentTimeDesc()}好，欢迎回来`,
               })
             })
+            .catch((error) => {
+              console.log('login error', error)
+            })
             .finally(() => {
               this.loading = false
             })

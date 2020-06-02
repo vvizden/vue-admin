@@ -8,7 +8,7 @@ const state = {
   sidebar: {
     isCollapse: Storage.get(SIDEBAR_COLLAPSE_KEY, false),
   },
-  elementUISize: Storage.get(ELEMENT_UI_SIZE_KEY, 'medium'),
+  elementUISize: Storage.get(ELEMENT_UI_SIZE_KEY, 'small'),
 }
 
 const mutations = {
