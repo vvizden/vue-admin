@@ -1,3 +1,4 @@
+// api请求基础接口
 import request from '@/utils/request'
 
 // 对响应做进一步处理

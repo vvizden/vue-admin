@@ -83,14 +83,22 @@
   box-sizing: content-box;
 }
 
-.el-scrollbar {
-  height: 100%;
-
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
-  }
-}
-
 .el-main {
   padding: 0;
+}
+
+.el-table .el-table__body .cell {
+  line-height: inherit;
+}
+
+.el-pagination {
+  padding: 2px 0;
+  :last-child {
+    margin-right: 0;
+  }
+
+  .el-pagination__count {
+    color: #606266;
+    font-weight: 400;
+  }
 }

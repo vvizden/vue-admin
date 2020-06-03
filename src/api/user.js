@@ -1,5 +1,9 @@
 import $http from './index'
 
+export const url = {
+  page: '/sys/user/list',
+}
+
 export function login(data) {
   return $http.post('/sys/login', data)
 }

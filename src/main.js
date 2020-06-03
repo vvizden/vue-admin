@@ -17,6 +17,8 @@ import store from './store'
 
 import './permission'
 
+import * as filters from './filters' // global filters
+
 import $http from '@/api'
 
 Vue.use(ElementUI, {
@@ -28,6 +30,11 @@ Vue.use(GlobalComponents)
 
 // http请求
 Vue.prototype.$http = $http
+
+// register global filters
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key])
+})
 
 Vue.config.productionTip = false
 
