@@ -96,12 +96,8 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    popoverProps: {
-      type: Object,
-      default: () => ({}),
-    },
-    showPopover: {
-      type: Boolean,
+    columnsCtrl: {
+      type: [Object, Boolean],
       default: false,
     },
     ...Table.props,
@@ -130,8 +126,9 @@ export default {
       },
     },
     tableProps() {
-      // eslint-disable-next-line
-      const { columns, tableStyle, popoverProps, ...otherProps } = this.$props
+      /* eslint-disable no-unused-vars */
+      const { columns, tableStyle, columnsCtrl, ...otherProps } = this.$props
+      /* eslint-disable no-unused-vars */
       for (const [k, v] of Object.entries(otherProps)) {
         if (v == null) {
           delete otherProps[k]
@@ -147,14 +144,23 @@ export default {
       }
     },
     customPopoverProps() {
-      return {
-        props: {
-          placement: 'left',
-          width: '220',
-          trigger: 'click',
-          ...this.popoverProps,
-        },
+      const props = {
+        placement: 'left',
+        width: '220',
+        trigger: 'click',
       }
+
+      if (this.columnsCtrl) {
+        return {
+          ...this.columnsCtrl,
+          props: {
+            ...props,
+            ...this.columnsCtrl.props,
+          },
+        }
+      }
+
+      return {}
     },
   },
   watch: {
@@ -177,7 +183,7 @@ export default {
 
     let operationVNodes = []
 
-    if (this.showPopover) {
+    if (this.columnsCtrl) {
       const colCheckBoxes = this.columnsCheckGroup.map((checkbox) => {
         return (
           <el-checkbox key={checkbox.key} label={checkbox.key}>
@@ -191,7 +197,13 @@ export default {
           <el-checkbox-group vModel={this.columnsCheckVal} min={1} size="mini">
             {colCheckBoxes}
           </el-checkbox-group>
-          <el-button slot="reference" type="primary" plain title="隐藏列">
+          <el-button
+            slot="reference"
+            type="primary"
+            size="mini"
+            plain
+            title="隐藏列"
+          >
             隐藏列
           </el-button>
         </el-popover>
@@ -224,6 +236,16 @@ export default {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 8px;
+  }
+}
+
+.el-checkbox-group ::v-deep {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .el-checkbox:last-of-type {
+    margin-right: 30px;
   }
 }
 </style>

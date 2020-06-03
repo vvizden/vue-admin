@@ -1,4 +1,5 @@
 import Table from './table'
+import Pagination from './pagination'
 
 const VERSION = '0.1.0'
 
@@ -11,6 +12,7 @@ function install(Vue, options = {}) {
   install.installed = true // install components
 
   Vue.use(Table)
+  Vue.use(Pagination)
 }
 
-export default { VERSION, install, Table }
+export default { VERSION, install, Table, Pagination }
