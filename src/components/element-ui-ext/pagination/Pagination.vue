@@ -21,9 +21,10 @@
 
 <script>
 import { scrollTo } from '@/utils/scroll-to'
+import { NAME_PREFIX } from '../../const/common'
 
 export default {
-  name: 'Pagination',
+  name: `${NAME_PREFIX}Pagination`,
   props: {
     total: {
       required: true,

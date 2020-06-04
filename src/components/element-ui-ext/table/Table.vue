@@ -146,7 +146,7 @@ export default {
     customPopoverProps() {
       const props = {
         placement: 'left',
-        width: '220',
+        width: '160',
         trigger: 'click',
       }
 
@@ -183,6 +183,10 @@ export default {
 
     let operationVNodes = []
 
+    if (this.$scopedSlots.operation) {
+      operationVNodes.push(this.$scopedSlots.operation())
+    }
+
     if (this.columnsCtrl) {
       const colCheckBoxes = this.columnsCheckGroup.map((checkbox) => {
         return (
@@ -193,7 +197,7 @@ export default {
       })
 
       const popoverVNode = (
-        <el-popover {...this.customPopoverProps}>
+        <el-popover class="columns-ctrl" {...this.customPopoverProps}>
           <el-checkbox-group vModel={this.columnsCheckVal} min={1} size="mini">
             {colCheckBoxes}
           </el-checkbox-group>
@@ -203,6 +207,7 @@ export default {
             size="mini"
             plain
             title="隐藏列"
+            icon="el-icon-more"
           >
             隐藏列
           </el-button>
@@ -210,10 +215,6 @@ export default {
       )
 
       operationVNodes.push(popoverVNode)
-    }
-
-    if (this.$scopedSlots.operation) {
-      operationVNodes.push(this.$scopedSlots.operation())
     }
 
     if (operationVNodes.length > 0) {
@@ -235,7 +236,12 @@ export default {
   .table-operation {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin-bottom: 8px;
+
+    .columns-ctrl {
+      margin-left: 8px;
+    }
   }
 }
 
