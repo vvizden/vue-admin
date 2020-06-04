@@ -86,7 +86,7 @@ function filterCols(array, filters) {
 
 export default {
   name: `${NAME_PREFIX}Table`,
-  inheritAttrs: false,
+  // inheritAttrs: false,
   props: {
     columns: {
       type: Array,
@@ -137,7 +137,7 @@ export default {
 
       return {
         key: this.tableKey,
-        attrs: this.$attrs,
+        // attrs: this.$attrs,
         props: otherProps,
         on: this.$listeners,
         style: { width: '100%', ...tableStyle },
@@ -202,14 +202,19 @@ export default {
             {colCheckBoxes}
           </el-checkbox-group>
           <el-button
-            slot="reference"
-            type="primary"
-            size="mini"
-            plain
-            title="隐藏列"
-            icon="el-icon-more"
+            {...{
+              slot: 'reference',
+              props: {
+                type: 'primary',
+                plain: true,
+                icon: 'el-icon-more',
+              },
+              attrs: {
+                title: '隐藏列',
+              },
+            }}
           >
-            隐藏列
+            {this.columnsCtrlText}
           </el-button>
         </el-popover>
       )
