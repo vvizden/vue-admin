@@ -13,9 +13,9 @@ export default {
       this.loading = true
       return this.$http
         .get(this.url.data, this.getQueryParams())
-        .then((result) => {
-          if (result) {
-            this.dataHandler(result)
+        .then((res) => {
+          if (res) {
+            this.dataHandler(res.result)
           }
         })
         .catch((error) => {

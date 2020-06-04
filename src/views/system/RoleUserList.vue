@@ -14,7 +14,7 @@
           type="primary"
           size="mini"
           icon="el-icon-circle-plus-outline"
-          @click="handleCreateClick"
+          @click="dialogFormVisible = true"
           >创建</el-button
         >
       </template>
@@ -36,79 +36,44 @@
     />
 
     <el-dialog
-      :title="dialogTitle"
-      top="6vh"
-      width="70%"
+      title="dialogTitle"
       :visible.sync="dialogFormVisible"
+      fullscreen
       destroy-on-close
     >
-      <UserForm @ok="handleUserFormOk" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins'
-import { userUrl } from '@/api/url'
+import { roleUrl } from '@/api/url'
 
 export default {
-  name: 'UserList',
+  name: 'RoleUserList',
   mixins: [TableMixin],
   components: {
-    UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
+    // UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
   },
   data() {
     return {
-      url: { data: userUrl.page },
+      url: { data: roleUrl.page },
       // begin ----> table
       columns: [
         {
-          label: '用户账号',
+          label: '角色编码',
           align: 'center',
-          prop: 'username',
+          prop: 'roleCode',
         },
         {
-          label: '用户姓名',
+          label: '角色名称',
           align: 'center',
-          prop: 'realname',
+          prop: 'roleName',
         },
         {
-          label: '头像',
+          label: '创建时间',
           align: 'center',
-          prop: 'avatar',
-          scopedSlots: true,
-        },
-
-        {
-          label: '性别',
-          align: 'center',
-          prop: 'sex_dictText',
-          sorter: true,
-        },
-        {
-          label: '生日',
-          align: 'center',
-          prop: 'birthday',
-        },
-        {
-          label: '手机号码',
-          align: 'center',
-          prop: 'phone',
-        },
-        {
-          label: '部门',
-          align: 'center',
-          prop: 'orgCode',
-        },
-        {
-          label: '负责部门',
-          align: 'center',
-          prop: 'departIds_dictText',
-        },
-        {
-          label: '状态',
-          align: 'center',
-          prop: 'status_dictText',
+          prop: 'createTime',
         },
       ],
       tableData: [],
@@ -132,15 +97,6 @@ export default {
     this.loadData()
   },
   methods: {
-    handleCreateClick() {
-      this.dialogTitle = '创建'
-      this.dialogFormVisible = true
-    },
-    handleUserFormOk() {
-      this.dialogFormVisible = false
-      this.pagination.page = 1
-      this.loadData()
-    },
     dataHandler(data) {
       this.tableData = data.records
       this.pagination.total = data.total

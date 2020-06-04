@@ -11,13 +11,13 @@ import '@/styles/index.scss'
 // global components
 import GlobalComponents from '@/components'
 
-import App from './App.vue'
-import router from './router'
-import store from './store'
-
 import './permission'
 
 import * as filters from './filters' // global filters
+
+import App from './App.vue'
+import router from './router'
+import store from './store'
 
 import $http from '@/api'
 

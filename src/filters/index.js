@@ -1,4 +1,5 @@
 export function staticFilter(url) {
+  if (!url) return url
   if (url.startsWith('http')) {
     return url
   } else {

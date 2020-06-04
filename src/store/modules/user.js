@@ -27,7 +27,9 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return login({ username: username.trim(), password: password }).then(
-      (result) => {
+      (res) => {
+        const { result } = res
+
         if (!result) {
           return Promise.reject(
             'vuex action user/login error: response result is null',
@@ -58,7 +60,9 @@ const actions = {
 
   // get permissions
   getPermissions({ commit, state }) {
-    return getPermissions({ token: state.token }).then((result) => {
+    return getPermissions({ token: state.token }).then((res) => {
+      const { result } = res
+
       if (!result) {
         return Promise.reject(
           'vuex action user/getPermissions error: response result is null',

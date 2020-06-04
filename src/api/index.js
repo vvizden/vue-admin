@@ -6,20 +6,14 @@ function requestWrapper(requestMethod, ...params) {
   return requestMethod(...params)
     .then((res) => {
       if (res.success) {
-        return res.result
+        return res
       } else {
         return Promise.reject(res)
       }
     })
     .catch((error) => {
-      if (
-        Object.prototype.hasOwnProperty.call(error, 'success') &&
-        error.success === false
-      ) {
-        return Promise.reject(error)
-      } else {
-        return Promise.reject()
-      }
+      // 存在两种类型的 error: { code, message, result, ... } || { message, ... }
+      return Promise.reject(error)
     })
 }
 
