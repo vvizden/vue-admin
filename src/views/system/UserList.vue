@@ -26,6 +26,16 @@
           icon="el-icon-user-solid"
         ></el-avatar>
       </template>
+      <template #action="{ row }">
+        <el-button
+          type="text"
+          icon="el-icon-edit-outline"
+          @click.stop="handleEditClick(row)"
+          >编辑</el-button
+        >
+        <el-divider direction="vertical" />
+        <el-button type="text" icon="el-icon-delete">删除</el-button>
+      </template>
     </v-table>
     <v-pagination
       v-show="pagination.total > 0"
@@ -42,7 +52,7 @@
       :visible.sync="dialogFormVisible"
       destroy-on-close
     >
-      <UserForm @ok="handleUserFormOk" />
+      <UserForm :model="editRow" @ok="handleUserFormOk" />
     </el-dialog>
   </div>
 </template>
@@ -83,7 +93,6 @@ export default {
           label: '性别',
           align: 'center',
           prop: 'sex_dictText',
-          sorter: true,
         },
         {
           label: '生日',
@@ -101,14 +110,16 @@ export default {
           prop: 'orgCode',
         },
         {
-          label: '负责部门',
-          align: 'center',
-          prop: 'departIds_dictText',
-        },
-        {
           label: '状态',
           align: 'center',
           prop: 'status_dictText',
+        },
+        {
+          label: '操作',
+          align: 'center',
+          prop: 'action',
+          width: '140px',
+          scopedSlots: true,
         },
       ],
       tableData: [],
@@ -119,8 +130,9 @@ export default {
       },
       sortord: {
         column: 'createTime',
-        order: 'order',
+        order: 'desc',
       },
+      editRow: {},
       // end <---- table
       // begin ---->  dialog
       dialogTitle: '创建',
@@ -133,7 +145,13 @@ export default {
   },
   methods: {
     handleCreateClick() {
+      this.editRow = {}
       this.dialogTitle = '创建'
+      this.dialogFormVisible = true
+    },
+    handleEditClick(row) {
+      this.editRow = row
+      this.dialogTitle = '编辑'
       this.dialogFormVisible = true
     },
     handleUserFormOk() {

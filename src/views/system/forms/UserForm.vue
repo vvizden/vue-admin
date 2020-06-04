@@ -16,24 +16,26 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item label="登陆密码" prop="password">
-      <el-input
-        v-model="ruleForm.password"
-        placeholder="请填写登陆密码"
-        clearable
-        show-password
-        autocomplete="new-password"
-      ></el-input>
-    </el-form-item>
+    <template v-if="!model.id">
+      <el-form-item label="登陆密码" prop="password">
+        <el-input
+          v-model="ruleForm.password"
+          placeholder="请填写登陆密码"
+          clearable
+          show-password
+          autocomplete="new-password"
+        ></el-input>
+      </el-form-item>
 
-    <el-form-item label="确认密码" prop="confirmPassword">
-      <el-input
-        v-model="ruleForm.confirmPassword"
-        placeholder="请再次填写登陆密码"
-        clearable
-        show-password
-      ></el-input>
-    </el-form-item>
+      <el-form-item label="确认密码" prop="confirmPassword">
+        <el-input
+          v-model="ruleForm.confirmPassword"
+          placeholder="请再次填写登陆密码"
+          clearable
+          show-password
+        ></el-input>
+      </el-form-item>
+    </template>
 
     <el-form-item label="用户姓名" prop="realname">
       <el-input
@@ -120,12 +122,18 @@
 <script>
 import { userUrl, roleUrl, deptUrl } from '@/api/url'
 import { duplicationCheck } from '@/api/util'
+import { cloneDeep, isEmpty } from 'lodash-es'
 
 export default {
   name: 'UserForm',
+  props: {
+    model: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      model: {},
       ruleForm: {
         username: '',
         password: '',
@@ -247,6 +255,16 @@ export default {
       },
     }
   },
+  watch: {
+    model(val) {
+      if (isEmpty(val)) {
+        this.$refs.ruleForm.resetFields()
+      } else {
+        this.ruleForm = { ...this.ruleForm, ...cloneDeep(val) }
+      }
+      this.formDataMapping(this.ruleForm, false)
+    },
+  },
   created() {
     // load role list
     this.$http.get(roleUrl.list).then((res) => {
@@ -258,20 +276,69 @@ export default {
       this.deptTreeData = res.result
     })
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.ruleForm = { ...this.ruleForm, ...cloneDeep(this.model) }
+      this.formDataMapping(this.ruleForm, false)
+    })
+  },
   methods: {
+    // forward = ture, form to model
+    formDataMapping(formData, forward = true) {
+      if (forward) {
+        // 所选角色
+        if (formData.roleIds) {
+          formData.selectedroles = formData.roleIds.join(',')
+          delete formData.roleIds
+        } else {
+          formData.selectedroles = ''
+        }
+        // 所选部门
+        const deptIds = this.$refs.deptTree.getCheckedKeys()
+        if (deptIds) {
+          formData.selecteddeparts = deptIds.join(',')
+        } else {
+          formData.selecteddeparts = ''
+        }
+      } else {
+        // 所选角色
+        if (this.model.id) {
+          // 用户所属角色
+          this.$http
+            .get(userUrl.userRoleIds, { userid: this.model.id })
+            .then((res) => {
+              formData.roleIds = res.result || []
+            })
+            .catch(() => {
+              formData.roleIds = []
+            })
+          // 用户所属部门
+          this.$http
+            .get(userUrl.userDepts, { userId: this.model.id })
+            .then((res) => {
+              if (res.result) {
+                const deptIds = res.result.map((e) => e.value)
+                this.$refs.deptTree.setCheckedKeys(deptIds)
+              }
+            })
+            .catch(() => {
+              this.$refs.deptTree.setCheckedKeys([])
+            })
+        } else {
+          formData.roleIds = []
+          this.$refs.deptTree.setCheckedKeys([])
+        }
+      }
+    },
     getFormData() {
       // 待提交表单数据
       let formData = { ...this.ruleForm }
-      // 所选角色
-      formData.selectedroles = formData.roleIds.join(',')
-      // 所选部门
-      const deptIds = this.$refs.deptTree.getCheckedKeys()
-      formData.selecteddeparts = deptIds.join(',')
+      // 处理 form => model 的映射
+      this.formDataMapping(formData, true)
       // 删除多余字段
       delete formData.confirmPassword
-      delete formData.roleIds
 
-      return Object.assign(this.model, formData)
+      return formData
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -350,7 +417,7 @@ export default {
         tableName: 'sys_user',
         fieldName: 'email',
         fieldVal: value,
-        dataId: this.userId,
+        dataId: this.model.id,
       }
       duplicationCheck(params).then((pass) => {
         if (pass) {
