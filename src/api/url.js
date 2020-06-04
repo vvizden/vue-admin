@@ -2,6 +2,8 @@ export const userUrl = {
   page: '/sys/user/list',
   create: '/sys/user/add',
   edit: '/sys/user/edit',
+  delete: '/sys/user/delete',
+  deleteBatch: '/sys/user/deleteBatch',
   userRoleIds: '/sys/user/queryUserRole',
   userDepts: '/sys/user/userDepartList',
   login: '/sys/login',

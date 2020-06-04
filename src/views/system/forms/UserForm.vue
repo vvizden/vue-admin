@@ -2,7 +2,7 @@
   <el-form
     v-loading="loading"
     element-loading-text="正在提交..."
-    element-loading-background="rgba(0, 0, 0, 0.8)"
+    element-loading-custom-class="custom-loading"
     :model="ruleForm"
     :rules="rules"
     ref="ruleForm"

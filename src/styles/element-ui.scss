@@ -84,11 +84,21 @@
 }
 
 .el-main {
-  padding: 0;
+  transition: width 5s linear;
 }
 
-.el-table .el-table__body .cell {
-  line-height: inherit;
+.el-table {
+  .el-table__header {
+    .el-table-column--selection {
+      .cell {
+        padding-right: 14px;
+      }
+    }
+  }
+
+  .el-table__body .cell {
+    line-height: inherit;
+  }
 }
 
 .el-pagination {
@@ -101,4 +111,13 @@
     color: #606266;
     font-weight: 400;
   }
+}
+
+.el-button--small {
+  padding: 8px 14px;
+}
+
+.el-button--text {
+  padding-left: 0;
+  padding-right: 0;
 }

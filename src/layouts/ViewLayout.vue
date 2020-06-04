@@ -1,10 +1,6 @@
 <template>
   <el-main>
-    <el-scrollbar>
-      <div class="app-container">
-        <router-view></router-view>
-      </div>
-    </el-scrollbar>
+    <router-view></router-view>
   </el-main>
 </template>
 
