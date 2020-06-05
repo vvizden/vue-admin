@@ -87,6 +87,7 @@
   transition: width 5s linear;
 }
 
+// fix selection align
 .el-table {
   .el-table__header {
     .el-table-column--selection {
@@ -94,10 +95,6 @@
         padding-right: 14px;
       }
     }
-  }
-
-  .el-table__body .cell {
-    line-height: inherit;
   }
 }
 

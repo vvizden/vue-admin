@@ -123,9 +123,11 @@
 import { userUrl, roleUrl, deptUrl } from '@/api/url'
 import { duplicationCheck } from '@/api/util'
 import { cloneDeep, isEmpty } from 'lodash-es'
+import { FormMixin } from '@/mixins'
 
 export default {
   name: 'UserForm',
+  mixins: [FormMixin],
   props: {
     model: {
       type: Object,
@@ -134,6 +136,12 @@ export default {
   },
   data() {
     return {
+      url: {
+        userRoleIds: userUrl.userRoleIds,
+        userDepts: userUrl.userDepts,
+        edit: userUrl.edit,
+        create: userUrl.create,
+      },
       ruleForm: {
         username: '',
         password: '',
@@ -222,6 +230,7 @@ export default {
         email: [
           {
             type: 'email',
+            required: false,
             whitespace: true,
             message: '邮箱格式错误',
             trigger: 'change',
@@ -231,6 +240,7 @@ export default {
         phone: [
           {
             pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/,
+            required: false,
             whitespace: true,
             message: '手机号格式错误',
             trigger: 'change',
@@ -305,7 +315,7 @@ export default {
         if (this.model.id) {
           // 用户所属角色
           this.$http
-            .get(userUrl.userRoleIds, { userid: this.model.id })
+            .get(this.url.userRoleIds, { userid: this.model.id })
             .then((res) => {
               formData.roleIds = res.result || []
             })
@@ -314,7 +324,7 @@ export default {
             })
           // 用户所属部门
           this.$http
-            .get(userUrl.userDepts, { userId: this.model.id })
+            .get(this.url.userDepts, { userId: this.model.id })
             .then((res) => {
               if (res.result) {
                 const deptIds = res.result.map((e) => e.value)
@@ -333,6 +343,11 @@ export default {
     getFormData() {
       // 待提交表单数据
       let formData = { ...this.ruleForm }
+      for (const key of Object.keys(formData)) {
+        if (formData[key] == '') {
+          delete formData[key]
+        }
+      }
       // 处理 form => model 的映射
       this.formDataMapping(formData, true)
       // 删除多余字段
@@ -347,9 +362,9 @@ export default {
           let httpPromise
           this.loading = true
           if (this.model.id) {
-            httpPromise = this.$http.put(userUrl.edit, formData)
+            httpPromise = this.$http.put(this.url.edit, formData)
           } else {
-            httpPromise = this.$http.post(userUrl.create, formData)
+            httpPromise = this.$http.post(this.url.create, formData)
           }
           httpPromise
             .then((res) => {
@@ -357,7 +372,9 @@ export default {
               this.$message.success(res.message)
             })
             .catch((error) => {
-              this.$message.warning(error.message)
+              if (error) {
+                this.$message.warning(error.message)
+              }
             })
             .finally(() => {
               this.loading = false
@@ -367,10 +384,11 @@ export default {
         }
       })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
     validateUsername(rule, value, callback) {
+      if (!value) {
+        return callback()
+      }
+
       const params = {
         tableName: 'sys_user',
         fieldName: 'username',
@@ -398,6 +416,10 @@ export default {
       }
     },
     validatePhone(rule, value, callback) {
+      if (!value) {
+        return callback()
+      }
+
       const params = {
         tableName: 'sys_user',
         fieldName: 'phone',
@@ -413,6 +435,10 @@ export default {
       })
     },
     validateEmail(rule, value, callback) {
+      if (!value) {
+        return callback()
+      }
+
       const params = {
         tableName: 'sys_user',
         fieldName: 'email',

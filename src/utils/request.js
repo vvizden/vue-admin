@@ -104,6 +104,7 @@ instance.interceptors.response.use(
         message: error.message,
       })
     }
+
     console.log('request.js response error', error) // for debug
     return Promise.reject(error)
   },

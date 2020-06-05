@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-form
       ref="filterForm"
+      :model="filterParams"
       inline
       label-width="auto"
       class="filter-container"
@@ -65,7 +66,7 @@
           type="primary"
           plain
           icon="el-icon-refresh-left"
-          @click="loadData"
+          @click="handleResetClick('filterForm')"
         >
           重置
         </el-button>
@@ -78,18 +79,48 @@
       element-loading-custom-class="custom-loading"
       :columns="columns"
       :data="tableData"
+      :row-key="rowKey"
       border
       highlight-current-row
-      columns-ctrl
+      height="100%"
+      :columns-ctrl="columnsCtrl"
+      @selection-change="handleSelectionChange"
     >
       <template #operation>
-        <div style="flex: 1;">
+        <div style="width: 100%;">
           <el-button
             type="primary"
             icon="el-icon-circle-plus-outline"
             @click="handleCreateClick"
-            >创建</el-button
           >
+            创建
+          </el-button>
+
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-download"
+            @click="exportXls('用户列表')"
+          >
+            导出
+          </el-button>
+
+          <el-popconfirm
+            v-if="selectedRows.length > 0"
+            cancelButtonType="default"
+            title="确定删除吗？"
+            style="margin-left: 10px;"
+            @onConfirm="handleDeleteBatchClick"
+          >
+            <el-button
+              slot="reference"
+              type="primary"
+              plain
+              icon="el-icon-delete"
+            >
+              批量删除
+            </el-button>
+          </el-popconfirm>
         </div>
       </template>
       <template #avatar="{ row }">
@@ -98,6 +129,7 @@
           fit="scale-down"
           :src="row.avatar | staticFilter"
           icon="el-icon-user-solid"
+          style="vertical-align: middle;"
         ></el-avatar>
       </template>
       <template #action="{ row }">
@@ -129,31 +161,38 @@
     />
 
     <el-dialog
-      :title="dialogTitle"
+      :title="formContainerTitle"
       top="6vh"
       width="70%"
-      :visible.sync="dialogFormVisible"
+      :visible.sync="formContainerVisible"
       destroy-on-close
     >
-      <UserForm :model="editRow" @ok="handleUserFormOk" />
+      <UserForm :model="editRow" @ok="handleFormOk" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { TableMixin } from '@/mixins'
+import { CurdMixin, ExportMixin } from '@/mixins'
 import { userUrl } from '@/api/url'
 
 export default {
   name: 'UserList',
-  mixins: [TableMixin],
+  mixins: [CurdMixin, ExportMixin],
   components: {
     UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
   },
   data() {
     return {
-      url: { data: userUrl.page, delete: userUrl.delete },
+      // 接口url
+      url: {
+        data: userUrl.page,
+        delete: userUrl.delete,
+        deleteBatch: userUrl.deleteBatch,
+        exportXls: userUrl.exportXls,
+      },
       // begin ----> table
+      // 表格列
       columns: [
         {
           label: '多选',
@@ -211,71 +250,26 @@ export default {
           scopedSlots: true,
         },
       ],
-      tableData: [],
-      pagination: {
-        page: 1,
-        limit: 10,
-        total: 0,
-      },
+      // 排序条件
       sortord: {
         column: 'createTime',
         order: 'desc',
       },
-      editRow: {},
-      filterParams: {},
+      columnsCtrl: {
+        props: {
+          placement: 'bottom-end',
+          visibleArrow: false,
+        },
+      },
       // end <---- table
-      // begin ---->  dialog
-      dialogTitle: '创建',
-      dialogFormVisible: false,
-      // begin <----  dialog
     }
   },
+  computed: {},
   mounted() {
     this.loadData()
   },
-  methods: {
-    handleCreateClick() {
-      this.editRow = {}
-      this.dialogTitle = '创建'
-      this.dialogFormVisible = true
-    },
-    handleEditClick(row) {
-      this.editRow = row
-      this.dialogTitle = '编辑'
-      this.dialogFormVisible = true
-    },
-    handleDeleteClick(id) {
-      this.editRow = {}
-      this.$http
-        .delete(this.url.delete, { id: id })
-        .then((res) => {
-          this.pagination.page = 1
-          this.loadData()
-          this.$message.success(res.message)
-        })
-        .catch((error) => {
-          this.$message.warning(error.message)
-        })
-    },
-    handleUserFormOk() {
-      this.dialogFormVisible = false
-      this.pagination.page = 1
-      this.loadData()
-    },
-    dataHandler(data) {
-      this.tableData = data.records
-      this.pagination.total = data.total
-    },
-    getQueryParams() {
-      return {
-        pageNo: this.pagination.page,
-        pageSize: this.pagination.limit,
-        ...this.filterParams,
-        ...this.sortord,
-      }
-    },
-  },
+  methods: {},
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>

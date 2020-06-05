@@ -149,7 +149,12 @@ export default {
               })
             })
             .catch((error) => {
-              console.log('login error', error)
+              if (error) {
+                this.$notify.warning({
+                  title: '系统提示',
+                  message: error.message,
+                })
+              }
             })
             .finally(() => {
               this.loading = false

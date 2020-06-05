@@ -31,9 +31,10 @@ const actions = {
         const { result } = res
 
         if (!result) {
-          return Promise.reject(
-            'vuex action user/login error: response result is null',
-          )
+          console.log('vuex action user/login error: response result is null')
+          return Promise.reject({
+            message: '缺失数据：result',
+          })
         }
         const userInfo = result.userInfo
         commit(SET_TOKEN, result.token)
@@ -64,17 +65,18 @@ const actions = {
       const { result } = res
 
       if (!result) {
-        return Promise.reject(
+        console.log(
           'vuex action user/getPermissions error: response result is null',
         )
+        return Promise.reject({
+          message: '缺失数据：result',
+        })
       }
 
       const { menu } = result
 
       if (!menu || menu.length <= 0) {
-        return Promise.reject(
-          'vuex action user/getPermissions: menu must be a non-null array!',
-        )
+        console.warn('vuex action user/getPermissions: menu is a null array!')
       }
 
       commit(SET_PERSSIONS, result || {})
