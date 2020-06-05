@@ -145,7 +145,6 @@ export default {
     },
     customPopoverProps() {
       const props = {
-        placement: 'left',
         width: '160',
         trigger: 'click',
       }
@@ -213,9 +212,7 @@ export default {
                 title: '隐藏列',
               },
             }}
-          >
-            {this.columnsCtrlText}
-          </el-button>
+          ></el-button>
         </el-popover>
       )
 
