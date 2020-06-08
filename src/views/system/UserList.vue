@@ -177,12 +177,12 @@
 </template>
 
 <script>
-import { CurdMixin, ExportMixin } from '@/mixins'
+import { PageTableMixin, CurdMixin, ExportMixin } from '@/mixins'
 import { userUrl } from '@/api/url'
 
 export default {
   name: 'UserList',
-  mixins: [CurdMixin, ExportMixin],
+  mixins: [PageTableMixin, CurdMixin, ExportMixin],
   components: {
     UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
   },
@@ -268,11 +268,9 @@ export default {
       // end <---- table
     }
   },
-  computed: {},
   mounted() {
     this.loadData()
   },
-  methods: {},
 }
 </script>
 

@@ -1,37 +1,6 @@
 <template>
   <div class="app-container">
     <!-- 筛选条件部分 -->
-    <el-form
-      ref="filterForm"
-      :model="filterParams"
-      inline
-      label-width="auto"
-      class="filter-container"
-    >
-      <el-form-item label="角色名称：" class="filter-item">
-        <el-input
-          v-model="filterParams.roleName"
-          placeholder="角色名称"
-          clearable
-          style="width: 180px"
-        ></el-input>
-      </el-form-item>
-
-      <!-- 查询和重置 -->
-      <el-form-item class="filter-item">
-        <el-button type="primary" icon="el-icon-search" @click="loadData">
-          查询
-        </el-button>
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh-left"
-          @click="handleResetClick('filterForm')"
-        >
-          重置
-        </el-button>
-      </el-form-item>
-    </el-form>
 
     <!-- el-table扩展组件，支持自定义展示隐藏列 -->
     <v-table
@@ -58,16 +27,16 @@
             创建
           </el-button>
 
-          <el-button
+          <!-- <el-button
             type="primary"
             plain
             icon="el-icon-download"
-            @click="exportXls('角色列表')"
+            @click="exportXls('权限列表')"
           >
             导出
-          </el-button>
+          </el-button> -->
 
-          <!-- <el-popconfirm
+          <el-popconfirm
             v-if="selectedRows.length > 0"
             cancelButtonType="default"
             title="确定删除吗？"
@@ -82,9 +51,10 @@
             >
               批量删除
             </el-button>
-          </el-popconfirm> -->
+          </el-popconfirm>
         </div>
       </template>
+      <!-- begin 视情况修改!! -->
       <!-- 自定义列内容，需要配合 scopedSlots: true -->
       <template #avatar="{ row }">
         <el-avatar
@@ -95,6 +65,7 @@
           style="vertical-align: middle;"
         ></el-avatar>
       </template>
+      <!-- end 视情况修改!! -->
 
       <!-- 自定义操作列内容，需要配合 scopedSlots: true -->
       <template #action="{ row }">
@@ -116,14 +87,7 @@
         </el-popconfirm>
       </template>
     </v-table>
-    <!-- 分页 -->
-    <v-pagination
-      v-show="pagination.total > 0"
-      :total="pagination.total"
-      :page.sync="pagination.page"
-      :limit.sync="pagination.limit"
-      @pagination="loadData"
-    />
+
     <!-- 弹窗表单 -->
     <el-dialog
       :title="formContainerTitle"
@@ -133,7 +97,7 @@
       @closed="handleFormContainerClosed"
     >
       <!-- 表单组件，存放于同级forms目录下 -->
-      <RoleUserForm
+      <PermissionForm
         v-if="formContainerInnerVisible"
         :model="editRow"
         @ok="handleFormOk"
@@ -143,20 +107,25 @@
 </template>
 
 <script>
-import { PageTableMixin, CurdMixin, ExportMixin } from '@/mixins'
-import { roleUrl } from '@/api/url'
+import { TableMixin, CurdMixin } from '@/mixins'
+import { permissionUrl } from '@/api/url'
 
 export default {
-  name: 'RoleUserList',
-  mixins: [PageTableMixin, CurdMixin, ExportMixin],
+  name: 'PermissionList',
+  mixins: [TableMixin, CurdMixin],
   components: {
-    RoleUserForm: () =>
-      import(/* webpackChunkName: "system" */ './forms/RoleUserForm'),
+    PermissionForm: () =>
+      import(/* webpackChunkName: "system" */ './forms/PermissionForm'),
   },
   data() {
     return {
-      url: { data: roleUrl.page, delete: roleUrl.delete },
-      // begin ----> table
+      url: {
+        data: permissionUrl.list,
+        delete: permissionUrl.delete,
+        deleteBatch: permissionUrl.deleteBatch,
+      },
+
+      // 表格列
       columns: [
         {
           label: '多选',
@@ -165,18 +134,46 @@ export default {
           align: 'center',
         },
         {
-          label: '角色编码',
-          prop: 'roleCode',
+          label: '菜单名称',
+          prop: 'name',
           align: 'center',
         },
         {
-          label: '角色名称',
-          prop: 'roleName',
+          label: '菜单类型',
+          prop: 'menuType',
+          align: 'center',
+          formatter: function(row, column, value) {
+            if (value == 0) {
+              return '菜单'
+            } else if (value == 1) {
+              return '菜单'
+            } else if (value == 2) {
+              return '按钮/权限'
+            } else {
+              return value
+            }
+          },
+        },
+        {
+          label: 'icon',
+          prop: 'icon',
           align: 'center',
         },
         {
-          label: '创建时间',
-          prop: 'createTime',
+          label: '组件',
+          prop: 'component',
+          align: 'center',
+          showOverflowTooltip: true,
+        },
+        {
+          label: '路径',
+          prop: 'url',
+          align: 'center',
+          showOverflowTooltip: true,
+        },
+        {
+          label: '排序',
+          prop: 'sortNo',
           align: 'center',
         },
         {
@@ -187,10 +184,7 @@ export default {
           scopedSlots: true,
         },
       ],
-      sortord: {
-        column: 'createTime',
-        order: 'desc',
-      },
+
       // 表格列控制参数
       columnsCtrl: {
         props: {
@@ -198,7 +192,6 @@ export default {
           visibleArrow: false,
         },
       },
-      // end <---- table
     }
   },
   mounted() {
@@ -206,5 +199,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped></style>
