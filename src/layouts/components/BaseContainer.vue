@@ -1,16 +1,15 @@
 <template>
-  <el-container class="base-layout is-vertical">
+  <el-container class="base-container is-vertical">
     <Header />
-    <router-view></router-view>
+    <slot></slot>
   </el-container>
 </template>
 
 <script>
 export default {
-  name: 'BaseLayout',
+  name: 'BaseView',
   components: {
-    Header: () =>
-      import(/* webpackChunkName: "layout" */ './components/Header'),
+    Header: () => import(/* webpackChunkName: "layout" */ './Header'),
   },
   data() {
     return {}
@@ -19,7 +18,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.base-layout {
+.base-container {
   height: 100%;
   overflow: hidden;
 }

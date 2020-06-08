@@ -1,17 +1,20 @@
 <template>
-  <el-container class="main-layout is-vertical">
-    <ViewLayout />
-    <Footer />
-  </el-container>
+  <BaseContainer>
+    <TabContainer>
+      <MainView />
+    </TabContainer>
+  </BaseContainer>
 </template>
 
 <script>
 export default {
   name: 'MainLayout',
   components: {
-    Footer: () =>
-      import(/* webpackChunkName: "layout" */ './components/Footer'),
-    ViewLayout: () => import(/* webpackChunkName: "layout" */ './ViewLayout'),
+    BaseContainer: () =>
+      import(/* webpackChunkName: "layout" */ './components/BaseContainer'),
+    TabContainer: () =>
+      import(/* webpackChunkName: "layout" */ './components/TabContainer'),
+    MainView: () => import(/* webpackChunkName: "layout" */ './views/MainView'),
   },
 }
 </script>

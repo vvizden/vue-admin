@@ -1,22 +1,30 @@
 <template>
-  <el-container class="aside-layout">
-    <Aside />
-    <MainLayout />
-  </el-container>
+  <BaseContainer>
+    <el-container class="aside-container">
+      <Aside />
+      <TabContainer>
+        <MainView />
+      </TabContainer>
+    </el-container>
+  </BaseContainer>
 </template>
 
 <script>
 export default {
   name: 'AsideLayout',
   components: {
+    BaseContainer: () =>
+      import(/* webpackChunkName: "layout" */ './components/BaseContainer'),
     Aside: () => import(/* webpackChunkName: "layout" */ './components/Aside'),
-    MainLayout: () => import(/* webpackChunkName: "layout" */ './MainLayout'),
+    TabContainer: () =>
+      import(/* webpackChunkName: "layout" */ './components/TabContainer'),
+    MainView: () => import(/* webpackChunkName: "layout" */ './views/MainView'),
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.aside-layout {
+.aside-container {
   overflow: hidden;
 }
 </style>

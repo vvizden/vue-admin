@@ -122,7 +122,7 @@
 <script>
 import { userUrl, roleUrl, deptUrl } from '@/api/url'
 import { duplicationCheck } from '@/api/util'
-import { cloneDeep, isEmpty } from 'lodash-es'
+import { cloneDeep, pickBy } from 'lodash-es'
 import { FormMixin } from '@/mixins'
 
 export default {
@@ -148,6 +148,7 @@ export default {
         confirmPassword: '',
         realname: '',
         roleIds: [],
+        deptIds: [],
         sex: 1,
         email: '',
         phone: '',
@@ -217,7 +218,14 @@ export default {
             trigger: 'change',
           },
         ],
-        // departIds: [],
+        departIds: [
+          {
+            type: 'array',
+            required: false,
+            message: '请选择组织机构',
+            trigger: 'change',
+          },
+        ],
         sex: [
           {
             type: 'enum',
@@ -266,13 +274,11 @@ export default {
     }
   },
   watch: {
-    model(val) {
-      if (isEmpty(val)) {
-        this.$refs.ruleForm.resetFields()
-      } else {
-        this.ruleForm = { ...this.ruleForm, ...cloneDeep(val) }
-      }
-      this.formDataMapping(this.ruleForm, false)
+    model() {
+      this.modelToForm().then((data) => {
+        this.ruleForm = data
+        this.$refs.deptTree.setCheckedKeys(this.ruleForm.deptIds)
+      })
     },
   },
   created() {
@@ -287,78 +293,95 @@ export default {
     })
   },
   mounted() {
-    this.$nextTick(() => {
-      this.ruleForm = { ...this.ruleForm, ...cloneDeep(this.model) }
-      this.formDataMapping(this.ruleForm, false)
+    this.modelToForm().then((data) => {
+      this.ruleForm = data
+      this.$refs.deptTree.setCheckedKeys(this.ruleForm.deptIds)
     })
   },
   methods: {
-    // forward = ture, form to model
-    formDataMapping(formData, forward = true) {
-      if (forward) {
-        // 所选角色
-        if (formData.roleIds) {
-          formData.selectedroles = formData.roleIds.join(',')
-          delete formData.roleIds
-        } else {
-          formData.selectedroles = ''
+    // 表单组件数据转化为待提交表单数据
+    formToFormData() {
+      // 深层拷贝数据
+      let clonedData = cloneDeep(this.ruleForm)
+      // 赋值 id
+      clonedData.id = this.model.id
+
+      // 转换所选角色
+      if (clonedData.roleIds) {
+        clonedData.selectedroles = clonedData.roleIds.join(',')
+      } else {
+        clonedData.selectedroles = ''
+      }
+      // 转换所选部门
+      const deptIds = this.$refs.deptTree.getCheckedKeys()
+      if (deptIds) {
+        clonedData.selecteddeparts = deptIds.join(',')
+      } else {
+        clonedData.selecteddeparts = ''
+      }
+
+      // 删除多余字段
+      delete clonedData.confirmPassword
+      delete clonedData.roleIds
+      delete clonedData.deptIds
+
+      // 去除空串的手机号和邮箱，避免数据库空串的唯一索引错误
+      if (clonedData.phone && clonedData.phone === '') {
+        delete clonedData.phone
+      }
+      if (clonedData.email && clonedData.email === '') {
+        delete clonedData.email
+      }
+
+      return clonedData
+    },
+    // 原始数据转化为表单组件所需数据
+    async modelToForm() {
+      // 筛选出form表单中需要的数据
+      let resultData = pickBy(this.model, (v, k) => {
+        return Object.prototype.hasOwnProperty.call(this.ruleForm, k)
+      })
+
+      resultData = cloneDeep(resultData)
+      // 重置表单，保证赋值前表单是原始的
+      this.resetForm('ruleForm')
+      // 填充表单
+      resultData = Object.assign({}, this.ruleForm, resultData)
+      // 所选角色
+      if (this.model.id) {
+        // 设置用户所属角色
+        // 设置用户所属部门
+        try {
+          const roleRes = await this.$http.get(this.url.userRoleIds, {
+            userid: this.model.id,
+          })
+          resultData.roleIds = roleRes.result || []
+        } catch (error) {
+          resultData.roleIds = []
         }
-        // 所选部门
-        const deptIds = this.$refs.deptTree.getCheckedKeys()
-        if (deptIds) {
-          formData.selecteddeparts = deptIds.join(',')
-        } else {
-          formData.selecteddeparts = ''
+
+        try {
+          const deptRes = await this.$http.get(this.url.userDepts, {
+            userId: this.model.id,
+          })
+
+          resultData.deptIds = deptRes.result
+            ? deptRes.result.map((e) => e.value)
+            : []
+        } catch (error) {
+          resultData.deptIds = []
         }
       } else {
-        // 所选角色
-        if (this.model.id) {
-          // 用户所属角色
-          this.$http
-            .get(this.url.userRoleIds, { userid: this.model.id })
-            .then((res) => {
-              formData.roleIds = res.result || []
-            })
-            .catch(() => {
-              formData.roleIds = []
-            })
-          // 用户所属部门
-          this.$http
-            .get(this.url.userDepts, { userId: this.model.id })
-            .then((res) => {
-              if (res.result) {
-                const deptIds = res.result.map((e) => e.value)
-                this.$refs.deptTree.setCheckedKeys(deptIds)
-              }
-            })
-            .catch(() => {
-              this.$refs.deptTree.setCheckedKeys([])
-            })
-        } else {
-          formData.roleIds = []
-          this.$refs.deptTree.setCheckedKeys([])
-        }
+        resultData.roleIds = []
+        resultData.deptIds = []
       }
-    },
-    getFormData() {
-      // 待提交表单数据
-      let formData = { ...this.ruleForm }
-      for (const key of Object.keys(formData)) {
-        if (formData[key] == '') {
-          delete formData[key]
-        }
-      }
-      // 处理 form => model 的映射
-      this.formDataMapping(formData, true)
-      // 删除多余字段
-      delete formData.confirmPassword
 
-      return formData
+      return resultData
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          const formData = this.getFormData()
+          const formData = this.formToFormData()
           let httpPromise
           this.loading = true
           if (this.model.id) {

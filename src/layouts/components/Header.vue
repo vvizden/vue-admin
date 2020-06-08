@@ -34,7 +34,11 @@ export default {
 
 .layout-header {
   display: flex;
-  background-color: $light-blue;
+  background-image: linear-gradient(
+    to right,
+    $header-bg-color-begin,
+    $header-bg-color-end
+  );
 
   .title {
     color: #fff;

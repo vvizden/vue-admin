@@ -1,5 +1,5 @@
-import BaseLayout from './BaseLayout'
 import AsideLayout from './AsideLayout'
 import MainLayout from './MainLayout'
+import ViewLayout from './ViewLayout'
 
-export { BaseLayout, AsideLayout, MainLayout }
+export { AsideLayout, MainLayout, ViewLayout }

@@ -13,20 +13,21 @@ Vue.use(VueRouter)
 // eslint-disable-next-line
 export function concatAsyncRoutes(routes) {
   return [
-    {
-      path: '/',
-      component: BaseLayout,
-      redirect: '/home',
-      hideInMenu: true,
-      children: generateChildRoutes(routes),
-      // children: [
-      //   {
-      //     path: 'aside-layout',
-      //     name: 'AsideLayout',
-      //     component: AsideLayout,
-      //   },
-      // ],
-    },
+    // {
+    //   path: '/',
+    //   component: BaseLayout,
+    //   redirect: '/home',
+    //   hideInMenu: true,
+    //   children: generateChildRoutes(routes),
+    //   // children: [
+    //   //   {
+    //   //     path: 'aside-layout',
+    //   //     name: 'AsideLayout',
+    //   //     component: AsideLayout,
+    //   //   },
+    //   // ],
+    // },
+    ...generateChildRoutes(routes),
     {
       path: '*',
       name: '404',

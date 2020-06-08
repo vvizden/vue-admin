@@ -1,8 +1,7 @@
 import PageTableMixin from './page-table-mixin'
-import FormMixin from './form-mixin'
 
 export default {
-  mixins: [PageTableMixin, FormMixin],
+  mixins: [PageTableMixin],
   data() {
     return {
       // 接口url
@@ -27,6 +26,13 @@ export default {
     },
   },
   methods: {
+    // 重置表单
+    resetForm(formName) {
+      if (this.$refs[formName]) {
+        this.$refs[formName].resetFields()
+      }
+    },
+
     // 点击重置按钮
     handleResetClick(formName) {
       this.resetForm(formName)

@@ -84,7 +84,7 @@
 }
 
 .el-main {
-  transition: width 5s linear;
+  // background-color: #eef3f6;
 }
 
 // fix selection align
@@ -117,4 +117,8 @@
 .el-button--text {
   padding-left: 0;
   padding-right: 0;
+}
+
+.el-table th {
+  background-color: #f4f4f5;
 }
