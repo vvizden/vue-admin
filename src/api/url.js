@@ -15,6 +15,9 @@ export const userUrl = {
 export const roleUrl = {
   page: '/sys/role/list',
   list: '/sys/role/queryall',
+  create: '/sys/role/add',
+  edit: '/sys/role/edit',
+  delete: '/sys/role/delete',
 }
 
 export const deptUrl = {

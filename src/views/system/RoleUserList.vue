@@ -67,7 +67,7 @@
             导出
           </el-button>
 
-          <el-popconfirm
+          <!-- <el-popconfirm
             v-if="selectedRows.length > 0"
             cancelButtonType="default"
             title="确定删除吗？"
@@ -82,7 +82,7 @@
             >
               批量删除
             </el-button>
-          </el-popconfirm>
+          </el-popconfirm> -->
         </div>
       </template>
       <!-- 自定义列内容，需要配合 scopedSlots: true -->
