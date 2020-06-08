@@ -17,6 +17,7 @@ export default {
       // begin ---->  dialog
       formContainerTitle: '创建',
       formContainerVisible: false,
+      formContainerInnerVisible: true,
       // begin <----  dialog
     }
   },
@@ -42,15 +43,21 @@ export default {
     // 点击创建按钮
     handleCreateClick() {
       this.editRow = {}
+      this.formContainerInnerVisible = true
       this.formContainerTitle = '创建'
-      this.formContainerVisible = true
+      this.$nextTick(() => {
+        this.formContainerVisible = true
+      })
     },
 
     // 点击编辑按钮
     handleEditClick(row) {
       this.editRow = row
+      this.formContainerInnerVisible = true
       this.formContainerTitle = '编辑'
-      this.formContainerVisible = true
+      this.$nextTick(() => {
+        this.formContainerVisible = true
+      })
     },
 
     // 点击删除按钮
@@ -102,6 +109,11 @@ export default {
       this.formContainerVisible = false
       this.pagination.page = 1
       this.loadData()
+    },
+
+    // 表单容器关闭动画结束时的回调
+    handleFormContainerClosed() {
+      this.formContainerInnerVisible = false
     },
 
     // 多选改变

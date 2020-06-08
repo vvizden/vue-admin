@@ -1,62 +1,23 @@
 <template>
   <div class="app-container">
-    <!-- <el-form
+    <!-- 筛选条件部分 -->
+    <el-form
       ref="filterForm"
+      :model="filterParams"
       inline
       label-width="auto"
       class="filter-container"
     >
-      <el-form-item label="性别：" class="filter-item">
-        <el-select
-          v-model="filterParams.sex"
-          placeholder="性别"
-          clearable
-          style="width: 140px"
-        >
-          <el-option label="男" :value="1"> </el-option>
-          <el-option label="女" :value="2"> </el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="状态：" class="filter-item">
-        <el-select
-          v-model="filterParams.status"
-          placeholder="状态"
-          clearable
-          style="width: 140px"
-        >
-          <el-option label="正常" :value="1"> </el-option>
-          <el-option label="冻结" :value="2"> </el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="用户账号：" class="filter-item">
+      <el-form-item label="角色名称：" class="filter-item">
         <el-input
-          v-model="filterParams.username"
-          placeholder="用户账号"
+          v-model="filterParams.roleName"
+          placeholder="角色名称"
           clearable
-          style="width: 140px"
+          style="width: 180px"
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="用户姓名：" class="filter-item">
-        <el-input
-          v-model.trim="filterParams.realname"
-          placeholder="用户姓名"
-          clearable
-          style="width: 140px"
-        ></el-input>
-      </el-form-item>
-
-      <el-form-item label="手机号：" class="filter-item">
-        <el-input
-          v-model.trim="filterParams.phone"
-          placeholder="手机号"
-          clearable
-          style="width: 140px"
-        ></el-input>
-      </el-form-item>
-
+      <!-- 查询和重置 -->
       <el-form-item class="filter-item">
         <el-button type="primary" icon="el-icon-search" @click="loadData">
           查询
@@ -65,33 +26,66 @@
           type="primary"
           plain
           icon="el-icon-refresh-left"
-          @click="loadData"
+          @click="handleResetClick('filterForm')"
         >
           重置
         </el-button>
       </el-form-item>
-    </el-form> -->
+    </el-form>
 
+    <!-- el-table扩展组件，支持自定义展示隐藏列 -->
     <v-table
       v-loading="loading"
       element-loading-text="正在加载..."
       element-loading-custom-class="custom-loading"
       :columns="columns"
       :data="tableData"
+      :row-key="rowKey"
       border
       highlight-current-row
-      columns-ctrl
+      height="100%"
+      :columns-ctrl="columnsCtrl"
+      @selection-change="handleSelectionChange"
     >
+      <!-- 操作区域，如创建，导出，批量删除 -->
       <template #operation>
         <div style="width: 100%;">
           <el-button
             type="primary"
             icon="el-icon-circle-plus-outline"
             @click="handleCreateClick"
-            >创建</el-button
           >
+            创建
+          </el-button>
+
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-download"
+            @click="exportXls('用户列表')"
+          >
+            导出
+          </el-button>
+
+          <el-popconfirm
+            v-if="selectedRows.length > 0"
+            cancelButtonType="default"
+            title="确定删除吗？"
+            style="margin-left: 10px;"
+            @onConfirm="handleDeleteBatchClick"
+          >
+            <el-button
+              slot="reference"
+              type="primary"
+              plain
+              icon="el-icon-delete"
+            >
+              批量删除
+            </el-button>
+          </el-popconfirm>
         </div>
       </template>
+      <!-- 自定义列内容，需要配合 scopedSlots: true -->
       <template #avatar="{ row }">
         <el-avatar
           size="small"
@@ -101,6 +95,8 @@
           style="vertical-align: middle;"
         ></el-avatar>
       </template>
+
+      <!-- 自定义操作列内容，需要配合 scopedSlots: true -->
       <template #action="{ row }">
         <el-button
           type="text"
@@ -120,7 +116,7 @@
         </el-popconfirm>
       </template>
     </v-table>
-
+    <!-- 分页 -->
     <v-pagination
       v-show="pagination.total > 0"
       :total="pagination.total"
@@ -128,28 +124,34 @@
       :limit.sync="pagination.limit"
       @pagination="loadData"
     />
-
+    <!-- 弹窗表单 -->
     <el-dialog
-      :title="dialogTitle"
+      :title="formContainerTitle"
       top="6vh"
       width="70%"
-      :visible.sync="dialogFormVisible"
-      destroy-on-close
+      :visible.sync="formContainerVisible"
+      @closed="handleFormContainerClosed"
     >
-      <UserForm :model="editRow" @ok="handleUserFormOk" />
+      <!-- 表单组件，存放于同级forms目录下 -->
+      <RoleUserForm
+        v-if="formContainerInnerVisible"
+        :model="editRow"
+        @ok="handleFormOk"
+      />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { TableMixin } from '@/mixins'
+import { CurdMixin, ExportMixin } from '@/mixins'
 import { roleUrl } from '@/api/url'
 
 export default {
   name: 'RoleUserList',
-  mixins: [TableMixin],
+  mixins: [CurdMixin, ExportMixin],
   components: {
-    UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
+    RoleUserForm: () =>
+      import(/* webpackChunkName: "system" */ './forms/RoleUserForm'),
   },
   data() {
     return {
@@ -185,72 +187,24 @@ export default {
           scopedSlots: true,
         },
       ],
-      tableData: [],
-      pagination: {
-        page: 1,
-        limit: 10,
-        total: 0,
-      },
       sortord: {
         column: 'createTime',
         order: 'desc',
       },
-      editRow: {},
-      filterParams: {},
+      // 表格列控制参数
+      columnsCtrl: {
+        props: {
+          placement: 'bottom-end',
+          visibleArrow: false,
+        },
+      },
       // end <---- table
-      // begin ---->  dialog
-      dialogTitle: '创建',
-      dialogFormVisible: false,
-      // begin <----  dialog
     }
   },
   mounted() {
     this.loadData()
   },
-  methods: {
-    handleCreateClick() {
-      this.editRow = {}
-      this.dialogTitle = '创建'
-      this.dialogFormVisible = true
-    },
-    handleEditClick(row) {
-      this.editRow = row
-      this.dialogTitle = '编辑'
-      this.dialogFormVisible = true
-    },
-    handleDeleteClick(id) {
-      this.editRow = {}
-      this.$http
-        .delete(this.url.delete, { id: id })
-        .then((res) => {
-          this.pagination.page = 1
-          this.loadData()
-          this.$message.success(res.message)
-        })
-        .catch((error) => {
-          if (error) {
-            this.$message.warning(error.message)
-          }
-        })
-    },
-    handleUserFormOk() {
-      this.dialogFormVisible = false
-      this.pagination.page = 1
-      this.loadData()
-    },
-    dataHandler(data) {
-      this.tableData = data.records
-      this.pagination.total = data.total
-    },
-    getQueryParams() {
-      return {
-        pageNo: this.pagination.page,
-        pageSize: this.pagination.limit,
-        ...this.filterParams,
-        ...this.sortord,
-      }
-    },
-  },
+  methods: {},
 }
 </script>
 

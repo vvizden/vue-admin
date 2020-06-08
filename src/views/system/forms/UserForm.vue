@@ -165,7 +165,7 @@ export default {
           },
           {
             validator: this.validateUsername,
-            trigger: 'change',
+            trigger: 'blur',
           },
         ],
         password: [
@@ -184,7 +184,7 @@ export default {
           },
           {
             validator: this.validatePassword,
-            trigger: 'change',
+            trigger: 'blur',
           },
         ],
         confirmPassword: [
@@ -197,7 +197,7 @@ export default {
           },
           {
             validator: this.validateConfirmPassword,
-            trigger: 'change',
+            trigger: 'blur',
           },
         ],
         realname: [
@@ -241,7 +241,7 @@ export default {
             required: false,
             whitespace: true,
             message: '邮箱格式错误',
-            trigger: 'change',
+            trigger: 'blur',
           },
           { validator: this.validateEmail, trigger: 'blur' },
         ],
@@ -251,7 +251,7 @@ export default {
             required: false,
             whitespace: true,
             message: '手机号格式错误',
-            trigger: 'change',
+            trigger: 'blur',
           },
           { validator: this.validatePhone, trigger: 'blur' },
         ],
@@ -260,7 +260,7 @@ export default {
             pattern: /^0\d{2,3}-[1-9]\d{6,7}$/,
             whitespace: true,
             message: '座机号码格式错误',
-            trigger: 'change',
+            trigger: 'blur',
           },
         ],
       },
@@ -273,14 +273,6 @@ export default {
       },
     }
   },
-  watch: {
-    model() {
-      this.modelToForm().then((data) => {
-        this.ruleForm = data
-        this.$refs.deptTree.setCheckedKeys(this.ruleForm.deptIds)
-      })
-    },
-  },
   created() {
     // load role list
     this.$http.get(roleUrl.list).then((res) => {
@@ -291,8 +283,8 @@ export default {
     this.$http.get(deptUrl.deptTree).then((res) => {
       this.deptTreeData = res.result
     })
-  },
-  mounted() {
+
+    // model to form
     this.modelToForm().then((data) => {
       this.ruleForm = data
       this.$refs.deptTree.setCheckedKeys(this.ruleForm.deptIds)
@@ -343,8 +335,6 @@ export default {
       })
 
       resultData = cloneDeep(resultData)
-      // 重置表单，保证赋值前表单是原始的
-      this.resetForm('ruleForm')
       // 填充表单
       resultData = Object.assign({}, this.ruleForm, resultData)
       // 所选角色
@@ -423,7 +413,7 @@ export default {
         if (pass) {
           callback()
         } else {
-          callback('该用户名已被注册，请重新填写用户名')
+          callback('该用户名已被注册，请重新填写')
         }
       })
     },
@@ -453,7 +443,7 @@ export default {
         if (pass) {
           callback()
         } else {
-          callback('该手机号已被注册，请重新填写手机号')
+          callback('该手机号已被注册，请重新填写')
         }
       })
     },
@@ -472,7 +462,7 @@ export default {
         if (pass) {
           callback()
         } else {
-          callback('该邮箱已被注册，请重新填写邮箱')
+          callback('该邮箱已被注册，请重新填写')
         }
       })
     },

@@ -165,9 +165,13 @@
       top="6vh"
       width="70%"
       :visible.sync="formContainerVisible"
-      destroy-on-close
+      @closed="handleFormContainerClosed"
     >
-      <UserForm :model="editRow" @ok="handleFormOk" />
+      <UserForm
+        v-if="formContainerInnerVisible"
+        :model="editRow"
+        @ok="handleFormOk"
+      />
     </el-dialog>
   </div>
 </template>

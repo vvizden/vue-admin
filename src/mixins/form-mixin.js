@@ -1,3 +1,4 @@
+/* !!!!!! 使用时需要提供 model 状态 */
 export default {
   methods: {
     // 重置表单
@@ -6,6 +7,7 @@ export default {
         this.$refs[formName].resetFields()
       }
     },
+    formToFormData() {},
     // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
