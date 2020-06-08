@@ -1,7 +1,4 @@
-import PageTableMixin from './page-table-mixin'
-
 export default {
-  mixins: [PageTableMixin],
   data() {
     return {
       // 接口url

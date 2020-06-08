@@ -39,12 +39,12 @@ router.beforeEach(async (to, from, next) => {
         if (hasMenuPermissions) {
           next()
         } else {
-          let accessRoutes = []
+          let addRoutes = []
           try {
             // get user permissions
             const permissions = await store.dispatch('user/getPermissions')
             // generate accessible routes
-            accessRoutes = await store.dispatch(
+            addRoutes = await store.dispatch(
               'permission/generateRoutes',
               permissions.menu,
             )
@@ -64,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
           }
 
           // dynamically add accessible routes
-          router.addRoutes(accessRoutes)
+          router.addRoutes(addRoutes)
 
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record

@@ -12,6 +12,8 @@ export const USER_INFO_KEY = 'user_info'
 export const SIDEBAR_COLLAPSE_KEY = 'sidebar_is_collapse'
 // element_ui_size key
 export const ELEMENT_UI_SIZE_KEY = 'element_ui_size'
+// dict key
+export const DICT_KEY = 'dict_key'
 
 Vue.use(Storage, {
   // key prefix

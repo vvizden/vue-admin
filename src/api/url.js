@@ -1,3 +1,4 @@
+// 用户 api url
 export const userUrl = {
   page: '/sys/user/list',
   create: '/sys/user/add',
@@ -12,6 +13,7 @@ export const userUrl = {
   permissions: '/sys/permission/getUserPermissionByToken',
 }
 
+// 角色 api url
 export const roleUrl = {
   page: '/sys/role/list',
   list: '/sys/role/queryall',
@@ -20,10 +22,21 @@ export const roleUrl = {
   delete: '/sys/role/delete',
 }
 
+// 组织机构 api url
 export const deptUrl = {
   deptTree: '/sys/sysDepart/queryIdTree',
 }
 
+// 系统 api url
 export const systemUrl = {
   duplicationCheck: '/sys/duplicate/check',
+}
+
+// 权限 api url
+export const permissionUrl = {
+  list: '/sys/permission/list',
+  create: '/sys/permission/add',
+  edit: '/sys/permission/edit',
+  delete: '/sys/permission/delete',
+  deleteBatch: '/sys/permission/deleteBatch',
 }

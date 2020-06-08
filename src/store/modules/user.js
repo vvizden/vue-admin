@@ -1,8 +1,8 @@
 import { login, logout, getPermissions } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import Storage, { USER_INFO_KEY } from '@/utils/storage'
+import Storage, { USER_INFO_KEY, DICT_KEY } from '@/utils/storage'
 import { resetRouter } from '@/router'
-import { SET_TOKEN, SET_INFO, SET_PERSSIONS } from '../mutation-types'
+import { SET_TOKEN, SET_INFO, SET_PERSSIONS, SET_DICT } from '../mutation-types'
 
 const state = {
   token: getToken(),
@@ -13,9 +13,11 @@ const state = {
 const mutations = {
   [SET_TOKEN]: (state, token) => {
     state.token = token
+    setToken(state.token)
   },
   [SET_INFO]: (state, info) => {
     state.info = info
+    Storage.set(USER_INFO_KEY, state.info)
   },
   [SET_PERSSIONS]: (state, permissions) => {
     state.permissions = permissions
@@ -36,11 +38,9 @@ const actions = {
             message: '缺失数据：result',
           })
         }
-        const userInfo = result.userInfo
         commit(SET_TOKEN, result.token)
-        commit(SET_INFO, userInfo)
-        setToken(result.token)
-        Storage.set(USER_INFO_KEY, userInfo)
+        commit(SET_INFO, result.userInfo)
+        commit(`app/${SET_DICT}`, result.sysAllDictItems, { root: true })
 
         return result
       },
@@ -52,9 +52,11 @@ const actions = {
     return logout(state.token).then(() => {
       commit(SET_TOKEN, '')
       commit(SET_INFO, {})
+      commit(`app/${SET_DICT}`, {}, { root: true })
       commit(SET_PERSSIONS, {})
       removeToken()
       Storage.remove(USER_INFO_KEY)
+      Storage.remove(DICT_KEY)
       resetRouter()
     })
   },
@@ -89,9 +91,11 @@ const actions = {
     return new Promise((resolve) => {
       commit(SET_TOKEN, '')
       commit(SET_INFO, {})
+      commit(`app/${SET_DICT}`, {}, { root: true })
       commit(SET_PERSSIONS, {})
       removeToken()
       Storage.remove(USER_INFO_KEY)
+      Storage.remove(DICT_KEY)
       resolve()
     })
   },

@@ -27,5 +27,7 @@ export const SET_TOKEN = 'SET_TOKEN'
 export const SET_INFO = 'SET_INFO'
 export const SET_PERSSIONS = 'SET_PERSSIONS'
 
+// app module
 export const TOGGLE_SIDEBAR_COLLAPSE = 'TOGGLE_SIDEBAR_COLLAPSE'
 export const SET_ELEMENT_UI_SIZE = 'SET_ELEMENT_UI_SIZE'
+export const SET_DICT = 'SET_DICT'

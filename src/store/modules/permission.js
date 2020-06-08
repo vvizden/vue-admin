@@ -16,9 +16,9 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, routes) {
     return new Promise((resolve) => {
-      const accessedRoutes = concatAsyncRoutes(routes)
-      commit(SET_ROUTES, accessedRoutes)
-      resolve(accessedRoutes)
+      const addRoutes = concatAsyncRoutes(routes)
+      commit(SET_ROUTES, addRoutes)
+      resolve(addRoutes)
     })
   },
 }

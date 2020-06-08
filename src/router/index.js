@@ -30,7 +30,6 @@ export function concatAsyncRoutes(routes) {
     ...generateChildRoutes(routes),
     {
       path: '*',
-      name: '404',
       component: () => import(/* webpackChunkName: "fail" */ '@/views/404'),
       hidden: true,
     },
@@ -45,7 +44,7 @@ export function concatAsyncRoutes(routes) {
 export const constantRoutes = [
   {
     path: '/login',
-    name: 'Login',
+    hidden: true,
     component: () =>
       import(/* webpackChunkName: "login" */ '@/views/login/index'),
   },
