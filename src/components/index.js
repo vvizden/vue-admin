@@ -1,4 +1,6 @@
 import Copyright from './copyright'
+import AutoRadio from './auto-radio'
+import ScrollContainer from './scroll-container'
 import ElementUIExt from './element-ui-ext'
 
 const VERSION = '0.1.0'
@@ -12,7 +14,16 @@ function install(Vue, options = {}) {
   install.installed = true // install components
 
   Vue.use(Copyright)
+  Vue.use(AutoRadio)
+  Vue.use(ScrollContainer)
   Vue.use(ElementUIExt)
 }
 
-export default { VERSION, install, Copyright, ElementUIExt }
+export default {
+  VERSION,
+  install,
+  Copyright,
+  AutoRadio,
+  ScrollContainer,
+  ElementUIExt,
+}
