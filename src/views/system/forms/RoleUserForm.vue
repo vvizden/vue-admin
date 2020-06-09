@@ -11,7 +11,7 @@
     <el-form-item label="角色编码" prop="roleCode">
       <el-input
         :disabled="!!model.id"
-        v-model="ruleForm.roleCode"
+        v-model.trim="ruleForm.roleCode"
         placeholder="请填写角色编码"
         clearable
       ></el-input>
@@ -19,7 +19,7 @@
 
     <el-form-item label="角色名称" prop="roleName">
       <el-input
-        v-model="ruleForm.roleName"
+        v-model.trim="ruleForm.roleName"
         placeholder="请填写角色名称"
         clearable
       ></el-input>
@@ -27,7 +27,7 @@
 
     <el-form-item label="角色描述" prop="description">
       <el-input
-        v-model="ruleForm.description"
+        v-model.trim="ruleForm.description"
         placeholder="请填写角色描述"
         type="textarea"
         :rows="5"
@@ -36,7 +36,7 @@
     </el-form-item>
 
     <!-- 表单提交与重置 -->
-    <el-form-item>
+    <el-form-item class="form-item-submit">
       <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
     </el-form-item>
@@ -76,7 +76,7 @@ export default {
             required: true,
             whitespace: true,
             message: '请填写角色编码',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
           {
             min: 0,
@@ -87,7 +87,7 @@ export default {
           {
             pattern: /[^\u4E00-\u9FA5]/g,
             message: '角色编码不可输入汉字',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
           {
             validator: this.validateRoleCode,
@@ -100,7 +100,7 @@ export default {
             required: true,
             whitespace: true,
             message: '请填写角色名称',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
           {
             min: 2,

@@ -35,8 +35,14 @@ export const systemUrl = {
 // 权限 api url
 export const permissionUrl = {
   list: '/sys/permission/list',
+  treeList: '/sys/permission/queryTreeList',
   create: '/sys/permission/add',
   edit: '/sys/permission/edit',
   delete: '/sys/permission/delete',
   deleteBatch: '/sys/permission/deleteBatch',
+}
+
+// 权限 api url
+export const dictUrl = {
+  listByCode: `/sys/dict/getDictItems`,
 }

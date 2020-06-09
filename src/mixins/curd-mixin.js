@@ -64,7 +64,9 @@ export default {
       this.$http
         .delete(this.url.delete, { id: id })
         .then((res) => {
-          this.pagination.page = 1
+          if (this.pagination) {
+            this.pagination.page = 1
+          }
           this.loadData()
           this.$message.success(res.message)
         })
@@ -87,7 +89,9 @@ export default {
         })
         .then((res) => {
           this.selectedRows = []
-          this.pagination.page = 1
+          if (this.pagination) {
+            this.pagination.page = 1
+          }
           this.loadData()
           this.$message.success(res.message)
         })
@@ -104,7 +108,9 @@ export default {
     // 表单提交成功
     handleFormOk() {
       this.formContainerVisible = false
-      this.pagination.page = 1
+      if (this.pagination) {
+        this.pagination.page = 1
+      }
       this.loadData()
     },
 

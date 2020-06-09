@@ -10,7 +10,7 @@
   >
     <el-form-item label="用户账号" prop="username">
       <el-input
-        v-model="ruleForm.username"
+        v-model.trim="ruleForm.username"
         placeholder="请填写用户账号"
         clearable
       ></el-input>
@@ -19,7 +19,7 @@
     <template v-if="!model.id">
       <el-form-item label="登陆密码" prop="password">
         <el-input
-          v-model="ruleForm.password"
+          v-model.trim="ruleForm.password"
           placeholder="请填写登陆密码"
           clearable
           show-password
@@ -29,7 +29,7 @@
 
       <el-form-item label="确认密码" prop="confirmPassword">
         <el-input
-          v-model="ruleForm.confirmPassword"
+          v-model.trim="ruleForm.confirmPassword"
           placeholder="请再次填写登陆密码"
           clearable
           show-password
@@ -82,10 +82,7 @@
     </el-form-item>
 
     <el-form-item label="性别" prop="sex">
-      <el-radio-group v-model="ruleForm.sex">
-        <el-radio :label="1">男</el-radio>
-        <el-radio :label="2">女</el-radio>
-      </el-radio-group>
+      <v-auto-radio v-model="ruleForm.sex" dictCode="sex"></v-auto-radio>
     </el-form-item>
 
     <el-form-item label="邮箱" prop="email">
@@ -112,7 +109,7 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item>
+    <el-form-item class="form-item-submit">
       <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
     </el-form-item>
@@ -149,7 +146,7 @@ export default {
         realname: '',
         roleIds: [],
         deptIds: [],
-        sex: 1,
+        sex: '1',
         email: '',
         phone: '',
         telephone: '',
@@ -161,7 +158,7 @@ export default {
             required: true,
             whitespace: true,
             message: '请填写用户账号',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
           {
             validator: this.validateUsername,
@@ -174,13 +171,13 @@ export default {
             required: true,
             whitespace: true,
             message: '请填写登陆密码',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
           {
             required: true,
             pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,./]).{8,}$/,
             message: '密码至少8位，必须同时存在数字、字母和符号',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
           {
             validator: this.validatePassword,
@@ -193,7 +190,7 @@ export default {
             required: true,
             whitespace: true,
             message: '请填写登陆密码',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
           {
             validator: this.validateConfirmPassword,
@@ -206,7 +203,7 @@ export default {
             required: true,
             whitespace: true,
             message: '请填写用户姓名',
-            trigger: 'change',
+            trigger: ['change', 'blur'],
           },
         ],
         roleIds: [
@@ -230,7 +227,7 @@ export default {
           {
             type: 'enum',
             required: true,
-            enum: [1, 2],
+            enum: ['1', '2'],
             message: '请选择性别',
             trigger: 'change',
           },

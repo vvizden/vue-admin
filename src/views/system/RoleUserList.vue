@@ -132,12 +132,10 @@
       :visible.sync="formContainerVisible"
       @closed="handleFormContainerClosed"
     >
-      <!-- 表单组件，存放于同级forms目录下 -->
-      <RoleUserForm
-        v-if="formContainerInnerVisible"
-        :model="editRow"
-        @ok="handleFormOk"
-      />
+      <v-scroll-container class="dialog-inner" v-if="formContainerInnerVisible">
+        <!-- 表单组件，存放于同级forms目录下 -->
+        <RoleUserForm :model="editRow" @ok="handleFormOk" />
+      </v-scroll-container>
     </el-dialog>
   </div>
 </template>

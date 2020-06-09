@@ -167,11 +167,9 @@
       :visible.sync="formContainerVisible"
       @closed="handleFormContainerClosed"
     >
-      <UserForm
-        v-if="formContainerInnerVisible"
-        :model="editRow"
-        @ok="handleFormOk"
-      />
+      <v-scroll-container class="dialog-inner" v-if="formContainerInnerVisible">
+        <UserForm :model="editRow" @ok="handleFormOk" />
+      </v-scroll-container>
     </el-dialog>
   </div>
 </template>
