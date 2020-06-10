@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ hidden: hidden }" class="pagination-container">
+  <div class="pagination-container">
     <el-pagination
       :background="background"
       :current-page.sync="currentPage"
@@ -56,10 +56,6 @@ export default {
       type: Boolean,
       default: true,
     },
-    hidden: {
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
     currentPage: {
@@ -102,6 +98,9 @@ export default {
 
 <style lang="scss" scoped>
 .pagination-container {
+  overflow: hidden;
+  max-height: 100%;
+  transition: all 0.3s linear;
   background: #fff;
   padding: 16px 0 0;
 
@@ -121,8 +120,5 @@ export default {
       float: left;
     }
   }
-}
-.pagination-container.hidden {
-  display: none;
 }
 </style>

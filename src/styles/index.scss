@@ -119,6 +119,7 @@ aside {
 
 //main-container全局样式
 .app-container {
+  padding: 20px;
   height: 100%;
   display: flex;
   flex-flow: column nowrap;
@@ -201,6 +202,7 @@ aside {
 
 .table-plus {
   flex: 1;
+  transition: all 2s ease-out;
   display: flex;
   flex-flow: column nowrap;
   overflow: hidden;

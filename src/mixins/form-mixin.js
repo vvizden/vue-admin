@@ -1,4 +1,6 @@
-/* !!!!!! 使用时需要提供 model 状态 */
+import { cloneDeep } from 'lodash-es'
+
+/* !!!!!! 使用时需要提供 model, ruleFormReset, ruleForm 数据 */
 export default {
   methods: {
     // 重置表单
@@ -6,6 +8,10 @@ export default {
       if (this.$refs[formName]) {
         this.$refs[formName].resetFields()
       }
+      if (this[`${formName}Reset`] && this[formName]) {
+        this[formName] = cloneDeep(this[`${formName}Reset`])
+      }
+      this.manualReset && this.manualReset()
     },
     formToFormData() {},
     // 提交表单

@@ -25,7 +25,7 @@ export default {
     height: 100%;
 
     .el-scrollbar__wrap {
-      overflow-x: auto;
+      overflow-x: hidden;
     }
 
     .scroll-inner {

@@ -84,6 +84,8 @@
 }
 
 .el-main {
+  padding: 0;
+  overflow-x: hidden;
   // background-color: #eef3f6;
 }
 
@@ -121,4 +123,32 @@
 
 .el-table th {
   background-color: #f4f4f5;
+}
+
+.el-switch {
+  position: relative;
+  .el-switch__label {
+    z-index: -1;
+    margin: 0;
+  }
+  .el-switch__core {
+    background-color: #8c8c8c;
+  }
+  .el-switch__label.is-active {
+    z-index: 1;
+  }
+  .el-switch__label * {
+    color: #fff;
+    font-size: 12px;
+  }
+  .el-switch__label--left {
+    position: absolute;
+    right: 0.5em;
+    order: 1;
+  }
+  .el-switch__label--right {
+    position: absolute;
+    left: 0.5em;
+    order: -1;
+  }
 }

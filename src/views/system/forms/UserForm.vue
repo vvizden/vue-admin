@@ -283,11 +283,16 @@ export default {
 
     // model to form
     this.modelToForm().then((data) => {
+      // 重置用
+      this.ruleFormReset = cloneDeep(data)
       this.ruleForm = data
       this.$refs.deptTree.setCheckedKeys(this.ruleForm.deptIds)
     })
   },
   methods: {
+    manualReset() {
+      this.$refs.deptTree.setCheckedKeys(this.ruleForm.deptIds)
+    },
     // 表单组件数据转化为待提交表单数据
     formToFormData() {
       // 深层拷贝数据
@@ -332,6 +337,11 @@ export default {
       })
 
       resultData = cloneDeep(resultData)
+
+      // 性别数据类型
+      if (Object.prototype.hasOwnProperty.call(resultData, 'sex')) {
+        resultData.sex = String(resultData.sex)
+      }
       // 填充表单
       resultData = Object.assign({}, this.ruleForm, resultData)
       // 所选角色

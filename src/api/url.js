@@ -17,6 +17,7 @@ export const userUrl = {
 export const roleUrl = {
   page: '/sys/role/list',
   list: '/sys/role/queryall',
+  treeList: '/sys/role/queryTreeList',
   create: '/sys/role/add',
   edit: '/sys/role/edit',
   delete: '/sys/role/delete',
@@ -36,6 +37,7 @@ export const systemUrl = {
 export const permissionUrl = {
   list: '/sys/permission/list',
   treeList: '/sys/permission/queryTreeList',
+  permissionList: '/sys/permission/queryRolePermission',
   create: '/sys/permission/add',
   edit: '/sys/permission/edit',
   delete: '/sys/permission/delete',

@@ -153,7 +153,6 @@
     </v-table>
 
     <v-pagination
-      v-show="pagination.total > 0"
       :total="pagination.total"
       :page.sync="pagination.page"
       :limit.sync="pagination.limit"

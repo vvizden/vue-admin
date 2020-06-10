@@ -124,7 +124,10 @@ export default {
     }
   },
   created() {
-    this.ruleForm = this.modelToForm()
+    const data = this.modelToForm()
+    // 重置用
+    this.ruleFormReset = cloneDeep(data)
+    this.ruleForm = data
   },
   methods: {
     // 表单组件数据转化为待提交表单数据

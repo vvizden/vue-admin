@@ -105,20 +105,41 @@
           >编辑</el-button
         >
         <el-divider direction="vertical" />
-        <el-popconfirm
-          cancelButtonType="default"
-          title="确定删除吗？"
-          @onConfirm="handleDeleteClick(row.id)"
-        >
-          <el-button slot="reference" type="text" icon="el-icon-delete"
-            >删除</el-button
-          >
-        </el-popconfirm>
+        <el-dropdown :hide-on-click="false">
+          <el-button type="text">
+            更多
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <el-button
+                type="text"
+                icon="el-icon-menu"
+                @click="handleAuthClick(row)"
+              >
+                授权
+              </el-button>
+            </el-dropdown-item>
+            <el-popconfirm
+              :visible-arrow="false"
+              placement="left-end"
+              cancelButtonType="default"
+              title="确定删除吗？"
+              @onConfirm="handleDeleteClick(row.id)"
+            >
+              <el-dropdown-item slot="reference">
+                <el-button type="text" icon="el-icon-delete">
+                  删除
+                </el-button>
+              </el-dropdown-item>
+            </el-popconfirm>
+          </el-dropdown-menu>
+        </el-dropdown>
       </template>
     </v-table>
     <!-- 分页 -->
     <v-pagination
-      v-show="pagination.total > 0"
       :total="pagination.total"
       :page.sync="pagination.page"
       :limit.sync="pagination.limit"
@@ -137,6 +158,20 @@
         <RoleUserForm :model="editRow" @ok="handleFormOk" />
       </v-scroll-container>
     </el-dialog>
+
+    <!-- 弹窗授权 -->
+    <el-dialog
+      title="授权"
+      top="6vh"
+      width="800px"
+      :visible.sync="authContainerVisible"
+      @closed="handleAuthContainerClosed"
+    >
+      <v-scroll-container class="dialog-inner" v-if="authContainerInnerVisible">
+        <!-- 授权组件，存放于同级forms目录下 -->
+        <RoleAuthForm :model="authRow" />
+      </v-scroll-container>
+    </el-dialog>
   </div>
 </template>
 
@@ -150,6 +185,8 @@ export default {
   components: {
     RoleUserForm: () =>
       import(/* webpackChunkName: "system" */ './forms/RoleUserForm'),
+    RoleAuthForm: () =>
+      import(/* webpackChunkName: "system" */ './forms/RoleAuthForm'),
   },
   data() {
     return {
@@ -197,10 +234,25 @@ export default {
         },
       },
       // end <---- table
+      authContainerVisible: false,
+      authContainerInnerVisible: true,
+      authRow: {},
     }
   },
   mounted() {
     this.loadData()
+  },
+  methods: {
+    handleAuthClick(row) {
+      this.authRow = row
+      this.authContainerInnerVisible = true
+      this.$nextTick(() => {
+        this.authContainerVisible = true
+      })
+    },
+    handleAuthContainerClosed() {
+      this.authContainerInnerVisible = false
+    },
   },
 }
 </script>
