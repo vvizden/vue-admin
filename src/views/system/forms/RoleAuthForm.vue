@@ -48,6 +48,7 @@ export default {
       url: {
         treeList: roleUrl.treeList,
         rolePermissionList: permissionUrl.permissionList,
+        saveRolePermission: permissionUrl.saveRolePermission,
       },
       ruleForm: {
         permissionIds: [],
@@ -87,14 +88,18 @@ export default {
     })
   },
   methods: {
+    localHttp() {
+      return this.$http.post(this.url.saveRolePermission, this.formToFormData())
+    },
     manualReset() {
       this.setCheckedKeys(this.ruleForm.permissionIds)
     },
     // 表单组件数据转化为待提交表单数据
     formToFormData() {
+      const keys = this.$refs.permissionTree.getCheckedKeys()
       return {
         roleId: this.model.id,
-        permissionIds: this.ruleForm.permissionIds.join(','),
+        permissionIds: keys.join(','),
         lastpermissionIds: this.lastpermissionIds.join(','),
       }
     },

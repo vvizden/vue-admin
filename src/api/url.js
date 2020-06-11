@@ -39,6 +39,7 @@ export const permissionUrl = {
   treeList: '/sys/permission/queryTreeList',
   permissionList: '/sys/permission/queryRolePermission',
   create: '/sys/permission/add',
+  saveRolePermission: '/sys/permission/saveRolePermission',
   edit: '/sys/permission/edit',
   delete: '/sys/permission/delete',
   deleteBatch: '/sys/permission/deleteBatch',

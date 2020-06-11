@@ -21,10 +21,14 @@ export default {
           const formData = this.formToFormData()
           let httpPromise
           this.loading = true
-          if (this.model.id) {
-            httpPromise = this.$http.put(this.url.edit, formData)
+          if (this.localHttp) {
+            httpPromise = this.localHttp()
           } else {
-            httpPromise = this.$http.post(this.url.create, formData)
+            if (this.model.id) {
+              httpPromise = this.$http.put(this.url.edit, formData)
+            } else {
+              httpPromise = this.$http.post(this.url.create, formData)
+            }
           }
           httpPromise
             .then((res) => {

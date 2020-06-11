@@ -169,7 +169,7 @@
     >
       <v-scroll-container class="dialog-inner" v-if="authContainerInnerVisible">
         <!-- 授权组件，存放于同级forms目录下 -->
-        <RoleAuthForm :model="authRow" />
+        <RoleAuthForm :model="authRow" @ok="handleRoleAuthFormOk" />
       </v-scroll-container>
     </el-dialog>
   </div>
@@ -252,6 +252,9 @@ export default {
     },
     handleAuthContainerClosed() {
       this.authContainerInnerVisible = false
+    },
+    handleRoleAuthFormOk() {
+      this.authContainerVisible = false
     },
   },
 }
