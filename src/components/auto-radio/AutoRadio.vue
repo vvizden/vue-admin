@@ -70,11 +70,19 @@ export default {
     let radioVNodes
     if (this.button) {
       radioVNodes = this.options.map((e) => {
-        return <el-radio-button label={e.value}>{e.text}</el-radio-button>
+        return (
+          <el-radio-button key={e.value} label={e.value}>
+            {e.text}
+          </el-radio-button>
+        )
       })
     } else {
       radioVNodes = this.options.map((e) => {
-        return <el-radio label={e.value}>{e.text}</el-radio>
+        return (
+          <el-radio key={e.value} label={e.value}>
+            {e.text}
+          </el-radio>
+        )
       })
     }
 

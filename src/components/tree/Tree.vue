@@ -46,6 +46,7 @@ export default {
         props: props,
         attrs: this.attrs,
         on: this.$listeners,
+        scopedSlots: this.$scopedSlots,
       }
     },
   },
@@ -85,13 +86,14 @@ export default {
     },
     checkAllToggle() {
       this.checkAll = !this.checkAll
+      let checkKeys
       if (this.checkAll) {
-        this.$refs.vTree.setCheckedKeys(
-          Object.keys(this.$refs.vTree.store.nodesMap),
-        )
+        checkKeys = Object.keys(this.$refs.vTree.store.nodesMap)
       } else {
-        this.$refs.vTree.setCheckedKeys([])
+        checkKeys = []
       }
+      this.$refs.vTree.setCheckedKeys(checkKeys)
+      this.$emit('check-all-toggle', checkKeys)
     },
   },
   render() {
@@ -209,9 +211,7 @@ export default {
         {headerVNode}
         <div class="v-tree__body">
           <ScrollContainer>
-            <el-tree ref="vTree" {...this.localProps}>
-              {this.$scopedSlots.default && this.$scopedSlots.default()}
-            </el-tree>
+            <el-tree ref="vTree" {...this.localProps}></el-tree>
           </ScrollContainer>
         </div>
       </div>
