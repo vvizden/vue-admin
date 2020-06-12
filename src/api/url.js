@@ -49,3 +49,14 @@ export const permissionUrl = {
 export const dictUrl = {
   listByCode: `/sys/dict/getDictItems`,
 }
+
+// 组织机构 api url
+export const departUrl = {
+  treeList: '/sys/sysDepart/queryTreeList',
+  simpleTreeList: '/sys/sysDepart/queryIdTree',
+  create: '/sys/sysDepart/add',
+  edit: '/sys/sysDepart/edit',
+  delete: '/sys/sysDepart/delete',
+  deleteBatch: '/sys/sysDepart/deleteBatch',
+  exportXls: '/sys/sysDepart/exportXls',
+}

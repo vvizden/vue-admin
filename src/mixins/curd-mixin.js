@@ -7,6 +7,8 @@ export default {
         delete: '',
         deleteBatch: '',
       },
+      // 行唯一标识
+      rowKey: 'id',
       // 当前编辑行
       editRow: {},
       // 选择的行
@@ -20,7 +22,13 @@ export default {
   },
   computed: {
     selectedRowKeys() {
-      return this.selectedRows.map((e) => e[this.rowKey])
+      return this.selectedRows.map((e) => {
+        if (typeof this.rowKey == 'function') {
+          return e[this.rowKey()]
+        } else {
+          return e[this.rowKey]
+        }
+      })
     },
   },
   methods: {
@@ -38,8 +46,8 @@ export default {
     },
 
     // 点击创建按钮
-    handleCreateClick() {
-      this.editRow = {}
+    handleCreateClick(row = {}) {
+      this.editRow = row instanceof Event ? {} : row
       this.formContainerInnerVisible = true
       this.formContainerTitle = '创建'
       this.$nextTick(() => {
@@ -49,7 +57,9 @@ export default {
 
     // 点击编辑按钮
     handleEditClick(row) {
-      this.editRow = row
+      if (row instanceof Event)
+        throw new Error('handleEditClick params must be the edit data!')
+      this.editRow = {}
       this.formContainerInnerVisible = true
       this.formContainerTitle = '编辑'
       this.$nextTick(() => {
@@ -59,6 +69,10 @@ export default {
 
     // 点击删除按钮
     handleDeleteClick(id) {
+      if (id instanceof Event)
+        throw new Error(
+          'handleDeleteClick params must be the unique key as like id!',
+        )
       this.editRow = {}
       this.loading = true
       this.$http
@@ -85,7 +99,15 @@ export default {
       this.loading = true
       this.$http
         .delete(this.url.deleteBatch, {
-          ids: this.selectedRows.map((e) => e.id).join(','),
+          ids: this.selectedRows
+            .map((e) => {
+              if (typeof this.rowKey == 'function') {
+                return e[this.rowKey()]
+              } else {
+                return e[this.rowKey]
+              }
+            })
+            .join(','),
         })
         .then((res) => {
           this.selectedRows = []
@@ -121,7 +143,7 @@ export default {
 
     // 多选改变
     handleSelectionChange(selection) {
-      this.selectedRows = selection
+      this.selectedRows = selection || []
     },
   },
 }

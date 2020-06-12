@@ -24,12 +24,21 @@
     </el-form-item>
 
     <template v-if="ruleForm.menuType !== '0'">
-      <el-form-item label="上级菜单" prop="parentId">
+      <el-form-item
+        label="上级菜单"
+        prop="parentId"
+        :required="ruleForm.menuType !== '0'"
+      >
         <el-cascader
           v-model="ruleForm.parentId"
           placeholder="请选择上级菜单"
           :options="menus"
-          :props="{ checkStrictly: true, leaf: 'isLeaf' }"
+          :props="{
+            checkStrictly: true,
+            leaf: 'isLeaf',
+            expandTrigger: 'hover',
+            emitPath: false,
+          }"
           clearable
           style="width: 100%;"
         ></el-cascader>
@@ -62,7 +71,7 @@
       <el-form-item label="菜单排序" prop="sortNo">
         <el-input-number
           v-model="ruleForm.sortNo"
-          :min="1"
+          :min="0"
           :precision="2"
           controls-position="right"
         ></el-input-number>
@@ -105,7 +114,7 @@
       <el-form-item label="菜单排序" prop="sortNo">
         <el-input-number
           v-model="ruleForm.sortNo"
-          :min="1"
+          :min="0"
           :precision="2"
           controls-position="right"
         ></el-input-number>
@@ -186,7 +195,7 @@ export default {
       ruleForm: {
         menuType: '0',
         name: '',
-        parentId: [],
+        parentId: '',
         url: '',
         component: '',
         redirect: '',
@@ -225,11 +234,8 @@ export default {
         ],
         parentId: [
           {
-            type: 'array',
-            required: false,
-            whitespace: true,
-            message: '请选择上级菜单',
-            trigger: ['change'],
+            validator: this.validateParentId,
+            trigger: 'change',
           },
         ],
         url: [
@@ -384,14 +390,6 @@ export default {
       // 赋值 id
       clonedData.id = this.model.id
 
-      // 上级菜单
-      if (clonedData.parentId != null && Array.isArray(clonedData.parentId)) {
-        clonedData.parentId = String(clonedData.parentId)
-        if (!clonedData.parentId) {
-          delete clonedData.parentId
-        }
-      }
-
       if (clonedData.menuType === '2') {
         clonedData = pick(clonedData, [
           'id',
@@ -433,9 +431,6 @@ export default {
       })
 
       resultData = cloneDeep(resultData)
-      if (resultData.parentId) {
-        resultData.parentId = [resultData.parentId]
-      }
 
       if (resultData.menuType != null) {
         resultData.menuType = String(resultData.menuType)
@@ -443,6 +438,28 @@ export default {
       // 填充表单
       resultData = Object.assign({}, this.ruleForm, resultData)
       return resultData
+    },
+
+    validateParentId(rule, value, cb) {
+      if (typeof value != 'string') {
+        cb('数据类型错误')
+      } else {
+        const isCompany = this.ruleForm.orgCategory === '1'
+        const valueTrim = value.trim()
+        if (isCompany) {
+          if (value) {
+            cb('上级菜单不合法')
+          } else {
+            cb()
+          }
+        } else {
+          if (!value || !valueTrim) {
+            cb('请选择上级菜单')
+          } else {
+            cb()
+          }
+        }
+      }
     },
   },
 }

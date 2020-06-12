@@ -13,7 +13,7 @@
         mode="vertical"
       >
         <sidebar-item
-          v-for="route in menuList"
+          v-for="route in permission_routes"
           :key="route.path"
           :item="route"
           :base-path="route.path"
@@ -29,23 +29,6 @@ import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
 import settings from '@/settings'
-
-const filterMenus = (menus = []) => {
-  let result = []
-  for (const item of menus) {
-    if (!item.hideInMenu) {
-      result.push(item)
-      if (item.children && item.children.length > 0) {
-        item.children = filterMenus(item.children)
-      }
-    } else {
-      if (item.children && item.children.length > 0) {
-        result = result.concat(filterMenus(item.children))
-      }
-    }
-  }
-  return result
-}
 
 export default {
   components: { SidebarItem, Logo },
@@ -68,9 +51,6 @@ export default {
     },
     isCollapse() {
       return this.sidebar.isCollapse
-    },
-    menuList() {
-      return filterMenus(this.permission_routes)
     },
   },
 }

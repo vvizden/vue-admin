@@ -9,16 +9,19 @@
     label-width="100px"
   >
     <el-form-item label="角色权限" prop="permissionIds">
-      <el-tree
+      <v-tree
         ref="permissionTree"
         :data="permissionData"
+        searchable
+        highlight-current
         show-checkbox
         check-strictly
         node-key="value"
         default-expand-all
         :props="permissionTreeProps"
+        style="height: 500px;"
       >
-      </el-tree>
+      </v-tree>
     </el-form-item>
 
     <!-- 表单提交与重置 -->
@@ -57,7 +60,7 @@ export default {
         permissionIds: [
           {
             type: 'array',
-            required: true,
+            required: false,
             min: 1,
             message: '请选择角色权限',
             trigger: 'change',
@@ -96,7 +99,7 @@ export default {
     },
     // 表单组件数据转化为待提交表单数据
     formToFormData() {
-      const keys = this.$refs.permissionTree.getCheckedKeys()
+      const keys = this.getTreeInstance().getCheckedKeys()
       return {
         roleId: this.model.id,
         permissionIds: keys.join(','),
@@ -123,7 +126,10 @@ export default {
       return Promise.reject()
     },
     setCheckedKeys(keys) {
-      this.$refs.permissionTree.setCheckedKeys(keys)
+      this.getTreeInstance().setCheckedKeys(keys)
+    },
+    getTreeInstance() {
+      return this.$refs.permissionTree.getTreeInstance()
     },
   },
 }

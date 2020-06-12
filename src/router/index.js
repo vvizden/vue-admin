@@ -15,17 +15,9 @@ export function concatAsyncRoutes(routes) {
   return [
     // {
     //   path: '/',
-    //   component: BaseLayout,
+    //   component: AsideLayout,
     //   redirect: '/home',
-    //   hideInMenu: true,
-    //   children: generateChildRoutes(routes),
-    //   // children: [
-    //   //   {
-    //   //     path: 'aside-layout',
-    //   //     name: 'AsideLayout',
-    //   //     component: AsideLayout,
-    //   //   },
-    //   // ],
+    //   hidden: true,
     // },
     ...generateChildRoutes(routes),
     {
