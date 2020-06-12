@@ -4,7 +4,7 @@
       <el-avatar size="medium" class="user-avatar">{{ realname }}</el-avatar>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item divided @click.native="logout">
-          登出
+          <i class="el-icon-switch-button el-icon--left"></i>登出
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

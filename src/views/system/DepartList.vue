@@ -72,7 +72,8 @@
         </span>
       </v-tree>
       <div class="split-right">
-        <h2 class="header el-icon-tickets el-icon--right">
+        <h2 class="header">
+          <i class="el-icon-tickets el-icon--left"></i>
           {{ infoTitle }}
         </h2>
         <v-scroll-container>
