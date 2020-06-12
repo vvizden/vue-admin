@@ -41,6 +41,7 @@
       <v-auto-radio
         v-model="ruleForm.orgCategory"
         dictCode="org_category"
+        :optionsFilter="optionsFilter"
       ></v-auto-radio>
     </el-form-item>
 
@@ -191,6 +192,17 @@ export default {
     this.ruleForm = data
   },
   methods: {
+    optionsFilter(options) {
+      if (this.model.parentId) {
+        return options.filter((e) => e.value !== '1')
+      } else {
+        if (this.model.id) {
+          return options
+        } else {
+          return options.filter((e) => e.value === '1')
+        }
+      }
+    },
     // 表单组件数据转化为待提交表单数据
     formToFormData() {
       // 深层拷贝数据
@@ -209,6 +221,9 @@ export default {
       })
 
       resultData = cloneDeep(resultData)
+      if (this.model.parentId) {
+        resultData.orgCategory = '2'
+      }
       // 填充表单
       resultData = Object.assign({}, this.ruleForm, resultData)
       return resultData

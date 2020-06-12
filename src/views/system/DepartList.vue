@@ -4,7 +4,7 @@
       <el-button
         type="primary"
         icon="el-icon-circle-plus-outline"
-        @click="handleCreateClick"
+        @click="handleCreateClickBefore"
       >
         创建
       </el-button>
@@ -76,11 +76,7 @@
           {{ infoTitle }}
         </h2>
         <v-scroll-container>
-          <DepartForm
-            :model="editRow"
-            :key="editRow.id || 'create'"
-            @ok="handleFormOk"
-          />
+          <DepartForm :model="editRow" :key="formKey" @ok="handleFormOk" />
         </v-scroll-container>
       </div>
     </div>
@@ -116,6 +112,19 @@ export default {
       infoTitle: '基本信息',
     }
   },
+  computed: {
+    formKey() {
+      if (this.editRow.id) {
+        return this.editRow.id
+      } else {
+        if (this.editRow.parentId) {
+          return 'create_child'
+        } else {
+          return 'create_company'
+        }
+      }
+    },
+  },
   mounted() {
     this.loadData().then(() => {
       this.$refs.deptTree
@@ -127,6 +136,10 @@ export default {
     })
   },
   methods: {
+    handleCreateClickBefore() {
+      this.handleCreateClick()
+      this.infoTitle = `创建公司`
+    },
     handleCreateChildClick(data) {
       this.editRow = { parentId: data.id }
       this.infoTitle = `创建 ${data.departName} 下级`

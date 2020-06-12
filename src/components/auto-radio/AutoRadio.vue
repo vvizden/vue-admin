@@ -3,6 +3,7 @@ import { NAME_PREFIX } from '../const/common'
 import { RadioGroup } from 'element-ui'
 import { mapState } from 'vuex'
 import { dictUrl } from '@/api/url'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: `${NAME_PREFIX}AutoRadio`,
@@ -19,6 +20,10 @@ export default {
       type: String,
       required: false,
     },
+    optionsFilter: {
+      type: Function,
+      default: (options) => options,
+    },
     ...RadioGroup.props,
   },
   data() {
@@ -28,7 +33,9 @@ export default {
   },
   computed: {
     ...mapState('app', {
-      dict: (state) => state.dict,
+      dict: (state) => {
+        return cloneDeep(state.dict)
+      },
     }),
     localProps() {
       const props = { ...this.$props }
@@ -57,10 +64,10 @@ export default {
     loadOptions() {
       if (this.dictCode) {
         if (this.dict && !this.dictCode.includes(',')) {
-          this.options = this.dict[this.dictCode]
+          this.options = this.optionsFilter(this.dict[this.dictCode])
         } else {
           this.$http.get(`${dictUrl}/${this.dictCode}`).then((res) => {
-            this.options = res.result || []
+            this.options = this.optionsFilter(res.result || [])
           })
         }
       }
@@ -71,7 +78,7 @@ export default {
     if (this.button) {
       radioVNodes = this.options.map((e) => {
         return (
-          <el-radio-button key={e.value} label={e.value}>
+          <el-radio-button key={e.value} label={e.value} disabled={e.disabled}>
             {e.text}
           </el-radio-button>
         )
