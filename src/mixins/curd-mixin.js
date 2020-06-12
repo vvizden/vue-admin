@@ -59,7 +59,7 @@ export default {
     handleEditClick(row) {
       if (row instanceof Event)
         throw new Error('handleEditClick params must be the edit data!')
-      this.editRow = {}
+      this.editRow = row
       this.formContainerInnerVisible = true
       this.formContainerTitle = '编辑'
       this.$nextTick(() => {

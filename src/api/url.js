@@ -47,7 +47,12 @@ export const permissionUrl = {
 
 // 权限 api url
 export const dictUrl = {
-  listByCode: `/sys/dict/getDictItems`,
+  listByCode: '/sys/dict/getDictItems',
+  list: '/sys/dict/list',
+  create: '/sys/dict/add',
+  edit: '/sys/dict/edit',
+  delete: '/sys/dict/delete',
+  exportXls: '/sys/dict/exportXls',
 }
 
 // 组织机构 api url
