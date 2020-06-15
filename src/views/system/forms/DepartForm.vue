@@ -221,11 +221,11 @@ export default {
       })
 
       resultData = cloneDeep(resultData)
+      // 填充表单
+      resultData = Object.assign({}, this.ruleForm, resultData)
       if (this.model.parentId) {
         resultData.orgCategory = '2'
       }
-      // 填充表单
-      resultData = Object.assign({}, this.ruleForm, resultData)
       return resultData
     },
     validateParentId(rule, value, cb) {

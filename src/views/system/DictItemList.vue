@@ -7,22 +7,23 @@
       label-width="auto"
       class="filter-container"
     >
-      <el-form-item label="字典名称：" prop="dictName" class="filter-item">
+      <el-form-item label="名称：" prop="itemText" class="filter-item">
         <el-input
-          v-model="filterParams.dictName"
-          placeholder="字典名称"
+          v-model="filterParams.itemText"
+          placeholder="名称"
           clearable
           style="width: 160px"
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="字典编码：" prop="dictCode" class="filter-item">
-        <el-input
-          v-model.trim="filterParams.dictCode"
-          placeholder="字典编码"
+      <el-form-item label="状态：" prop="status" class="filter-item">
+        <v-auto-select
+          v-model.trim="filterParams.status"
+          placeholder="状态"
           clearable
+          dictCode="dict_item_status"
           style="width: 160px"
-        ></el-input>
+        ></v-auto-select>
       </el-form-item>
 
       <el-form-item class="filter-item">
@@ -62,15 +63,6 @@
           >
             创建
           </el-button>
-
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-download"
-            @click="exportXls('数据字典列表')"
-          >
-            导出
-          </el-button>
         </div>
       </template>
       <template #avatar="{ row }">
@@ -88,13 +80,6 @@
           icon="el-icon-edit-outline"
           @click.stop="handleEditClick(row)"
           >编辑</el-button
-        >
-        <el-divider direction="vertical" />
-        <el-button
-          type="text"
-          icon="el-icon-setting"
-          @click.stop="handleSettingClick(row)"
-          >配置</el-button
         >
         <el-divider direction="vertical" />
         <el-popconfirm
@@ -116,49 +101,44 @@
       @pagination="loadData"
     />
 
-    <!-- 表单弹窗 -->
     <el-dialog
       :title="formContainerTitle"
       top="6vh"
       width="70%"
+      :append-to-body="true"
       :visible.sync="formContainerVisible"
       @closed="handleFormContainerClosed"
     >
       <v-scroll-container class="dialog-inner" v-if="formContainerInnerVisible">
-        <DictForm :model="editRow" @ok="handleFormOk" />
+        <DictItemForm :model="editRow" @ok="handleFormOk" />
       </v-scroll-container>
     </el-dialog>
-
-    <!-- 字典列表抽屉 -->
-    <el-drawer title="字典列表" size="680" :visible.sync="drawerVisible">
-      <DictItemList
-        class="no-padding"
-        :dictId="configDict.id"
-        :key="configDict.id"
-      />
-    </el-drawer>
   </div>
 </template>
 
 <script>
-import { PageTableMixin, CurdMixin, ExportMixin } from '@/mixins'
-import { dictUrl } from '@/api/url'
+import { PageTableMixin, CurdMixin } from '@/mixins'
+import { dictItemUrl } from '@/api/url'
 
 export default {
-  name: 'DictList',
-  mixins: [PageTableMixin, CurdMixin, ExportMixin],
+  name: 'DictItemList',
+  mixins: [PageTableMixin, CurdMixin],
   components: {
-    DictForm: () => import(/* webpackChunkName: "system" */ './forms/DictForm'),
-    DictItemList: () =>
-      import(/* webpackChunkName: "system" */ './DictItemList'),
+    DictItemForm: () =>
+      import(/* webpackChunkName: "system" */ './forms/DictItemForm'),
+  },
+  props: {
+    dictId: {
+      type: String,
+      required: false,
+    },
   },
   data() {
     return {
       // 接口url
       url: {
-        data: dictUrl.list,
-        delete: dictUrl.delete,
-        exportXls: dictUrl.exportXls,
+        data: dictItemUrl.list,
+        delete: dictItemUrl.delete,
       },
       // 表格列
       columns: [
@@ -169,13 +149,13 @@ export default {
           align: 'center',
         },
         {
-          label: '字典名称',
-          prop: 'dictName',
+          label: '名称',
+          prop: 'itemText',
           align: 'center',
         },
         {
-          label: '字典编号',
-          prop: 'dictCode',
+          label: '数据值',
+          prop: 'itemValue',
           align: 'center',
         },
         {
@@ -184,17 +164,27 @@ export default {
           align: 'center',
         },
         {
+          label: '排序',
+          prop: 'sortOrder',
+          align: 'center',
+        },
+        {
+          label: '状态',
+          prop: 'status_dictText',
+          align: 'center',
+        },
+        {
           label: '操作',
           prop: 'action',
           align: 'center',
-          width: '200px',
+          width: '140px',
           scopedSlots: true,
         },
       ],
       // 排序条件
       sortord: {
-        column: 'createTime',
-        order: 'desc',
+        column: 'sortOrder',
+        order: 'asc',
       },
       columnsCtrl: {
         props: {
@@ -202,17 +192,18 @@ export default {
           visibleArrow: false,
         },
       },
-      drawerVisible: false,
-      configDict: {},
     }
   },
   mounted() {
     this.loadData()
   },
   methods: {
-    handleSettingClick(row) {
-      this.configDict = row
-      this.drawerVisible = true
+    getQueryParams() {
+      return {
+        dictId: this.dictId,
+        ...this.filterParams,
+        ...this.sortord,
+      }
     },
   },
 }

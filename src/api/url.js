@@ -45,7 +45,7 @@ export const permissionUrl = {
   deleteBatch: '/sys/permission/deleteBatch',
 }
 
-// 权限 api url
+// 数据字典 api url
 export const dictUrl = {
   listByCode: '/sys/dict/getDictItems',
   list: '/sys/dict/list',
@@ -53,6 +53,16 @@ export const dictUrl = {
   edit: '/sys/dict/edit',
   delete: '/sys/dict/delete',
   exportXls: '/sys/dict/exportXls',
+}
+
+// 数据字典 api url
+export const dictItemUrl = {
+  list: '/sys/dictItem/list',
+  refreshCache: 'sys/dict/refleshCache',
+  create: '/sys/dictItem/add',
+  edit: '/sys/dictItem/edit',
+  delete: '/sys/dictItem/delete',
+  deleteBatch: '/sys/dictItem/deleteBatch',
 }
 
 // 组织机构 api url
