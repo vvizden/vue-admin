@@ -8,7 +8,7 @@
       label-width="auto"
       class="filter-container"
     >
-      <el-form-item label="角色名称：" class="filter-item">
+      <el-form-item label="角色名称：" prop="roleName" class="filter-item">
         <el-input
           v-model="filterParams.roleName"
           placeholder="角色名称"

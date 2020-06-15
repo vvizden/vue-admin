@@ -7,56 +7,23 @@
       label-width="auto"
       class="filter-container"
     >
-      <!-- <el-form-item label="性别：" class="filter-item">
-        <el-select
-          v-model="filterParams.sex"
-          placeholder="性别"
-          clearable
-          style="width: 140px"
-        >
-          <el-option label="男" :value="1"> </el-option>
-          <el-option label="女" :value="2"> </el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="状态：" class="filter-item">
-        <el-select
-          v-model="filterParams.status"
-          placeholder="状态"
-          clearable
-          style="width: 140px"
-        >
-          <el-option label="正常" :value="1"> </el-option>
-          <el-option label="冻结" :value="2"> </el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="用户账号：" class="filter-item">
+      <el-form-item label="字典名称：" prop="dictName" class="filter-item">
         <el-input
-          v-model="filterParams.username"
-          placeholder="用户账号"
+          v-model="filterParams.dictName"
+          placeholder="字典名称"
           clearable
-          style="width: 140px"
+          style="width: 160px"
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="用户姓名：" class="filter-item">
+      <el-form-item label="字典编码：" prop="dictCode" class="filter-item">
         <el-input
-          v-model.trim="filterParams.realname"
-          placeholder="用户姓名"
+          v-model.trim="filterParams.dictCode"
+          placeholder="字典编码"
           clearable
-          style="width: 140px"
+          style="width: 160px"
         ></el-input>
       </el-form-item>
-
-      <el-form-item label="手机号：" class="filter-item">
-        <el-input
-          v-model.trim="filterParams.phone"
-          placeholder="手机号"
-          clearable
-          style="width: 140px"
-        ></el-input>
-      </el-form-item> -->
 
       <el-form-item class="filter-item">
         <el-button type="primary" icon="el-icon-search" @click="loadData">
@@ -100,7 +67,7 @@
             type="primary"
             plain
             icon="el-icon-download"
-            @click="exportXls('用户列表')"
+            @click="exportXls('数据字典列表')"
           >
             导出
           </el-button>
@@ -150,7 +117,7 @@
       @closed="handleFormContainerClosed"
     >
       <v-scroll-container class="dialog-inner" v-if="formContainerInnerVisible">
-        <!-- <UserForm :model="editRow" @ok="handleFormOk" /> -->
+        <DictForm :model="editRow" @ok="handleFormOk" />
       </v-scroll-container>
     </el-dialog>
   </div>
@@ -164,7 +131,7 @@ export default {
   name: 'DictList',
   mixins: [PageTableMixin, CurdMixin, ExportMixin],
   components: {
-    // UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
+    DictForm: () => import(/* webpackChunkName: "system" */ './forms/DictForm'),
   },
   data() {
     return {

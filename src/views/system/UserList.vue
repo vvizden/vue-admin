@@ -7,19 +7,19 @@
       label-width="auto"
       class="filter-container"
     >
-      <el-form-item label="性别：" class="filter-item">
+      <el-form-item label="性别：" prop="sex" class="filter-item">
         <el-select
           v-model="filterParams.sex"
           placeholder="性别"
           clearable
           style="width: 140px"
         >
-          <el-option label="男" :value="1"> </el-option>
-          <el-option label="女" :value="2"> </el-option>
+          <el-option label="男" value="1"> </el-option>
+          <el-option label="女" value="2"> </el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="状态：" class="filter-item">
+      <el-form-item label="状态：" prop="status" class="filter-item">
         <el-select
           v-model="filterParams.status"
           placeholder="状态"
@@ -31,7 +31,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="用户账号：" class="filter-item">
+      <el-form-item label="用户账号：" prop="username" class="filter-item">
         <el-input
           v-model="filterParams.username"
           placeholder="用户账号"
@@ -40,7 +40,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="用户姓名：" class="filter-item">
+      <el-form-item label="用户姓名：" prop="realname" class="filter-item">
         <el-input
           v-model.trim="filterParams.realname"
           placeholder="用户姓名"
@@ -49,7 +49,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="手机号：" class="filter-item">
+      <el-form-item label="手机号：" prop="phone" class="filter-item">
         <el-input
           v-model.trim="filterParams.phone"
           placeholder="手机号"

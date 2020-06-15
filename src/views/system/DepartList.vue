@@ -13,7 +13,7 @@
         type="primary"
         plain
         icon="el-icon-download"
-        @click="exportXls('用户列表')"
+        @click="exportXls('组织机构列表')"
       >
         导出
       </el-button>
