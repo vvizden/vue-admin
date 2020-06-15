@@ -1,5 +1,6 @@
 import Copyright from './copyright'
 import AutoRadio from './auto-radio'
+import AutoSelect from './auto-select'
 import ScrollContainer from './scroll-container'
 import Tree from './tree'
 import ElementUIExt from './element-ui-ext'
@@ -16,6 +17,7 @@ function install(Vue, options = {}) {
 
   Vue.use(Copyright)
   Vue.use(AutoRadio)
+  Vue.use(AutoSelect)
   Vue.use(ScrollContainer)
   Vue.use(Tree)
   Vue.use(ElementUIExt)
@@ -26,6 +28,7 @@ export default {
   install,
   Copyright,
   AutoRadio,
+  AutoSelect,
   ScrollContainer,
   Tree,
   ElementUIExt,

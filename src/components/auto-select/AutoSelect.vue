@@ -1,21 +1,17 @@
 <script>
 import { NAME_PREFIX } from '../const/common'
-import { RadioGroup } from 'element-ui'
+import { Select } from 'element-ui'
 import { mapState } from 'vuex'
 import { dictUrl } from '@/api/url'
 import { cloneDeep } from 'lodash-es'
 
 export default {
-  name: `${NAME_PREFIX}AutoRadio`,
+  name: `${NAME_PREFIX}AutoSelect`,
   model: {
     prop: 'value',
     event: 'change',
   },
   props: {
-    button: {
-      type: Boolean,
-      default: false,
-    },
     dictCode: {
       type: String,
       required: false,
@@ -24,7 +20,7 @@ export default {
       type: Function,
       default: (options) => options,
     },
-    ...RadioGroup.props,
+    ...Select.props,
   },
   data() {
     return {
@@ -39,7 +35,6 @@ export default {
     }),
     localProps() {
       const props = { ...this.$props }
-      delete props.button
       delete props.dictCode
       for (const [k, v] of Object.entries(props)) {
         if (v == null && k !== 'value') {
@@ -50,7 +45,7 @@ export default {
       return {
         props: props,
         on: {
-          input: (val) => {
+          change: (val) => {
             this.$emit('change', val)
           },
         },
@@ -66,40 +61,32 @@ export default {
         if (this.dict && !this.dictCode.includes(',')) {
           this.options = this.optionsFilter(this.dict[this.dictCode])
         } else {
-          this.$http.get(`${dictUrl}/${this.dictCode}`).then((res) => {
-            this.options = this.optionsFilter(res.result || [])
-          })
+          this.$http
+            .get(`${dictUrl.listByCode}/${this.dictCode}`)
+            .then((res) => {
+              this.options = this.optionsFilter(res.result || [])
+            })
         }
       }
     },
   },
   render() {
-    let radioVNodes
-    if (this.button) {
-      radioVNodes = this.options.map((e) => {
-        return (
-          <el-radio-button key={e.value} label={e.value} disabled={e.disabled}>
-            {e.text}
-          </el-radio-button>
-        )
-      })
-    } else {
-      radioVNodes = this.options.map((e) => {
-        return (
-          <el-radio key={e.value} label={e.value}>
-            {e.text}
-          </el-radio>
-        )
-      })
+    let optionVNodes = this.options.map((e) => {
+      return (
+        <el-option
+          key={e.value}
+          value={e.value}
+          label={e.text}
+          disabled={e.disabled}
+        ></el-option>
+      )
+    })
+
+    if (!optionVNodes || optionVNodes.length === 0) {
+      optionVNodes = this.$scopedSlots.default && this.$scopedSlots.default()
     }
 
-    if (!radioVNodes || radioVNodes.length === 0) {
-      radioVNodes = this.$scopedSlots.default && this.$scopedSlots.default()
-    }
-
-    return <el-radio-group {...this.localProps}>{radioVNodes}</el-radio-group>
+    return <el-select {...this.localProps}>{optionVNodes}</el-select>
   },
 }
 </script>
-
-<style></style>
