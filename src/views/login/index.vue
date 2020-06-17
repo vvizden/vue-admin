@@ -9,6 +9,7 @@
             :model="loginForm"
             :rules="loginRules"
             class="login-form"
+            @submit.native.prevent
           >
             <el-form-item prop="username">
               <el-input
@@ -18,14 +19,14 @@
                 placeholder="用户名"
                 name="username"
                 tabindex="1"
-                autocomplete="on"
                 size="medium"
+                clearable
               />
             </el-form-item>
 
             <el-tooltip
               v-model="capsTooltip"
-              content="Caps lock is On"
+              content="大写已锁定"
               placement="right"
               manual
             >
@@ -38,8 +39,9 @@
                   placeholder="密码"
                   name="password"
                   tabindex="2"
-                  autocomplete="on"
+                  autocomplete="new-password"
                   size="medium"
+                  clearable
                   @keyup.native="checkCapslock"
                   @blur="capsTooltip = false"
                   @keyup.enter.native="handleLogin"
@@ -47,15 +49,23 @@
               </el-form-item>
             </el-tooltip>
 
-            <el-button
-              :loading="loading"
-              class="login-button"
-              type="primary"
-              size="medium"
-              @click.native.prevent="handleLogin"
-            >
-              登陆
-            </el-button>
+            <el-form-item>
+              <el-checkbox v-model="loginForm.isSavePassword">
+                记住密码
+              </el-checkbox>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button
+                :loading="loading"
+                class="login-button"
+                type="primary"
+                size="medium"
+                @click.native.prevent="handleLogin"
+              >
+                登陆
+              </el-button>
+            </el-form-item>
           </el-form>
         </el-tab-pane>
       </el-tabs>
@@ -68,6 +78,7 @@
 import { getCurrentTimeDesc } from '@/utils/time'
 import settings from '@/settings'
 import variables from '@/styles/element-variables.scss'
+import Storage, { REMEMBER_PASSWORD_KEY } from '@/utils/storage'
 
 export default {
   name: 'Login',
@@ -75,10 +86,11 @@ export default {
     return {
       title: settings.title,
       titleStyle: { color: variables.primaryColor },
-      loginForm: {
+      loginForm: Storage.get(REMEMBER_PASSWORD_KEY, {
         username: '',
         password: '',
-      },
+        isSavePassword: false,
+      }),
       loginRules: {
         username: [
           {
@@ -118,8 +130,7 @@ export default {
   },
   methods: {
     checkCapslock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
+      this.capsTooltip = e.getModifierState && e.getModifierState('CapsLock')
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
@@ -128,6 +139,11 @@ export default {
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(() => {
+              if (this.loginForm.isSavePassword) {
+                Storage.set(REMEMBER_PASSWORD_KEY, this.loginForm)
+              } else {
+                Storage.remove(REMEMBER_PASSWORD_KEY)
+              }
               this.$router
                 .push({
                   path: this.redirect || '/',
@@ -181,12 +197,18 @@ export default {
 }
 
 .login-card {
-  width: 400px;
+  width: 480px;
   position: absolute;
   top: 50%;
   right: 200px;
   transform: translateY(-50%);
   background-color: #fff;
+
+  ::v-deep {
+    .el-card__body {
+      padding: 16px 48px;
+    }
+  }
 }
 
 .title {
@@ -196,15 +218,25 @@ export default {
 }
 
 .login-form {
-  padding-top: 16px;
-  padding-bottom: 32px;
+  padding-top: 24px;
+  padding-bottom: 16px;
+
+  ::v-deep {
+    .el-form-item {
+      margin-bottom: 24px;
+    }
+  }
 }
 
 .login-button {
   width: 100%;
-  margin-top: 16px;
-  font-size: 16px;
   letter-spacing: 2px;
+
+  ::v-deep {
+    span {
+      font-size: 16px;
+    }
+  }
 }
 
 .copyright {
