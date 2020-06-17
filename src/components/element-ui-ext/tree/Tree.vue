@@ -1,5 +1,5 @@
 <script>
-import { NAME_PREFIX } from '../const/common'
+import { NAME_PREFIX } from '../../const/common'
 import { Tree } from 'element-ui'
 import ScrollContainer from '../scroll-container'
 

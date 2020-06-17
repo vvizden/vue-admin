@@ -1,8 +1,13 @@
 import { cloneDeep } from 'lodash-es'
 
-/* !!!!!! 使用时需要提供 model, ruleFormReset, ruleForm 数据 */
+/* !!!!!! 使用时需要提供 model, ruleFormReset, ruleForm 数据和 manualReset, formToFormData 方法 */
 export default {
   methods: {
+    isEditForm() {
+      return (
+        this.model && Object.prototype.hasOwnProperty.call(this.model, 'id')
+      )
+    },
     // 重置表单
     resetForm(formName) {
       if (this.$refs[formName]) {
@@ -13,7 +18,6 @@ export default {
       }
       this.manualReset && this.manualReset()
     },
-    formToFormData() {},
     // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -24,7 +28,7 @@ export default {
           if (this.localHttp) {
             httpPromise = this.localHttp()
           } else {
-            if (this.model.id) {
+            if (this.isEditForm()) {
               httpPromise = this.$http.put(this.url.edit, formData)
             } else {
               httpPromise = this.$http.post(this.url.create, formData)

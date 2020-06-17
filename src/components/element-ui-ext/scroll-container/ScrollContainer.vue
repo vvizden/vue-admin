@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { NAME_PREFIX } from '../const/common'
+import { NAME_PREFIX } from '../../const/common'
 
 export default {
   name: `${NAME_PREFIX}ScrollContainer`,

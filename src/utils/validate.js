@@ -76,3 +76,7 @@ export function isArray(arg) {
   }
   return Array.isArray(arg)
 }
+
+// ↓↓↓↓↓↓↓↓ 业务校验
+
+// ↑↑↑↑↑↑↑↑ 业务校验

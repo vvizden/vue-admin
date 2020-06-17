@@ -3,6 +3,7 @@ export const userUrl = {
   page: '/sys/user/list',
   create: '/sys/user/add',
   edit: '/sys/user/edit',
+  updatePassword: '/sys/user/updatePassword',
   delete: '/sys/user/delete',
   deleteBatch: '/sys/user/deleteBatch',
   exportXls: '/sys/user/exportXls',
