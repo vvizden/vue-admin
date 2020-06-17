@@ -19,6 +19,7 @@
                 name="username"
                 tabindex="1"
                 autocomplete="on"
+                size="medium"
               />
             </el-form-item>
 
@@ -38,6 +39,7 @@
                   name="password"
                   tabindex="2"
                   autocomplete="on"
+                  size="medium"
                   @keyup.native="checkCapslock"
                   @blur="capsTooltip = false"
                   @keyup.enter.native="handleLogin"
@@ -49,6 +51,7 @@
               :loading="loading"
               class="login-button"
               type="primary"
+              size="medium"
               @click.native.prevent="handleLogin"
             >
               登陆
@@ -63,27 +66,12 @@
 
 <script>
 import { getCurrentTimeDesc } from '@/utils/time'
-import { validUsername } from '@/utils/validate'
 import settings from '@/settings'
 import variables from '@/styles/element-variables.scss'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能少于6位'))
-      } else {
-        callback()
-      }
-    }
     return {
       title: settings.title,
       titleStyle: { color: variables.primaryColor },
@@ -93,10 +81,20 @@ export default {
       },
       loginRules: {
         username: [
-          { required: true, trigger: 'blur', validator: validateUsername },
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入用户名',
+            trigger: 'blur',
+          },
         ],
         password: [
-          { required: true, trigger: 'blur', validator: validatePassword },
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入密码',
+            trigger: 'blur',
+          },
         ],
       },
       capsTooltip: false,
@@ -173,8 +171,13 @@ export default {
   top: 0;
   bottom: 0;
   right: 0;
-  background-color: #101038;
+  background-color: #2969a2;
   overflow: hidden;
+}
+
+.login-container ::v-deep #tab-login {
+  font-size: 16px;
+  letter-spacing: 2px;
 }
 
 .login-card {
@@ -187,7 +190,7 @@ export default {
 }
 
 .title {
-  margin: 32px 0;
+  margin: 24px 0;
   font-size: 32px;
   text-align: center;
 }
@@ -199,6 +202,7 @@ export default {
 
 .login-button {
   width: 100%;
+  margin-top: 16px;
   font-size: 16px;
   letter-spacing: 2px;
 }
@@ -208,13 +212,6 @@ export default {
   bottom: 10px;
   left: 50%;
   transform: translate(-50%);
-  color: #4b4b6e;
-}
-</style>
-
-<style lang="scss">
-.login-container #tab-login {
-  font-size: 16px;
-  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.5);
 }
 </style>

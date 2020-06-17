@@ -39,6 +39,9 @@ const actions = {
   setElementUISize({ commit }, size) {
     commit(SET_ELEMENT_UI_SIZE, size)
   },
+  setDict({ commit }, dict) {
+    commit(SET_DICT, dict)
+  },
 }
 
 export default {

@@ -48,7 +48,9 @@ export const permissionUrl = {
 // 数据字典 api url
 export const dictUrl = {
   listByCode: '/sys/dict/getDictItems',
-  list: '/sys/dict/list',
+  page: '/sys/dict/list',
+  listAll: 'sys/dict/queryAllDictItems',
+  refreshCache: 'sys/dict/refleshCache',
   create: '/sys/dict/add',
   edit: '/sys/dict/edit',
   delete: '/sys/dict/delete',
@@ -57,8 +59,7 @@ export const dictUrl = {
 
 // 数据字典 api url
 export const dictItemUrl = {
-  list: '/sys/dictItem/list',
-  refreshCache: 'sys/dict/refleshCache',
+  page: '/sys/dictItem/list',
   create: '/sys/dictItem/add',
   edit: '/sys/dictItem/edit',
   delete: '/sys/dictItem/delete',

@@ -66,6 +66,15 @@
           <el-button
             type="primary"
             plain
+            icon="el-icon-refresh"
+            @click="handleRefreshClick"
+          >
+            刷新缓存
+          </el-button>
+
+          <el-button
+            type="primary"
+            plain
             icon="el-icon-download"
             @click="exportXls('数据字典列表')"
           >
@@ -143,6 +152,7 @@
 <script>
 import { PageTableMixin, CurdMixin, ExportMixin } from '@/mixins'
 import { dictUrl } from '@/api/url'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'DictList',
@@ -156,7 +166,9 @@ export default {
     return {
       // 接口url
       url: {
-        data: dictUrl.list,
+        data: dictUrl.page,
+        listAll: dictUrl.listAll,
+        refreshCache: dictUrl.refreshCache,
         delete: dictUrl.delete,
         exportXls: dictUrl.exportXls,
       },
@@ -210,9 +222,23 @@ export default {
     this.loadData()
   },
   methods: {
+    ...mapActions('app', ['setDict']),
     handleSettingClick(row) {
       this.configDict = row
       this.drawerVisible = true
+    },
+    handleRefreshClick() {
+      this.$http
+        .get(this.url.refreshCache)
+        .then(() => {
+          return this.$http.get(this.url.listAll).then((res) => {
+            this.setDict(res.result)
+            this.$message.success('缓存刷新成功')
+          })
+        })
+        .catch(() => {
+          this.$message.error('缓存刷新失败')
+        })
     },
   },
 }

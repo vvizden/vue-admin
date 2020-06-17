@@ -137,7 +137,7 @@ export default {
     return {
       // 接口url
       url: {
-        data: dictItemUrl.list,
+        data: dictItemUrl.page,
         delete: dictItemUrl.delete,
       },
       // 表格列
