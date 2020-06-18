@@ -9,9 +9,12 @@
         :text-color="variables.menuText"
         :unique-opened="false"
         :active-text-color="variables.menuActiveText"
-        :collapse-transition="true"
+        :collapse-transition="false"
         mode="vertical"
       >
+        <el-menu-item class="menu-collapse" @click.native="toggleCollapse">
+          <item :icon="collapseIcon" />
+        </el-menu-item>
         <sidebar-item
           v-for="route in permission_routes"
           :key="route.path"
@@ -26,11 +29,13 @@
 <script>
 import { mapGetters } from 'vuex'
 // import Logo from './Logo'
+import Item from './Item'
 import variables from '@/styles/variables.scss'
 
 export default {
   components: {
     SidebarItem: () => import(/* webpackChunkName: "layout" */ './SidebarItem'),
+    Item,
     // Logo
   },
   computed: {
@@ -51,9 +56,36 @@ export default {
       return variables
     },
     isCollapse() {
-      // return !this.sidebar.opened
-      return false
+      return this.sidebar.isCollapse
+    },
+    collapseIcon() {
+      return this.sidebar.isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'
+    },
+  },
+  methods: {
+    toggleCollapse() {
+      this.$store.dispatch('app/toggleSideBarCollpase')
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.menu-collapse {
+  height: 24px;
+  line-height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent !important;
+  border-bottom: 1px solid #e4e4e4;
+  color: #606266 !important;
+
+  ::v-deep {
+    .sub-el-icon {
+      width: auto;
+      margin-right: 0 !important;
+    }
+  }
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <el-aside class="layout-aside" width="200px">
+  <el-aside class="layout-aside sidebar-container">
     <Sidebar />
   </el-aside>
 </template>

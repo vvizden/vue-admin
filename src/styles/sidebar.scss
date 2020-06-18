@@ -1,8 +1,8 @@
 #app {
-  .main-container {
+  .tab-container {
     min-height: 100%;
     transition: margin-left 0.28s;
-    margin-left: $sideBarWidth;
+    // margin-left: $sideBarWidth;
     position: relative;
   }
 
@@ -92,8 +92,8 @@
       width: 54px !important;
     }
 
-    .main-container {
-      margin-left: 54px;
+    .tab-container {
+      // margin-left: 54px;
     }
 
     .submenu-title-noDropdown {
@@ -154,7 +154,7 @@
 
   // mobile responsive
   .mobile {
-    .main-container {
+    .tab-container {
       margin-left: 0px;
     }
 
@@ -173,7 +173,7 @@
   }
 
   .withoutAnimation {
-    .main-container,
+    .tab-container,
     .sidebar-container {
       transition: none;
     }
