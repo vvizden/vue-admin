@@ -28,12 +28,12 @@ const vDrag = {
       const maxLeft =
         parseInt(getAttr(document.body, 'width')) -
         target.offsetLeft -
-        parseInt(getAttr(target, 'width'))
+        target.offsetWidth
       const minTop = target.offsetTop
       const maxTop =
         parseInt(getAttr(document.body, 'height')) -
         target.offsetTop -
-        parseInt(getAttr(target, 'height'))
+        target.offsetHeight
 
       document.onmousemove = (event) => {
         // 鼠标移动时计算每次移动的距离，并改变拖拽元素的定位
