@@ -11,6 +11,7 @@ import '@/styles/index.scss'
 // global components
 import GlobalComponents from '@/components'
 
+import './icons' // icon
 import './permission'
 
 import * as filters from './filters' // global filters

@@ -1,6 +1,7 @@
 import Copyright from './copyright'
 import AutoRadio from './auto-radio'
 import AutoSelect from './auto-select'
+import SvgIcon from './svg-icon'
 import ElementUIExt from './element-ui-ext'
 
 const VERSION = '0.1.0'
@@ -16,6 +17,7 @@ function install(Vue, options = {}) {
   Vue.use(Copyright)
   Vue.use(AutoRadio)
   Vue.use(AutoSelect)
+  Vue.use(SvgIcon)
   Vue.use(ElementUIExt)
 }
 
@@ -25,5 +27,6 @@ export default {
   Copyright,
   AutoRadio,
   AutoSelect,
+  SvgIcon,
   ElementUIExt,
 }

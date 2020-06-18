@@ -58,7 +58,11 @@ router.beforeEach(async (to, from, next) => {
             })
 
             // Notification.error(error || '系统错误')
-            if (error.response && [500, 401].includes(error.response.status)) {
+            if (
+              error &&
+              error.response &&
+              [500, 401].includes(error.response.status)
+            ) {
               next()
             } else {
               next(`/login?redirect=${to.path}`)
