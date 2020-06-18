@@ -1,9 +1,10 @@
 <template>
   <!-- 表单弹窗 -->
   <el-dialog
+    v-el-dialog-drag
     title="修改密码"
     top="6vh"
-    width="70%"
+    width="500px"
     :visible="visible"
     @update:visible="handleUpdateVisible"
     @closed="handleDialogClosed"

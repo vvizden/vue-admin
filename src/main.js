@@ -11,10 +11,11 @@ import '@/styles/index.scss'
 // global components
 import GlobalComponents from '@/components'
 
+import GlobalDirectives from './directives' // global filters
+import * as filters from './filters' // global filters
+
 import './icons' // icon
 import './permission'
-
-import * as filters from './filters' // global filters
 
 import App from './App.vue'
 import router from './router'
@@ -28,6 +29,7 @@ Vue.use(ElementUI, {
 })
 
 Vue.use(GlobalComponents)
+Vue.use(GlobalDirectives)
 
 // http请求
 Vue.prototype.$http = $http
