@@ -46,6 +46,10 @@
   }
 }
 
+.el-dialog__wrapper {
+  overflow: hidden;
+}
+
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;

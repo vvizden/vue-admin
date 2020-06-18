@@ -78,7 +78,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: transparent !important;
-  border-bottom: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e6e6e6;
   color: #606266 !important;
 
   ::v-deep {

@@ -102,14 +102,15 @@
     />
 
     <el-dialog
+      v-el-dialog-drag
       :title="formContainerTitle"
       top="6vh"
-      width="70%"
+      width="600px"
       :append-to-body="true"
       :visible.sync="formContainerVisible"
       @closed="handleFormContainerClosed"
     >
-      <v-scroll-container class="dialog-inner" v-if="formContainerInnerVisible">
+      <v-scroll-container v-if="formContainerInnerVisible">
         <DictItemForm :model="editRow" @ok="handleFormOk" />
       </v-scroll-container>
     </el-dialog>

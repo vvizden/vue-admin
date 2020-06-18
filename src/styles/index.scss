@@ -265,6 +265,6 @@ aside {
 }
 
 // .dialog-inner
-.dialog-inner {
-  height: 70vh !important;
+.scroll-wrapper.dialog-inner {
+  height: 70vh;
 }

@@ -160,9 +160,10 @@
     />
 
     <el-dialog
+      v-el-dialog-drag
       :title="formContainerTitle"
       top="6vh"
-      width="70%"
+      width="800px"
       :visible.sync="formContainerVisible"
       @closed="handleFormContainerClosed"
     >

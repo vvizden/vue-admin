@@ -19,7 +19,7 @@
         node-key="value"
         default-expand-all
         :props="permissionTreeProps"
-        style="height: 500px;"
+        style="height: 400px;"
       >
       </v-tree>
     </el-form-item>

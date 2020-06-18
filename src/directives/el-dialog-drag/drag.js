@@ -24,16 +24,15 @@ const vDrag = {
       const top = parseInt(getAttr(target, 'top'))
 
       // 分别计算四个方向的边界值
-      const minLeft = target.offsetLeft
+      const minLeft =
+        target.offsetLeft + parseInt(getAttr(target, 'width')) - 50
       const maxLeft =
-        parseInt(getAttr(document.body, 'width')) -
-        target.offsetLeft -
-        target.offsetWidth
+        parseInt(getAttr(document.body, 'width')) - target.offsetLeft - 50
       const minTop = target.offsetTop
       const maxTop =
         parseInt(getAttr(document.body, 'height')) -
         target.offsetTop -
-        target.offsetHeight
+        parseInt(getAttr(header, 'height'))
 
       document.onmousemove = (event) => {
         // 鼠标移动时计算每次移动的距离，并改变拖拽元素的定位

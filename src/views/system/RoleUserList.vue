@@ -147,13 +147,14 @@
     />
     <!-- 弹窗表单 -->
     <el-dialog
+      v-el-dialog-drag
       :title="formContainerTitle"
       top="6vh"
-      width="70%"
+      width="600px"
       :visible.sync="formContainerVisible"
       @closed="handleFormContainerClosed"
     >
-      <v-scroll-container class="dialog-inner" v-if="formContainerInnerVisible">
+      <v-scroll-container v-if="formContainerInnerVisible">
         <!-- 表单组件，存放于同级forms目录下 -->
         <RoleUserForm :model="editRow" @ok="handleFormOk" />
       </v-scroll-container>
@@ -161,13 +162,18 @@
 
     <!-- 弹窗授权 -->
     <el-dialog
+      v-el-dialog-drag
       title="授权"
       top="6vh"
-      width="800px"
+      width="700px"
       :visible.sync="authContainerVisible"
       @closed="handleAuthContainerClosed"
     >
-      <v-scroll-container class="dialog-inner" v-if="authContainerInnerVisible">
+      <v-scroll-container
+        style="height: 500px;"
+        class="dialog-inner"
+        v-if="authContainerInnerVisible"
+      >
         <!-- 授权组件，存放于同级forms目录下 -->
         <RoleAuthForm :model="authRow" @ok="handleRoleAuthFormOk" />
       </v-scroll-container>
