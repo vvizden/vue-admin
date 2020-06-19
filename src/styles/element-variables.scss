@@ -3,6 +3,8 @@
 * So I modified the default color and you can modify it to your liking.
 **/
 
+$--border-radius-small: 2px !default;
+
 /* theme color */
 // $--color-primary: #1890ff;
 $--color-primary: #0070f4;
@@ -18,7 +20,44 @@ $--button-font-weight: 400;
 $--border-color-light: #dfe4ed;
 $--border-color-lighter: #e6ebf5;
 
+// Table
 $--table-border: 1px solid #dfe6ec;
+
+// Alert
+$--alert-border-radius: $--border-radius-small;
+
+// MessageBox
+$--msgbox-border-radius: $--border-radius-small;
+
+// Notification
+$--notification-radius: $--border-radius-small;
+
+// Input
+$--input-border-radius: $--border-radius-small;
+
+// Cascader
+$--cascader-menu-radius: $--border-radius-small;
+
+// Button
+$--button-border-radius: $--border-radius-small;
+$--button-medium-border-radius: $--border-radius-small;
+$--button-small-border-radius: $--border-radius-small;
+$--button-mini-border-radius: $--border-radius-small;
+
+// Pagination
+$--pagination-border-radius: $--border-radius-small;
+
+// Tag
+$--tag-border-radius: $--border-radius-small;
+
+// Card
+$--card-border-radius: $--border-radius-small;
+
+// Transfer
+$--transfer-border-radius: $--border-radius-small;
+
+// Popup
+$--popup-modal-opacity: 0.02;
 
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';

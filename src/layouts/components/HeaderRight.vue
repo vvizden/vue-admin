@@ -56,7 +56,10 @@ export default {
 
 <style lang="scss" scoped>
 .header-right {
-  line-height: 0;
+  .el-dropdown {
+    line-height: 0;
+  }
+
   .user-avatar {
     cursor: pointer;
 

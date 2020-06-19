@@ -109,6 +109,7 @@ aside {
   position: relative;
   z-index: 1;
   width: $sideBarWidth !important;
+  border-right: $sideBarBorderRight;
   box-shadow: $sideBarBoxShadow;
   line-height: 0;
   font-size: 16px;

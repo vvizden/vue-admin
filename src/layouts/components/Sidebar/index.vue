@@ -72,13 +72,13 @@ export default {
 
 <style lang="scss" scoped>
 .menu-collapse {
-  height: 24px;
-  line-height: 24px;
+  height: 32px;
+  line-height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: transparent !important;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #dfe6ec;
   color: #606266 !important;
 
   ::v-deep {

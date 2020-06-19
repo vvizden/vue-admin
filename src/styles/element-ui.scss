@@ -56,6 +56,30 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  border-radius: 2px;
+}
+
+.el-dialog__header {
+  padding: 16px;
+  border-bottom: 1px solid #dfe6ec;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.el-dialog__title {
+  font-size: 16px;
+  line-height: 0;
+  // color: #fff;
+}
+
+.el-dialog__headerbtn {
+  line-height: 0;
+  top: 16px;
+  vertical-align: middle;
+
+  .el-dialog__close {
+    // color: #fff;
+  }
 }
 
 // refine element ui upload
@@ -162,4 +186,8 @@
 
 .el-drawer__body {
   padding: 20px;
+}
+
+.el-select-dropdown {
+  border-radius: 2px;
 }
