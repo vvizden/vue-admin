@@ -139,11 +139,11 @@ export default {
   methods: {
     handleCreateClickBefore() {
       this.handleCreateClick()
-      this.infoTitle = `创建公司`
+      this.infoTitle = `创建 公司`
     },
     handleCreateChildClick(data) {
       this.editRow = { parentId: data.id }
-      this.infoTitle = `创建 ${data.departName} 下级`
+      this.infoTitle = `创建 部门 / 岗位`
     },
     handleCheck(data, node) {
       this.handleSelectionChange(node.checkedKeys)
