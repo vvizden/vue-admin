@@ -203,6 +203,7 @@ export default {
   right: 200px;
   transform: translateY(-50%);
   background-color: #fff;
+  animation: login-card-slip-in-right-left 0.4s ease-out;
 
   ::v-deep {
     .el-card__body {
