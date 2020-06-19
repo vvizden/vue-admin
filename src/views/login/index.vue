@@ -3,7 +3,7 @@
     <el-card class="login-card">
       <p class="title" :style="titleStyle">{{ title }}</p>
       <el-tabs value="login">
-        <el-tab-pane label="登陆" name="login">
+        <el-tab-pane label="登录" name="login">
           <el-form
             ref="loginForm"
             :model="loginForm"
@@ -63,7 +63,7 @@
                 size="medium"
                 @click.native.prevent="handleLogin"
               >
-                登陆
+                登录
               </el-button>
             </el-form-item>
           </el-form>
@@ -160,6 +160,7 @@ export default {
               this.$notify.success({
                 title: '欢迎',
                 message: `${getCurrentTimeDesc()}好，欢迎回来`,
+                duration: 2500,
               })
             })
             .catch((error) => {
