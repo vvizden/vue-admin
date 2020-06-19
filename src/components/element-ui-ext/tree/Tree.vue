@@ -229,6 +229,7 @@ export default {
 }
 
 .v-tree__header {
+  flex: none;
   display: flex;
   overflow: hidden;
   align-items: center;
@@ -244,6 +245,8 @@ export default {
 }
 
 .v-tree__body {
+  height: 100%;
   flex: 1;
+  overflow: hidden;
 }
 </style>

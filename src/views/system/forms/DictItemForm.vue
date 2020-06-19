@@ -163,7 +163,9 @@ export default {
     modelToForm() {
       // 筛选出form表单中需要的数据
       let resultData = pickBy(this.model, (v, k) => {
-        return Object.prototype.hasOwnProperty.call(this.ruleForm, k)
+        return (
+          Object.prototype.hasOwnProperty.call(this.ruleForm, k) && v != null
+        )
       })
       resultData = cloneDeep(resultData)
       if (resultData.status != null) {
