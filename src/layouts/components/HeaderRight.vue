@@ -56,6 +56,10 @@ export default {
 
 <style lang="scss" scoped>
 .header-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
   .el-dropdown {
     line-height: 0;
   }
