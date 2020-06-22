@@ -1,13 +1,13 @@
 #app {
   .tab-container {
     min-height: 100%;
-    transition: margin-left 0.28s;
+    // transition: margin-left 0.28s;
     // margin-left: $sideBarWidth;
-    position: relative;
+    // position: relative;
   }
 
   .sidebar-container {
-    transition: width 0.28s;
+    transition: flex-basis 0.28s;
     width: 100%;
     background-color: $menuBg;
     height: 100%;
@@ -90,7 +90,8 @@
 
   .hideSidebar {
     .sidebar-container {
-      width: 54px !important;
+      // width: 54px !important;
+      flex-basis: 54px;
     }
 
     .tab-container {

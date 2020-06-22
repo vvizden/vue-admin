@@ -109,7 +109,8 @@ aside {
   display: block;
   position: relative;
   z-index: 1;
-  width: $sideBarWidth !important;
+  // width: $sideBarWidth !important;
+  flex-basis: $sideBarWidth;
   border-right: $sideBarBorderRight;
   box-shadow: $sideBarBoxShadow;
   line-height: 0;

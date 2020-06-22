@@ -1,29 +1,27 @@
 <template>
-  <div class="sidebar-container">
-    <!-- <logo v-if="showLogo" :collapse="isCollapse" /> -->
-    <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu
-        :default-active="activeMenu"
-        :collapse="isCollapse"
-        :background-color="variables.menuBg"
-        :text-color="variables.menuText"
-        :unique-opened="false"
-        :active-text-color="variables.menuActiveText"
-        :collapse-transition="false"
-        mode="vertical"
-      >
-        <el-menu-item class="menu-collapse" @click.native="toggleCollapse">
-          <item :icon="collapseIcon" />
-        </el-menu-item>
-        <sidebar-item
-          v-for="route in permission_routes"
-          :key="route.path"
-          :item="route"
-          :base-path="route.path"
-        />
-      </el-menu>
-    </el-scrollbar>
-  </div>
+  <!-- <logo v-if="showLogo" :collapse="isCollapse" /> -->
+  <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-menu
+      :default-active="activeMenu"
+      :collapse="isCollapse"
+      :background-color="variables.menuBg"
+      :text-color="variables.menuText"
+      :unique-opened="false"
+      :active-text-color="variables.menuActiveText"
+      :collapse-transition="false"
+      mode="vertical"
+    >
+      <el-menu-item class="menu-collapse" @click.native="toggleCollapse">
+        <item :icon="collapseIcon" />
+      </el-menu-item>
+      <sidebar-item
+        v-for="route in permission_routes"
+        :key="route.path"
+        :item="route"
+        :base-path="route.path"
+      />
+    </el-menu>
+  </el-scrollbar>
 </template>
 
 <script>
