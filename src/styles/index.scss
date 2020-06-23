@@ -271,3 +271,14 @@ aside {
 .scroll-wrapper.dialog-inner {
   height: 70vh;
 }
+
+// hidden table border
+.table-border--hidden {
+  .el-table--border th {
+    border-right: 1px solid #fff;
+  }
+
+  .el-table--border td {
+    border-right: none;
+  }
+}

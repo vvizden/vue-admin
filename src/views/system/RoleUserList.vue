@@ -44,6 +44,7 @@
       border
       highlight-current-row
       height="100%"
+      class="table-border--hidden"
       :columns-ctrl="columnsCtrl"
       @selection-change="handleSelectionChange"
     >
