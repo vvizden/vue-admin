@@ -188,7 +188,11 @@ export default {
   top: 0;
   bottom: 0;
   right: 0;
-  background-color: #2969a2;
+  background-color: #6f6bff;
+  background-image: url('~@/assets/images/login-inset.png');
+  background-repeat: no-repeat;
+  background-size: auto 640px;
+  background-position: 20% center;
   overflow: hidden;
 }
 
@@ -201,7 +205,7 @@ export default {
   width: 480px;
   position: absolute;
   top: 50%;
-  right: 200px;
+  right: 16%;
   transform: translateY(-50%);
   background-color: #fff;
   animation: login-card-slip-in-right-left 0.4s ease-out;
