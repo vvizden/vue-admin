@@ -22,9 +22,11 @@ git clone https://github.com/vvizden/vue-admin
 npm install
 # or
 npm install --registry=https://registry.npm.taobao.org
+# or
+npm run init
 
 # 运行
-npm run serve
+npm run dev
 
 # 构建
 npm run build
