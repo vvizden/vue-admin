@@ -259,6 +259,13 @@ export default {
         column: 'createTime',
         order: 'desc',
       },
+      filterParams: {
+        sex: null,
+        status: null,
+        username: null,
+        realname: null,
+        phone: null,
+      },
       columnsCtrl: {
         props: {
           placement: 'bottom-end',

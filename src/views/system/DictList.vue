@@ -210,6 +210,10 @@ export default {
         column: 'createTime',
         order: 'desc',
       },
+      filterParams: {
+        dictCode: null,
+        dictName: null,
+      },
       columnsCtrl: {
         props: {
           placement: 'bottom-end',

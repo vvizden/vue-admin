@@ -188,6 +188,10 @@ export default {
         column: 'sortOrder',
         order: 'asc',
       },
+      filterParams: {
+        itemText: null,
+        status: null,
+      },
       columnsCtrl: {
         props: {
           placement: 'bottom-end',

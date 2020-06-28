@@ -233,6 +233,9 @@ export default {
         column: 'createTime',
         order: 'desc',
       },
+      filterParams: {
+        roleName: null,
+      },
       // 表格列控制参数
       columnsCtrl: {
         props: {
