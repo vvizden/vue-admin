@@ -90,6 +90,7 @@
       <template #operation>
         <div style="width: 100%;">
           <el-button
+            v-permission="['user:add']"
             type="primary"
             icon="el-icon-circle-plus-outline"
             @click="handleCreateClick"
