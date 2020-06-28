@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { departUrl } from '@/api/url'
+import { deptUrl } from '@/api/url'
 import { FormMixin } from '@/mixins'
 import { cloneDeep, pickBy } from 'lodash-es'
 
@@ -113,9 +113,9 @@ export default {
   data() {
     return {
       url: {
-        edit: departUrl.edit,
-        create: departUrl.create,
-        simpleTreeList: departUrl.simpleTreeList,
+        edit: deptUrl.edit,
+        create: deptUrl.create,
+        simpleTreeList: deptUrl.simpleTreeList,
       },
       ruleForm: {
         departName: '',
