@@ -2,11 +2,11 @@
 
 ## 项目介绍
 
-通用后台管理系统模板。参考自 Panjiacheng 的 [vue-element-ui](https://github.com/PanJiaChen/vue-element-admin/)，并对接 [jeecg-boot](https://github.com/zhangdaiscott/jeecg-boot/) 的服务端接口。基础版本，只包含登陆，用户管理，角色管理，组织机构，菜单管理，数据字典等功能。
+后台系统基础架子。参考 PanJiaChen 的 [vue-element-ui](https://github.com/PanJiaChen/vue-element-admin/)，并对接 [jeecg-boot](https://github.com/zhangdaiscott/jeecg-boot/) 的服务端接口。基础版本，目前只包含登陆，用户管理，角色管理，组织机构，菜单管理，数据字典等功能。
 
 ## 为什么造轮子
 
-团队使用的 jeecg-boot，团队熟悉 jeect-boot 服务端的技术栈，但前端工程使用的 ant design vue 组件库，出于团队规模和开发体验出发，选择了 element-ui。又因为，个人并没有在网上找到合适的，jeecg-boot 服务端技术栈 + element-ui-vue 前后分离的后台管理系统模板。同时，vue-element-admin 糅合了很多的技术，并不能开箱即用，故受命造此轮子。
+团队对 jeect-boot 服务端的技术栈比较熟悉，但 jeect-boot 前端工程是基于 ant design vue 组件库搭建的，出于团队规模和开发体验考虑，选择了 element-ui 组件库。又因为，个人并没有在网上找到合适的，jeecg-boot 服务端技术栈 + element-ui-vue 前后分离的后台管理系统的整套方案。同时，vue-element-admin 的 UI 风格个人不太喜欢，并且集成了很多我司业务上用不上的技术，并不能贴合业务，开箱即用，故造此轮子。
 
 ## 项目目录
 
@@ -19,11 +19,11 @@ writing...
 git clone https://github.com/vvizden/vue-admin
 
 # 安装
-npm install
+npm run init
 # or
 npm install --registry=https://registry.npm.taobao.org
 # or
-npm run init
+npm install
 
 # 运行
 npm run dev
