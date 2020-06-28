@@ -107,7 +107,7 @@ export default {
       if (isExternal(basePath)) {
         return basePath
       }
-      return path.resolve(basePath, routePath)
+      return path.resolve(basePath || '', routePath || '')
     },
   },
 }
