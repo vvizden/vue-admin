@@ -3,7 +3,7 @@
 @import './transition.scss';
 @import './animation.scss';
 @import './element-ui.scss';
-@import './sidebar.scss';
+@import './layout.scss';
 @import './btn.scss';
 
 body {
@@ -102,86 +102,8 @@ input:-internal-autofill-selected {
   }
 }
 
-aside {
-  // background: #eef1f6;
-  background: #fff;
-  margin-bottom: 20px;
-  display: block;
-  position: relative;
-  z-index: 1;
-  // width: $sideBarWidth !important;
-  flex-basis: $sideBarWidth;
-  border-right: $sideBarBorderRight;
-  box-shadow: $sideBarBoxShadow;
-  line-height: 0;
-  font-size: 16px;
-  // font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-  //   Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  color: #2c3e50;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  a {
-    color: #337ab7;
-    cursor: pointer;
-
-    &:hover {
-      color: rgb(32, 160, 255);
-    }
-  }
-}
-
-//main-container全局样式
-.app-container {
-  padding: 20px;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-.components-container {
-  margin: 30px 50px;
-  position: relative;
-}
-
-.pagination-container {
-  margin-top: 0;
-}
-
 .text-center {
   text-align: center;
-}
-
-.sub-navbar {
-  height: 50px;
-  line-height: 50px;
-  position: relative;
-  width: 100%;
-  text-align: right;
-  padding-right: 20px;
-  transition: 600ms ease position;
-  background: linear-gradient(
-    90deg,
-    rgba(32, 182, 249, 1) 0%,
-    rgba(32, 182, 249, 1) 0%,
-    rgba(33, 120, 241, 1) 100%,
-    rgba(33, 120, 241, 1) 100%
-  );
-
-  .subtitle {
-    font-size: 20px;
-    color: #fff;
-  }
-
-  &.draft {
-    background: #d0d0d0;
-  }
-
-  &.deleted {
-    background: #d0d0d0;
-  }
 }
 
 .link-type,
@@ -194,14 +116,36 @@ aside {
   }
 }
 
+//refine vue-multiselect plugin
+.multiselect {
+  line-height: 16px;
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}
+
+//main-container全局样式
+.app-container {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.pagination-container {
+  margin-top: 0;
+}
+
 .filter-container {
   padding: 12px;
   background-color: #f4f4f5;
-  // background-color: #f7fbff;
   border: 1px solid #dfe6ec;
-  // border: 1px solid #dee6ef;
   border-radius: 2px;
   margin-bottom: 16px;
+
   .filter-item {
     display: inline-block;
     vertical-align: top;
@@ -216,9 +160,9 @@ aside {
   }
 }
 
+// 扩展表格额外样式
 .table-plus {
   flex: 1;
-  transition: all 2s ease-out;
   display: flex;
   flex-flow: column nowrap;
   overflow: hidden;
@@ -251,15 +195,6 @@ aside {
       color: rgba(0, 112, 244, 1);
     }
   }
-}
-
-//refine vue-multiselect plugin
-.multiselect {
-  line-height: 16px;
-}
-
-.multiselect--active {
-  z-index: 1000 !important;
 }
 
 // form-item-submit

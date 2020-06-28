@@ -5,7 +5,7 @@
       <a class="copyright__link" href="http://www.hongdian.com" target="_blank"
         >深圳市宏电技术股份有限公司</a
       >
-      All Rights Reserved
+      版权所有
     </p>
   </div>
 </template>

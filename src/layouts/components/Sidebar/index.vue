@@ -1,40 +1,47 @@
 <template>
-  <!-- <logo v-if="showLogo" :collapse="isCollapse" /> -->
-  <el-scrollbar wrap-class="scrollbar-wrapper">
-    <el-menu
-      :default-active="activeMenu"
-      :collapse="isCollapse"
-      :background-color="variables.menuBg"
-      :text-color="variables.menuText"
-      :unique-opened="false"
-      :active-text-color="variables.menuActiveText"
-      :collapse-transition="false"
-      mode="vertical"
-    >
-      <el-menu-item class="menu-collapse" @click.native="toggleCollapse">
-        <item :icon="collapseIcon" />
-      </el-menu-item>
-      <sidebar-item
-        v-for="route in permission_routes"
-        :key="route.path"
-        :item="route"
-        :base-path="route.path"
-      />
-    </el-menu>
-  </el-scrollbar>
+  <div class="sidebar-scroll-container">
+    <el-scrollbar wrap-class="scrollbar-wrapper">
+      <el-menu
+        :default-active="activeMenu"
+        :collapse="isCollapse"
+        :unique-opened="false"
+        :collapse-transition="false"
+        router
+        mode="vertical"
+        @transitionend.native="handleTransitionEnd"
+      >
+        <el-menu-item class="menu-collapse" @click.native="toggleCollapse">
+          <Item :icon="collapseIcon" />
+        </el-menu-item>
+        <ElMenuChild
+          v-for="route in permission_routes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
+      </el-menu>
+    </el-scrollbar>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-// import Logo from './Logo'
+import ElMenuChild from './ElMenuChild'
 import Item from './Item'
+import path from 'path'
+import { isExternal } from '@/utils/validate'
 import variables from '@/styles/variables.scss'
 
 export default {
+  name: 'Sidebar',
   components: {
-    SidebarItem: () => import(/* webpackChunkName: "layout" */ './SidebarItem'),
+    ElMenuChild,
     Item,
-    // Logo
+  },
+  data() {
+    return {
+      arrowShow: false,
+    }
   },
   computed: {
     ...mapGetters(['permission_routes', 'sidebar']),
@@ -64,26 +71,44 @@ export default {
     toggleCollapse() {
       this.$store.dispatch('app/toggleSideBarCollpase')
     },
+    handleTransitionEnd() {
+      this.$emit('collapseTransitionEnd', this.isCollapse)
+    },
+    showSubMenuOrItem(item) {
+      if (item.alwaysShow) {
+        return true
+      }
+
+      if (item.children) {
+        if (item.children.length === 0) {
+          return true
+        } else {
+          const childrenShow = item.children.filter((e) => !e.hidden)
+          if (childrenShow.length === 0) {
+            return true
+          } else if (childrenShow.length === 1) {
+            if (childrenShow[0].children) {
+              return true
+            } else {
+              return childrenShow[0]
+            }
+          } else {
+            return true
+          }
+        }
+      } else {
+        return false
+      }
+    },
+    resolvePath(routePath, basePath) {
+      if (isExternal(routePath)) {
+        return routePath
+      }
+      if (isExternal(basePath)) {
+        return basePath
+      }
+      return path.resolve(basePath, routePath)
+    },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.menu-collapse {
-  height: 32px;
-  line-height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent !important;
-  border-bottom: 1px solid #dfe6ec;
-  color: #606266 !important;
-
-  ::v-deep {
-    .sub-el-icon {
-      width: auto;
-      margin-right: 0 !important;
-    }
-  }
-}
-</style>

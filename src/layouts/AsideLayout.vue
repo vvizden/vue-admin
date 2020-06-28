@@ -1,7 +1,7 @@
 <template>
   <BaseContainer>
     <el-container class="aside-container" :class="asideContainerClass">
-      <Aside />
+      <Aside @collapseTransitionEnd="handleCollapseTransitionEnd" />
       <TabContainer>
         <MainView />
       </TabContainer>
@@ -22,12 +22,37 @@ export default {
       import(/* webpackChunkName: "layout" */ './components/TabContainer'),
     MainView: () => import(/* webpackChunkName: "layout" */ './views/MainView'),
   },
+  data() {
+    return {
+      menuCollapseTransitionEnd: false,
+      menuOpenTransitionEnd: false,
+    }
+  },
   computed: {
     ...mapGetters(['sidebar']),
     asideContainerClass() {
       return {
-        hideSidebar: this.sidebar.isCollapse,
-        openSidebar: !this.sidebar.isCollapse,
+        'menu--collapse': this.sidebar.isCollapse,
+        // 'menu--collapse-transition-end': this.menuCollapseTransitionEnd,
+        'menu--open-transition-end': this.menuOpenTransitionEnd,
+      }
+    },
+  },
+  watch: {
+    'sidebar.isCollapse': function(val) {
+      if (val) {
+        this.menuOpenTransitionEnd = false
+      } else {
+        this.menuCollapseTransitionEnd = false
+      }
+    },
+  },
+  methods: {
+    handleCollapseTransitionEnd(isCollapse) {
+      if (isCollapse) {
+        this.menuCollapseTransitionEnd = true
+      } else {
+        this.menuOpenTransitionEnd = true
       }
     },
   },
