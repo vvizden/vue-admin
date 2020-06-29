@@ -62,7 +62,7 @@
             <el-popconfirm
               cancelButtonType="default"
               title="确定删除吗？"
-              @onConfirm="handleDeleteClick(data.id)"
+              @onConfirm="handleDeleteClick(data)"
             >
               <el-button slot="reference" type="text" size="mini">
                 删除

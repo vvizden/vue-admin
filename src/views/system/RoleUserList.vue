@@ -127,7 +127,7 @@
               placement="left-end"
               cancelButtonType="default"
               title="确定删除吗？"
-              @onConfirm="handleDeleteClick(row.id)"
+              @onConfirm="handleDeleteClick(row)"
             >
               <el-dropdown-item slot="reference">
                 <el-button type="text" icon="el-icon-delete">
