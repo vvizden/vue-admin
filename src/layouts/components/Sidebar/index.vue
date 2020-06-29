@@ -14,7 +14,7 @@
           <Item :icon="collapseIcon" />
         </el-menu-item>
         <ElMenuChild
-          v-for="route in permission_menu_routes"
+          v-for="route in menuRoutePermissions"
           :key="route.path"
           :item="route"
           :base-path="route.path"
@@ -44,7 +44,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permission_menu_routes', 'sidebar']),
+    ...mapGetters(['menuRoutePermissions', 'sidebar']),
     activeMenu() {
       const route = this.$route
       const { meta, path } = route

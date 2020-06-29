@@ -13,7 +13,7 @@ export function generateMenuRoutes(data) {
     let componentPath = item.component
     if (componentPath && componentPath.trim()) {
       if (componentPath.indexOf('layouts/') === -1) {
-        if (componentPath.indexOf('view/') === -1) {
+        if (componentPath.indexOf('views/') === -1) {
           componentPath = `views/${componentPath}`
         }
       } else {
@@ -26,7 +26,7 @@ export function generateMenuRoutes(data) {
     }
 
     let path = item.path
-    if (isExternal(URL)) {
+    if (isExternal(URL) && !componentPath) {
       path = URL
     }
 
@@ -69,4 +69,13 @@ export function generateAddRoutes(data) {
     }
   }
   return routes
+}
+
+export function addLeadingSlashCharacter(data) {
+  return data.map((e) => {
+    if (e && e.path && e.path.trim() && !e.path.startsWith('/')) {
+      e.path = `/${e.path}`
+    }
+    return e
+  })
 }
