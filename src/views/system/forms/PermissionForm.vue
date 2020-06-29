@@ -250,7 +250,7 @@ export default {
         component: [
           {
             type: 'string',
-            required: true,
+            required: false,
             whitespace: true,
             message: '请填写组件路径',
             trigger: ['change', 'blur'],

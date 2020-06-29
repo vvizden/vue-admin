@@ -6,7 +6,7 @@
         :collapse="isCollapse"
         :unique-opened="false"
         :collapse-transition="false"
-        router
+        :router="false"
         mode="vertical"
         @transitionend.native="handleTransitionEnd"
       >
@@ -14,7 +14,7 @@
           <Item :icon="collapseIcon" />
         </el-menu-item>
         <ElMenuChild
-          v-for="route in permission_routes"
+          v-for="route in permission_menu_routes"
           :key="route.path"
           :item="route"
           :base-path="route.path"
@@ -44,7 +44,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permission_routes', 'sidebar']),
+    ...mapGetters(['permission_menu_routes', 'sidebar']),
     activeMenu() {
       const route = this.$route
       const { meta, path } = route

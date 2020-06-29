@@ -1,24 +1,25 @@
 import { constantRoutes, concatAsyncRoutes } from '@/router'
-import { SET_ROUTES } from '../mutation-types'
+import { generateMenuRoutes, generateAddRoutes } from '@/utils/route'
+import { SET_MENU_ROUTES } from '../mutation-types'
 
 const state = {
-  routes: [],
-  addRoutes: [],
+  menuRoutes: [],
+  addMenuRoutes: [],
 }
 
 const mutations = {
-  [SET_ROUTES]: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
+  [SET_MENU_ROUTES]: (state, routes) => {
+    state.addMenuRoutes = routes
+    state.menuRoutes = constantRoutes.concat(routes)
   },
 }
 
 const actions = {
   generateRoutes({ commit }, routes) {
     return new Promise((resolve) => {
-      const addRoutes = concatAsyncRoutes(routes)
-      commit(SET_ROUTES, addRoutes)
-      resolve(addRoutes)
+      const addMenuRoutes = concatAsyncRoutes(generateMenuRoutes(routes))
+      commit(SET_MENU_ROUTES, addMenuRoutes)
+      resolve(generateAddRoutes(addMenuRoutes))
     })
   },
 }

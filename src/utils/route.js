@@ -1,6 +1,6 @@
-import { validURL } from '@/utils/validate'
+import { validURL, isExternal } from '@/utils/validate'
 
-export function generateChildRoutes(data) {
+export function generateMenuRoutes(data) {
   const routes = []
   for (let item of data) {
     const URL = (item.meta.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) =>
@@ -11,22 +11,30 @@ export function generateChildRoutes(data) {
     }
 
     let componentPath = item.component
-    if (componentPath.indexOf('layouts/') === -1) {
-      if (componentPath.indexOf('view/') === -1) {
-        componentPath = `views/${componentPath}`
+    if (componentPath && componentPath.trim()) {
+      if (componentPath.indexOf('layouts/') === -1) {
+        if (componentPath.indexOf('view/') === -1) {
+          componentPath = `views/${componentPath}`
+        }
+      } else {
+        if (componentPath.indexOf('layouts/RouteView') !== -1) {
+          componentPath = 'layouts/AsideLayout'
+        }
       }
     } else {
-      if (componentPath.indexOf('layouts/RouteView') !== -1) {
-        componentPath = 'layouts/AsideLayout'
-      }
+      componentPath = ''
+    }
+
+    let path = item.path
+    if (isExternal(URL)) {
+      path = URL
     }
 
     let menu = {
-      path: item.path,
+      path: path,
       name: item.name,
       redirect: item.redirect,
-      component: () =>
-        import(/* webpackChunkName: "menu" */ `@/${componentPath}.vue`),
+      component: componentPath && (() => import(`@/${componentPath}.vue`)),
       hidden: item.hidden,
       meta: {
         title: item.meta.title,
@@ -37,7 +45,7 @@ export function generateChildRoutes(data) {
     }
 
     if (item.children && item.children.length > 0) {
-      menu.children = generateChildRoutes(item.children)
+      menu.children = generateMenuRoutes(item.children)
     }
     //--update-begin----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
     //判断是否生成路由
@@ -45,6 +53,20 @@ export function generateChildRoutes(data) {
       routes.push(menu)
     }
     //--update-end----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
+  }
+  return routes
+}
+
+export function generateAddRoutes(data) {
+  const routes = []
+  for (let item of data) {
+    let path = item.path
+    if (!isExternal(path)) {
+      if (item.children && item.children.length > 0) {
+        item.children = generateAddRoutes(item.children)
+      }
+      routes.push(item)
+    }
   }
   return routes
 }

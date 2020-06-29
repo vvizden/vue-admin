@@ -8,6 +8,6 @@ const getters = {
     const permissions = state.user.permissions.auth
     return permissions ? permissions.map((e) => e.action) : []
   },
-  permission_routes: (state) => state.permission.routes,
+  permission_menu_routes: (state) => state.permission.menuRoutes,
 }
 export default getters
