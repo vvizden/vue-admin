@@ -110,7 +110,7 @@
         <el-popconfirm
           cancelButtonType="default"
           title="确定删除吗？"
-          @onConfirm="handleDeleteClick(row.id)"
+          @onConfirm="handleDeleteClick(row)"
         >
           <el-button slot="reference" type="text" icon="el-icon-delete"
             >删除</el-button
@@ -209,6 +209,10 @@ export default {
       sortord: {
         column: 'createTime',
         order: 'desc',
+      },
+      filterParams: {
+        dictCode: null,
+        dictName: null,
       },
       columnsCtrl: {
         props: {

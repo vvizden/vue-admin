@@ -62,7 +62,7 @@
             <el-popconfirm
               cancelButtonType="default"
               title="确定删除吗？"
-              @onConfirm="handleDeleteClick(data.id)"
+              @onConfirm="handleDeleteClick(data)"
             >
               <el-button slot="reference" type="text" size="mini">
                 删除
@@ -86,7 +86,7 @@
 
 <script>
 import { LoadDataMixin, CurdMixin, ExportMixin } from '@/mixins'
-import { departUrl } from '@/api/url'
+import { deptUrl } from '@/api/url'
 
 export default {
   name: 'DepartList',
@@ -99,10 +99,10 @@ export default {
   data() {
     return {
       url: {
-        data: departUrl.treeList,
-        delete: departUrl.delete,
-        deleteBatch: departUrl.deleteBatch,
-        exportXls: departUrl.exportXls,
+        data: deptUrl.treeList,
+        delete: deptUrl.delete,
+        deleteBatch: deptUrl.deleteBatch,
+        exportXls: deptUrl.exportXls,
       },
       // 组织机构数据
       deptTreeData: [],

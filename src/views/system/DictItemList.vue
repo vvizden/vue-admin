@@ -86,7 +86,7 @@
         <el-popconfirm
           cancelButtonType="default"
           title="确定删除吗？"
-          @onConfirm="handleDeleteClick(row.id)"
+          @onConfirm="handleDeleteClick(row)"
         >
           <el-button slot="reference" type="text" icon="el-icon-delete"
             >删除</el-button
@@ -187,6 +187,10 @@ export default {
       sortord: {
         column: 'sortOrder',
         order: 'asc',
+      },
+      filterParams: {
+        itemText: null,
+        status: null,
       },
       columnsCtrl: {
         props: {

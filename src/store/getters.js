@@ -4,6 +4,10 @@ const getters = {
   avatar: (state) => state.user.info.avatar,
   realname: (state) => state.user.info.realname,
   menuPermissions: (state) => state.user.permissions.menu,
-  permission_routes: (state) => state.permission.routes,
+  userPermissions: (state) => {
+    const permissions = state.user.permissions.auth
+    return permissions ? permissions.map((e) => e.action) : []
+  },
+  menuRoutePermissions: (state) => state.permission.menuRoutes,
 }
 export default getters

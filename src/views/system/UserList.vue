@@ -90,6 +90,7 @@
       <template #operation>
         <div style="width: 100%;">
           <el-button
+            v-permission="['user:add']"
             type="primary"
             icon="el-icon-circle-plus-outline"
             @click="handleCreateClick"
@@ -144,7 +145,7 @@
         <el-popconfirm
           cancelButtonType="default"
           title="确定删除吗？"
-          @onConfirm="handleDeleteClick(row.id)"
+          @onConfirm="handleDeleteClick(row)"
         >
           <el-button slot="reference" type="text" icon="el-icon-delete"
             >删除</el-button
@@ -257,6 +258,13 @@ export default {
       sortord: {
         column: 'createTime',
         order: 'desc',
+      },
+      filterParams: {
+        sex: null,
+        status: null,
+        username: null,
+        realname: null,
+        phone: null,
       },
       columnsCtrl: {
         props: {

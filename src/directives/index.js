@@ -1,4 +1,5 @@
 import ElDialogDrag from './el-dialog-drag'
+import Permission from './permission'
 
 const VERSION = '0.1.0'
 
@@ -11,10 +12,12 @@ function install(Vue, options = {}) {
   install.installed = true // install components
 
   Vue.use(ElDialogDrag)
+  Vue.use(Permission)
 }
 
 export default {
   VERSION,
   install,
   ElDialogDrag,
+  Permission,
 }

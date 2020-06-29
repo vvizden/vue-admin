@@ -66,9 +66,11 @@ export default {
         if (this.dict && !this.dictCode.includes(',')) {
           this.options = this.optionsFilter(this.dict[this.dictCode])
         } else {
-          this.$http.get(`${dictUrl}/${this.dictCode}`).then((res) => {
-            this.options = this.optionsFilter(res.result || [])
-          })
+          this.$http
+            .get(`${dictUrl.listByCode}/${this.dictCode}`)
+            .then((res) => {
+              this.options = this.optionsFilter(res.result || [])
+            })
         }
       }
     },

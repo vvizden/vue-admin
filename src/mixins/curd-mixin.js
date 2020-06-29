@@ -1,3 +1,6 @@
+/**
+ * 使用时，请提供rowKey属性值，可以是变量，也可是方法
+ */
 export default {
   data() {
     return {
@@ -7,8 +10,6 @@ export default {
         delete: '',
         deleteBatch: '',
       },
-      // 行唯一标识
-      rowKey: 'id',
       // 当前编辑行
       editRow: {},
       // 选择的行
@@ -23,11 +24,10 @@ export default {
   computed: {
     selectedRowKeys() {
       return this.selectedRows.map((e) => {
-        if (typeof this.rowKey == 'function') {
-          return e[this.rowKey()]
-        } else {
-          return e[this.rowKey]
+        if (this.getRowKey) {
+          return e[this.getRowKey(e)]
         }
+        return e[this.rowKey]
       })
     },
   },
@@ -58,7 +58,7 @@ export default {
     // 点击编辑按钮
     handleEditClick(row) {
       if (row instanceof Event)
-        throw new Error('handleEditClick params must be the edit data!')
+        throw new Error('handleEditClick params must be the edit row object!')
       this.editRow = row
       this.formContainerInnerVisible = true
       this.formContainerTitle = '编辑'
@@ -68,11 +68,18 @@ export default {
     },
 
     // 点击删除按钮
-    handleDeleteClick(id) {
-      if (id instanceof Event)
+    handleDeleteClick(row) {
+      if (row instanceof Event)
         throw new Error(
-          'handleDeleteClick params must be the unique key as like id!',
+          'handleDeleteClick params must be the row object includes unique key like id!',
         )
+
+      let id
+      if (this.getRowKey) {
+        id = this.getRowKey(row)
+      } else {
+        id = row[this.rowKey]
+      }
       this.editRow = {}
       this.loading = true
       this.$http
@@ -101,11 +108,10 @@ export default {
         .delete(this.url.deleteBatch, {
           ids: this.selectedRows
             .map((e) => {
-              if (typeof this.rowKey == 'function') {
-                return e[this.rowKey()]
-              } else {
-                return e[this.rowKey]
+              if (this.getRowKey) {
+                return e[this.getRowKey(e)]
               }
+              return e[this.rowKey]
             })
             .join(','),
         })

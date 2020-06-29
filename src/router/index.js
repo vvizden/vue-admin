@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // eslint-disable-next-line
 import { BaseLayout, AsideLayout, MainLayout } from '@/layouts'
-import { generateChildRoutes } from '@/utils/route'
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = VueRouter.prototype.push
@@ -25,7 +24,7 @@ export function concatAsyncRoutes(routes) {
     //   redirect: '/home',
     //   hidden: true,
     // },
-    ...generateChildRoutes(routes),
+    ...routes,
     {
       path: '*',
       component: () => import(/* webpackChunkName: "fail" */ '@/views/404'),

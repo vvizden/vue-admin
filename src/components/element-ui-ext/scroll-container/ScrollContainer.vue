@@ -29,7 +29,7 @@ export default {
     }
 
     .scroll-inner {
-      padding-right: 18px;
+      padding-right: 0px;
     }
   }
 }
