@@ -7,6 +7,9 @@ export function createMenu(h, item, basePath) {
   const showSunMenu = this.showSubMenuOrItem(item, basePath)
 
   if (typeof showSunMenu == 'object') {
+    if (showSunMenu.meta) {
+      showSunMenu.meta.icon = item.meta ? item.meta.icon : void 0
+    }
     return createElMenuItem.call(this, h, showSunMenu, basePath)
   } else {
     if (showSunMenu) {

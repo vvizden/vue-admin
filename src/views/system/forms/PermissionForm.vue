@@ -241,7 +241,7 @@ export default {
         url: [
           {
             type: 'string',
-            required: true,
+            required: false,
             whitespace: true,
             message: '请填写路由路径',
             trigger: ['change', 'blur'],
