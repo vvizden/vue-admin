@@ -107,8 +107,9 @@
 
     .el-menu-item [class^='svg-icon'],
     .el-submenu [class^='svg-icon'] {
+      flex: none;
       vertical-align: middle;
-      margin-right: 8px;
+      margin-right: 5px;
       text-align: center;
       font-size: 18px;
     }
@@ -128,6 +129,8 @@
 }
 
 .menu-link {
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 0;
   left: 0;
