@@ -41,7 +41,7 @@ export default {
             })
             .catch((error) => {
               if (error) {
-                this.$message.warning(error.message)
+                this.$message.warning(error.message || '操作失败')
               }
             })
             .finally(() => {
