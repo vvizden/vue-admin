@@ -7,8 +7,6 @@ export default {
       },
       // loading
       loading: false,
-      // 筛选条件
-      filterParams: {},
     }
   },
   methods: {
