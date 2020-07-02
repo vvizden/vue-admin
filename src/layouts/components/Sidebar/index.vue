@@ -11,7 +11,6 @@
         @transitionend.native="handleTransitionEnd"
       >
         <el-menu-item
-          index="menu-collapse"
           class="menu-collapse is-active"
           @click.native="toggleCollapse"
         >
