@@ -1,5 +1,5 @@
 import Chart from './Chart'
-import loadCharts from './chart-list'
+import loadModules from './modules'
 
 function install(Vue, options = {}) {
   if (install.installed) {
@@ -11,7 +11,7 @@ function install(Vue, options = {}) {
   Object.assign(Chart, options)
   Vue.component(Chart.name, Chart)
 
-  loadCharts()
+  loadModules()
 }
 
 Chart.install = install
