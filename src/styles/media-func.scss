@@ -1,0 +1,10 @@
+$mobile-max-width: 480px;
+$pad-max-width: 768px;
+$laptop-max-width: 1024px;
+$desktop-max-width: 1200px;
+
+@mixin media-screen($max-width: $mobile-max-width) {
+  @media screen and (max-width: $max-width) {
+    @content;
+  }
+}

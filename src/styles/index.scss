@@ -30,14 +30,6 @@ html {
   box-sizing: inherit;
 }
 
-.no-padding {
-  padding: 0px !important;
-}
-
-.padding-content {
-  padding: 4px 0;
-}
-
 a:focus,
 a:active {
   outline: none;
@@ -71,26 +63,6 @@ input:-internal-autofill-selected {
   float: left;
 }
 
-.pr-5 {
-  padding-right: 5px;
-}
-
-.pl-5 {
-  padding-left: 5px;
-}
-
-.block {
-  display: block;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.inlineBlock {
-  display: block;
-}
-
 .clearfix {
   &:after {
     visibility: hidden;
@@ -102,8 +74,88 @@ input:-internal-autofill-selected {
   }
 }
 
+.no-padding {
+  padding: 0px !important;
+}
+
+.pr-8 {
+  padding-right: 8px;
+}
+
+.pl-8 {
+  padding-left: 8px;
+}
+
+.ml-8 {
+  margin-left: 8px;
+}
+
+.ml-16 {
+  margin-left: 16px;
+}
+
+.mb-8 {
+  margin-bottom: 8px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mb-24 {
+  margin-bottom: 24px;
+}
+
+.mb-32 {
+  margin-bottom: 32px;
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 .text-center {
   text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex--inline {
+  display: inline-flex;
+}
+
+.flex--direction-row {
+  flex-direction: row;
+}
+
+.flex--direction-col {
+  flex-direction: column;
+}
+
+.flex--content-center {
+  justify-content: center;
+}
+
+.flex--items-center {
+  align-items: center;
+}
+
+.flex__item--auto {
+  flex: auto;
+}
+
+.flex__item--none {
+  flex: none;
 }
 
 .link-type,
@@ -116,16 +168,7 @@ input:-internal-autofill-selected {
   }
 }
 
-//refine vue-multiselect plugin
-.multiselect {
-  line-height: 16px;
-}
-
-.multiselect--active {
-  z-index: 1000 !important;
-}
-
-//main-container全局样式
+// main-container全局样式
 .app-container {
   padding: 20px;
   width: 100%;
@@ -156,6 +199,12 @@ input:-internal-autofill-selected {
 
     .el-form-item__label {
       padding-right: 4px;
+    }
+
+    &:last-child {
+      .el-form-item__content {
+        line-height: 1;
+      }
     }
   }
 }
