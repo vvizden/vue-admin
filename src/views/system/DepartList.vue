@@ -19,13 +19,18 @@
       </el-button>
 
       <el-popconfirm
-        v-if="selectedRows.length > 0"
         cancelButtonType="default"
         title="确定删除吗？"
         style="margin-left: 10px;"
         @onConfirm="handleDeleteBatchClick"
       >
-        <el-button slot="reference" type="primary" plain icon="el-icon-delete">
+        <el-button
+          :disabled="selectedRows.length === 0"
+          slot="reference"
+          type="primary"
+          plain
+          icon="el-icon-delete"
+        >
           批量删除
         </el-button>
       </el-popconfirm>
