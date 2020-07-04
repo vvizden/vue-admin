@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "init": "npm install --registry=https://registry.npm.taobao.org",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint --fix",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
