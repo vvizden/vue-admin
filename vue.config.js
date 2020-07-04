@@ -63,4 +63,15 @@ module.exports = {
       })
       .end()
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        // 注意：在 sass-loader v7 中，这个选项名是 "data"
+        prependData: `@import "~@/styles/variables.sass"`,
+      },
+      scss: {
+        prependData: `@import "~@/styles/variables.scss";`,
+      },
+    },
+  },
 }
