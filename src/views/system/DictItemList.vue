@@ -60,7 +60,7 @@
           <el-button
             type="primary"
             icon="el-icon-circle-plus-outline"
-            @click="handleCreateClick"
+            @click="handleCreateClick({ dictId: dictId })"
           >
             创建
           </el-button>
@@ -207,6 +207,8 @@ export default {
     getQueryParams() {
       return {
         dictId: this.dictId,
+        pageNo: this.pagination.page,
+        pageSize: this.pagination.limit,
         ...this.filterParams,
         ...this.sortord,
       }
