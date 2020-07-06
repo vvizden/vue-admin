@@ -60,7 +60,7 @@ function createElMenuItem(item, basePath) {
           {...{
             class: ['menu-link'],
             attrs: {
-              href: externalLink ? route.path : href,
+              href: externalLink ? item.meta.url : href,
               target: externalLink ? '_blank' : '_self',
             },
             on: {

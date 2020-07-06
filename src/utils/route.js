@@ -56,13 +56,14 @@ export function generateMenuRoutes(data) {
 export function generateAddRoutes(data) {
   const routes = []
   for (let item of data) {
-    let url = item.meta && item.meta.url
-    let externalLink = item.meta && item.meta.externalLink
+    let copyItem = { ...item }
+    let url = copyItem.meta && copyItem.meta.url
+    let externalLink = copyItem.meta && copyItem.meta.externalLink
     if (!url || !externalLink) {
-      if (item.children && item.children.length > 0) {
-        item.children = generateAddRoutes(item.children)
+      if (copyItem.children && copyItem.children.length > 0) {
+        copyItem.children = generateAddRoutes(copyItem.children)
       }
-      routes.push(item)
+      routes.push(copyItem)
     }
   }
   return routes
