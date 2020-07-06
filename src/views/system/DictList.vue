@@ -141,12 +141,14 @@
     </el-dialog>
 
     <!-- 字典列表抽屉 -->
-    <el-drawer title="字典列表" size="680" :visible.sync="drawerVisible">
-      <DictItemList
-        class="no-padding"
-        :dictId="configDict.id"
-        :key="configDict.id"
-      />
+    <el-drawer
+      title="字典列表"
+      size="720px"
+      append-to-body
+      :visible.sync="drawerVisible"
+      @open="handleDrawerOpen"
+    >
+      <DictItemList class="no-padding" :key="dictId" :dictId="dictId" />
     </el-drawer>
   </div>
 </template>
@@ -160,9 +162,8 @@ export default {
   name: 'DictList',
   mixins: [PageTableMixin, CurdMixin, ExportMixin],
   components: {
-    DictForm: () => import(/* webpackChunkName: "system" */ './forms/DictForm'),
-    DictItemList: () =>
-      import(/* webpackChunkName: "system" */ './DictItemList'),
+    DictForm: () => import('./forms/DictForm'),
+    DictItemList: () => import('./DictItemList'),
   },
   data() {
     return {
@@ -222,6 +223,7 @@ export default {
       },
       drawerVisible: false,
       configDict: {},
+      dictId: String(Date.now()),
     }
   },
   mounted() {
@@ -232,6 +234,9 @@ export default {
     handleSettingClick(row) {
       this.configDict = row
       this.drawerVisible = true
+    },
+    handleDrawerOpen() {
+      this.dictId = this.configDict.id
     },
     handleRefreshClick() {
       this.$http

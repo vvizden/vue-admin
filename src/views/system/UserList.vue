@@ -108,13 +108,13 @@
           </el-button>
 
           <el-popconfirm
-            v-if="selectedRows.length > 0"
             cancelButtonType="default"
             title="确定删除吗？"
             style="margin-left: 10px;"
             @onConfirm="handleDeleteBatchClick"
           >
             <el-button
+              :disabled="selectedRows.length === 0"
               slot="reference"
               type="primary"
               plain

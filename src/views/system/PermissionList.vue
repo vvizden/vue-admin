@@ -38,13 +38,13 @@
           </el-button> -->
 
           <el-popconfirm
-            v-if="selectedRows.length > 0"
             cancelButtonType="default"
             title="确定删除吗？"
             style="margin-left: 10px;"
             @onConfirm="handleDeleteBatchClick"
           >
             <el-button
+              :disabled="selectedRows.length === 0"
               slot="reference"
               type="primary"
               plain
@@ -136,12 +136,12 @@ export default {
         {
           label: '菜单名称',
           prop: 'name',
-          align: 'center',
+          align: 'left',
         },
         {
           label: '菜单类型',
           prop: 'menuType',
-          align: 'center',
+          align: 'left',
           formatter: function(row, column, value) {
             if (value == 0) {
               return '菜单'
@@ -157,24 +157,24 @@ export default {
         {
           label: 'icon',
           prop: 'icon',
-          align: 'center',
+          align: 'left',
         },
         {
           label: '组件',
           prop: 'component',
-          align: 'center',
+          align: 'left',
           showOverflowTooltip: true,
         },
         {
           label: '路径',
           prop: 'url',
-          align: 'center',
+          align: 'left',
           showOverflowTooltip: true,
         },
         {
           label: '排序',
           prop: 'sortNo',
-          align: 'center',
+          align: 'left',
         },
         {
           label: '操作',
@@ -195,7 +195,7 @@ export default {
     }
   },
   mounted() {
-    this.loadData()
+    // this.loadData()
   },
 }
 </script>

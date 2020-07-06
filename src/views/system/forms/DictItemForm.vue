@@ -85,6 +85,7 @@ export default {
         create: dictItemUrl.create,
       },
       ruleForm: {
+        dictId: '',
         itemText: '',
         itemValue: '',
         description: '',

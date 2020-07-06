@@ -7,12 +7,15 @@
     "build": "vue-cli-service build",
     "init": "npm install --registry=https://registry.npm.taobao.org",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint --fix",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "date-fns": "^2.14.0",
+    "echarts": "^4.8.0",
+    "element-resize-detector": "^1.2.1",
     "element-ui": "^2.13.2",
     "lodash-es": "^4.17.15",
     "normalize.css": "^8.0.1",

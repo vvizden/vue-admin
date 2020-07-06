@@ -194,6 +194,8 @@
   border-radius: 2px;
 }
 
-.el-submenu__title {
-  transition: none;
+.el-picker-panel.el-date-range-picker.has-time {
+  .el-picker-panel__link-btn:first-child {
+    display: none;
+  }
 }

@@ -10,7 +10,10 @@
         mode="vertical"
         @transitionend.native="handleTransitionEnd"
       >
-        <el-menu-item class="menu-collapse" @click.native="toggleCollapse">
+        <el-menu-item
+          class="menu-collapse is-active"
+          @click.native="toggleCollapse"
+        >
           <Item :icon="collapseIcon" />
         </el-menu-item>
         <ElMenuChild
