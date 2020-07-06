@@ -30,7 +30,6 @@ function createElSubMenu(item, basePath) {
   const h = this.$createElement
 
   const path = resolvePath(item.path, basePath)
-  console.log('submenu', path)
 
   return (
     <el-submenu key={path} index={path}>
@@ -56,8 +55,6 @@ function createElMenuItem(item, basePath) {
   const scopedSlots = {
     // eslint-disable-next-line
     default: ({ href, route, navigate, isActive, isExactActive }) => {
-      // console.log(item.path, basePath, path, route)
-
       return (
         <a
           {...{
