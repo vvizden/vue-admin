@@ -1,4 +1,4 @@
-import { validURL, isExternal } from '@/utils/validate'
+import { validURL } from '@/utils/validate'
 
 export function generateMenuRoutes(data) {
   const routes = []
@@ -25,13 +25,8 @@ export function generateMenuRoutes(data) {
       componentPath = ''
     }
 
-    let path = item.path
-    if (isExternal(URL) && !componentPath) {
-      path = URL
-    }
-
     let menu = {
-      path: path,
+      path: item.path,
       name: item.name,
       redirect: item.redirect,
       component: componentPath && (() => import(`@/${componentPath}.vue`)),
@@ -41,6 +36,7 @@ export function generateMenuRoutes(data) {
         icon: item.meta.icon,
         url: item.meta.url,
         noCache: !item.meta.keepAlive,
+        externalLink: item.meta.internalOrExternal,
       },
     }
 
@@ -60,8 +56,9 @@ export function generateMenuRoutes(data) {
 export function generateAddRoutes(data) {
   const routes = []
   for (let item of data) {
-    let path = item.path
-    if (!isExternal(path)) {
+    let url = item.meta && item.meta.url
+    let externalLink = item.meta && item.meta.externalLink
+    if (!url || !externalLink) {
       if (item.children && item.children.length > 0) {
         item.children = generateAddRoutes(item.children)
       }
