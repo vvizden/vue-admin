@@ -30,8 +30,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/styles/variables.scss';
-
 .layout-header {
   display: flex;
   background-image: linear-gradient(
