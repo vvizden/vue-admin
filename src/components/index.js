@@ -2,6 +2,7 @@ import Copyright from './copyright'
 import AutoRadio from './auto-radio'
 import AutoSelect from './auto-select'
 import SvgIcon from './svg-icon'
+import IconTitle from './icon-title'
 import Chart from './chart'
 import ElementUIExt from './element-ui-ext'
 
@@ -19,6 +20,7 @@ function install(Vue, options = {}) {
   Vue.use(AutoRadio)
   Vue.use(AutoSelect)
   Vue.use(SvgIcon)
+  Vue.use(IconTitle)
   Vue.use(Chart)
   Vue.use(ElementUIExt)
 }
@@ -30,6 +32,7 @@ export default {
   AutoRadio,
   AutoSelect,
   SvgIcon,
+  IconTitle,
   Chart,
   ElementUIExt,
 }
