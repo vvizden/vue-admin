@@ -23,7 +23,7 @@ export default {
     return {
       filterText: '',
       localDefaultExpandAll: true,
-      localCheckStrictly: true,
+      localCheckStrictly: this.checkStrictly,
       checkAll: false,
     }
   },
@@ -116,44 +116,39 @@ export default {
         </el-button>
 
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
-            <el-button
-              type="text"
-              icon="el-icon-circle-check"
-              {...{
-                on: {
-                  click: this.checkAllToggle,
-                },
-              }}
-            >
-              全选/反选
-            </el-button>
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <el-button
-              type="text"
-              icon="el-icon-connection"
-              {...{
-                on: {
-                  click: this.selectConnection,
-                },
-              }}
-            >
-              关联选择
-            </el-button>
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <el-button
-              type="text"
-              icon="el-icon-files"
-              {...{
-                on: {
-                  click: this.expandOrFold,
-                },
-              }}
-            >
-              折叠/展开
-            </el-button>
+          {this.showCheckbox
+            ? [
+                <el-dropdown-item
+                  icon="el-icon-circle-check"
+                  {...{
+                    nativeOn: {
+                      click: this.checkAllToggle,
+                    },
+                  }}
+                >
+                  全选/反选
+                </el-dropdown-item>,
+                <el-dropdown-item
+                  icon="el-icon-connection"
+                  {...{
+                    nativeOn: {
+                      click: this.selectConnection,
+                    },
+                  }}
+                >
+                  关联选择
+                </el-dropdown-item>,
+              ]
+            : void 0}
+          <el-dropdown-item
+            icon="el-icon-files"
+            {...{
+              nativeOn: {
+                click: this.expandOrFold,
+              },
+            }}
+          >
+            折叠/展开
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
