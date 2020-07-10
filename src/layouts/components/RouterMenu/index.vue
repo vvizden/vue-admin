@@ -4,6 +4,24 @@ import { createMenuChild } from './createMenuChild'
 
 export default {
   name: 'RouterMenu',
+  props: {
+    mode: {
+      type: String,
+      default: 'vertical',
+      validator: function(value) {
+        return ['horizontal', 'vertical'].indexOf(value) !== -1
+      },
+    },
+    backgroundColor: {
+      type: String,
+    },
+    textColor: {
+      type: String,
+    },
+    activeTextColor: {
+      type: String,
+    },
+  },
   computed: {
     ...mapGetters(['menuRoutePermissions', 'sidebar']),
     activeMenu() {
@@ -24,7 +42,10 @@ export default {
           uniqueOpened: false,
           collapseTransition: false,
           router: false,
-          mode: 'vertical',
+          mode: this.mode,
+          backgroundColor: this.backgroundColor,
+          textColor: this.textColor,
+          activeTextColor: this.activeTextColor,
         },
       }
     },

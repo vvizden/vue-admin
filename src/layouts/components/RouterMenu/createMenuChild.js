@@ -8,7 +8,7 @@ export function createMenuChild(item, basePath) {
   const showSunMenu = showSubMenuOrItem(item, basePath)
 
   if (typeof showSunMenu == 'object') {
-    if (showSunMenu.meta) {
+    if (showSunMenu.meta && !showSunMenu.meta.icon) {
       showSunMenu.meta.icon = item.meta ? item.meta.icon : void 0
     }
     return createElMenuItem.call(
