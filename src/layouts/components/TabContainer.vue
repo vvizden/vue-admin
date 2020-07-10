@@ -14,10 +14,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.tab-container {
-  height: 100%;
-  overflow: hidden;
-}
-</style>
