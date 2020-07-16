@@ -1,5 +1,5 @@
 import AsideLayout from './AsideLayout'
+import TabLayout from './TabLayout'
 import MainLayout from './MainLayout'
-import ViewLayout from './ViewLayout'
 
-export { AsideLayout, MainLayout, ViewLayout }
+export { AsideLayout, TabLayout, MainLayout }

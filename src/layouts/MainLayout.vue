@@ -1,8 +1,6 @@
 <template>
   <BaseContainer>
-    <TabContainer>
-      <MainView />
-    </TabContainer>
+    <MainView />
   </BaseContainer>
 </template>
 
@@ -12,8 +10,6 @@ export default {
   components: {
     BaseContainer: () =>
       import(/* webpackChunkName: "layout" */ './components/BaseContainer'),
-    TabContainer: () =>
-      import(/* webpackChunkName: "layout" */ './components/TabContainer'),
     MainView: () => import(/* webpackChunkName: "layout" */ './views/MainView'),
   },
 }
