@@ -1,6 +1,6 @@
 <script>
 import { NAME_PREFIX } from '../../const/common'
-import { Tree } from 'element-ui'
+import { Tree, Input } from 'element-ui'
 import ScrollContainer from '../scroll-container'
 
 export default {
@@ -17,6 +17,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    searcherSize: Input.props.size,
     ...Tree.props,
   },
   data() {
@@ -32,6 +33,7 @@ export default {
       const props = { ...this.$props }
       delete props.searchable
       delete props.popover
+      delete props.searcherSize
       for (const [k, v] of Object.entries(props)) {
         if (v == null) {
           delete props[k]
@@ -103,6 +105,7 @@ export default {
         <el-input
           vModel={this.filterText}
           clearable
+          size={this.searcherSize}
           placeholder="输入关键字过滤"
           prefixIcon="el-icon-search"
         />
