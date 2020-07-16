@@ -15,7 +15,7 @@ import GlobalDirectives from './directives' // global filters
 import * as filters from './filters' // global filters
 
 import './icons' // icon
-import './permission'
+import './permission' // permission
 
 import App from './App.vue'
 import router from './router'
