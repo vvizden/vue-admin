@@ -30,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
       if (to.path === '/login') {
         // if is logged in, redirect to the home page
         next('/')
-        NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
+        // NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
       } else {
         // determine whether the user has obtained his menu permissions
         const hasMenuPermissions =
@@ -88,9 +88,10 @@ router.beforeEach(async (to, from, next) => {
       } else {
         next(`/login?redirect=${to.path}`)
       }
-      NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
+      // NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
     }
   }
+  NProgress.done()
 })
 
 router.afterEach(() => {
