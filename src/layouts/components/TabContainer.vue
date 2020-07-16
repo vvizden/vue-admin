@@ -1,5 +1,6 @@
 <template>
   <el-container class="tab-container is-vertical">
+    <!-- <viewTag /> -->
     <slot></slot>
     <!-- <Footer /> -->
   </el-container>
@@ -11,6 +12,7 @@ export default {
   components: {
     // Footer: () =>
     //   import(/* webpackChunkName: "layout" */ './components/Footer'),
+    // ViewTag: () => import(/* webpackChunkName: "layout" */ './ViewTag'),
   },
 }
 </script>
