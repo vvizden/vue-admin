@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Vue Admin',
+  title: process.env.VUE_APP_Title,
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
