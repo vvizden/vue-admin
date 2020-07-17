@@ -1,13 +1,21 @@
 <template>
   <div class="login-container">
-    <el-card class="login-card">
-      <p class="title" :style="titleStyle">{{ title }}</p>
-      <el-tabs value="login">
-        <el-tab-pane label="登录" name="login">
+    <div class="login-wraper">
+      <!-- <div class="login-header">
+        宏电
+      </div> -->
+
+      <div class="login-figure">
+        <div class="login-figure__inset"></div>
+        <div class="login-figure__form">
+          <div class="login-figure__title">
+            <svg-icon icon-class="app-title" />
+          </div>
           <el-form
             ref="loginForm"
             :model="loginForm"
             :rules="loginRules"
+            size="default"
             class="login-form"
             @submit.native.prevent
           >
@@ -19,7 +27,6 @@
                 placeholder="用户名"
                 name="username"
                 tabindex="1"
-                size="medium"
                 clearable
               />
             </el-form-item>
@@ -40,7 +47,6 @@
                   name="password"
                   tabindex="2"
                   autocomplete="new-password"
-                  size="medium"
                   clearable
                   @keyup.native="checkCapslock"
                   @blur="capsTooltip = false"
@@ -60,32 +66,28 @@
                 :loading="loading"
                 class="login-button"
                 type="primary"
-                size="medium"
                 @click.native.prevent="handleLogin"
               >
                 登录
               </el-button>
             </el-form-item>
           </el-form>
-        </el-tab-pane>
-      </el-tabs>
-    </el-card>
-    <v-copyright />
+        </div>
+      </div>
+
+      <v-copyright />
+    </div>
   </div>
 </template>
 
 <script>
 import { getCurrentTimeDesc } from '@/utils/time'
-import settings from '@/settings'
-import variables from '@/styles/element-variables.scss'
 import Storage, { REMEMBER_PASSWORD_KEY } from '@/utils/storage'
 
 export default {
-  name: 'Login',
+  name: 'LoginCard',
   data() {
     return {
-      title: settings.title,
-      titleStyle: { color: variables.primaryColor },
       loginForm: Storage.get(REMEMBER_PASSWORD_KEY, {
         username: '',
         password: '',
@@ -183,53 +185,69 @@ export default {
 
 <style lang="scss" scoped>
 .login-container {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  background-color: #6f6bff;
-  background-image: url('~@/assets/images/login-inset.png');
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url('~@/assets/images/login-bg.jpg');
   background-repeat: no-repeat;
-  background-size: auto 640px;
-  background-position: 20% center;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-header {
+  align-self: flex-start;
+
+  font-size: 32px;
+  color: #fff;
+
+  margin-bottom: 16px;
+}
+
+.login-figure {
+  width: 1100px;
+  height: 560px;
+  display: flex;
+
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.login-figure__title {
+  color: $--color-primary;
+  font-size: 200px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 8px;
+
+  height: 200px;
+  line-height: 0;
   overflow: hidden;
 }
 
-.login-container ::v-deep #tab-login {
-  font-size: 16px;
-  letter-spacing: 2px;
-}
-
-.login-card {
+.login-figure__inset {
   width: 480px;
-  position: absolute;
-  top: 50%;
-  right: 16%;
-  transform: translateY(-50%);
-  background-color: #fff;
-  animation: login-card-slip-in-right-left 0.4s ease-out;
 
-  ::v-deep {
-    .el-card__body {
-      padding: 16px 48px;
-    }
-  }
+  background-image: url('~@/assets/images/login-inset.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
-.title {
-  margin: 24px 0;
-  font-size: 32px;
-  text-align: center;
+.login-figure__form {
+  flex: auto;
+
+  padding: 0 32px;
 }
 
 .login-form {
-  padding-top: 24px;
-  padding-bottom: 16px;
-
   ::v-deep {
     .el-form-item {
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
   }
 }
@@ -246,10 +264,9 @@ export default {
 }
 
 .copyright {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translate(-50%);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+
+  margin-top: 16px;
 }
 </style>
