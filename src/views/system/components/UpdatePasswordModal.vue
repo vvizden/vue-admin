@@ -134,14 +134,14 @@ export default {
     ...mapState('user', {
       username: (state) => state.info.username,
     }),
+    isEditForm() {
+      return true
+    },
   },
   created() {
     this.ruleFormReset = cloneDeep(this.ruleForm)
   },
   methods: {
-    isEditForm() {
-      return true
-    },
     formToFormData() {
       // 深层拷贝数据
       let clonedData = cloneDeep(this.ruleForm)
