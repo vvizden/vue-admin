@@ -20,7 +20,7 @@ const mutations = {
     if (state.visitedViews.some((v) => v.path === view.path)) return
     state.visitedViews.push(
       Object.assign({}, view, {
-        title: view.meta.title || 'no-name',
+        title: view.meta.title,
       }),
     )
   },
@@ -83,6 +83,7 @@ const actions = {
     dispatch('addVisitedView', view)
     dispatch('addCachedView', view)
   },
+
   addVisitedView({ commit }, view) {
     commit(ADD_VISITED_VIEW, view)
   },
@@ -100,12 +101,14 @@ const actions = {
       })
     })
   },
+
   delVisitedView({ commit, state }, view) {
     return new Promise((resolve) => {
       commit(DEL_VISITED_VIEW, view)
       resolve([...state.visitedViews])
     })
   },
+
   delCachedView({ commit, state }, view) {
     return new Promise((resolve) => {
       commit(DEL_CACHED_VIEW, view)
@@ -123,12 +126,14 @@ const actions = {
       })
     })
   },
+
   delOthersVisitedViews({ commit, state }, view) {
     return new Promise((resolve) => {
       commit(DEL_OTHERS_VISITED_VIEWS, view)
       resolve([...state.visitedViews])
     })
   },
+
   delOthersCachedViews({ commit, state }, view) {
     return new Promise((resolve) => {
       commit(DEL_OTHERS_CACHED_VIEWS, view)

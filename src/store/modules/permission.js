@@ -7,7 +7,7 @@ import {
 import { SET_MENU_ROUTES } from '../mutation-types'
 
 const state = {
-  menuRoutes: [],
+  menuRoutes: [...constantRoutes],
   addMenuRoutes: [],
 }
 
