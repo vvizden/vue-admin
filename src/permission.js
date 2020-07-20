@@ -7,7 +7,7 @@ import getPageTitle from '@/utils/app'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login'] // Access is allowed even without a token
+const whiteList = [] // Access is allowed even without a token
 
 router.onError((error) => {
   console.log('router onError', error)
