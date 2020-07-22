@@ -42,6 +42,13 @@
     >
       <i class="el-icon-arrow-right"></i>
     </div>
+    <div
+      v-if="data.length > 1"
+      class="view-tag-close"
+      @click="handleViewTagCloseClick"
+    >
+      <i class="el-icon-close"></i>
+    </div>
   </div>
 </template>
 
@@ -148,6 +155,9 @@ export default {
     handleItemCloseClick(key, index) {
       this.$emit('close', key, this.dataMap[key], index)
     },
+    handleViewTagCloseClick() {
+      this.$emit('closeAll')
+    },
     init() {
       this.setViewTagWidth()
 
@@ -221,12 +231,12 @@ $--color-border: #dfe6ec;
 
   position: relative;
 
-  padding: 4px $--width-slide + 8px;
+  padding: 4px $--width-slide * 2 + 8px 4px $--width-slide + 8px;
   background-color: $--color-feature-bg;
   border-bottom: 1px solid $--color-border;
 }
 
-.view-tag-slide {
+@mixin viewTagAction {
   width: $--width-slide;
   height: 100%;
   display: flex;
@@ -250,6 +260,10 @@ $--color-border: #dfe6ec;
   }
 }
 
+.view-tag-slide {
+  @include viewTagAction;
+}
+
 .view-tag-slide--left {
   left: 0;
   // border-right: 1px solid $--color-border;
@@ -257,9 +271,27 @@ $--color-border: #dfe6ec;
 }
 
 .view-tag-slide--right {
-  right: 0;
+  right: $--width-slide;
   // border-left: 1px solid $--color-border;
   box-shadow: -2px 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.view-tag-close {
+  @include viewTagAction;
+
+  right: 0;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    transform: scaleY(0.6);
+    background-color: $--color-border;
+  }
 }
 
 .view-tag {
@@ -346,7 +378,7 @@ $--color-border: #dfe6ec;
   background-color: currentColor;
 }
 
-.el-icon-close {
+.view-tag__item > .el-icon-close {
   position: absolute;
   right: 8px;
   top: 50%;

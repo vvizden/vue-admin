@@ -5,6 +5,7 @@
     :dataProps="dataProps"
     @change="handleViewTagChange"
     @close="handleViewTagClose"
+    @closeAll="handleViewTagCloseAll"
   />
 </template>
 
@@ -49,6 +50,9 @@ export default {
             this.toLastedView(visitedViews)
           }
         })
+    },
+    handleViewTagCloseAll() {
+      this.$store.dispatch('view/delOthersViews', this.selectViewTag)
     },
     addViewTag(view) {
       if (view.name) {
