@@ -40,7 +40,8 @@ export default {
 
   .title {
     color: #fff;
-    font-size: 18px;
+    font-size: 24px;
+    letter-spacing: 2px;
   }
 
   .right-item {

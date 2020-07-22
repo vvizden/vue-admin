@@ -220,13 +220,13 @@ export default {
 
 .login-figure__title {
   color: $--color-primary;
-  font-size: 40px;
+  font-size: 32px;
   font-weight: 700;
   text-align: center;
   letter-spacing: 4px;
 
-  height: 180px;
-  line-height: 180px;
+  height: 160px;
+  line-height: 160px;
   overflow: hidden;
 }
 
