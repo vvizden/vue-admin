@@ -43,7 +43,7 @@ export const constantRoutes = [
     path: '/login',
     hidden: true,
     component: () =>
-      import(/* webpackChunkName: "login" */ '@/views/login/index'),
+      import(/* webpackChunkName: "login" */ '@/views/login/LoginCard'),
   },
 ]
 
