@@ -93,11 +93,11 @@ export default {
     }
   },
   computed: {
-    dataMap() {
-      return this.data.reduce((map, e) => {
+    dataIndexMap() {
+      return this.data.reduce((map, e, index) => {
         let key = e[this.dataPropsComputed.key]
         if (!Object.prototype.hasOwnProperty.call(map, key)) {
-          map[key] = e
+          map[key] = index
         }
         return map
       }, {})
@@ -130,6 +130,7 @@ export default {
   watch: {
     value(val) {
       this.selectItemKey = val
+      this.moveToViewport()
     },
     data() {
       this.$nextTick(() => {
@@ -139,6 +140,7 @@ export default {
     viewTagContainerStyle() {
       this.$nextTick(() => {
         this.setViewTagWidth()
+        this.moveToViewport()
       })
     },
   },
@@ -149,11 +151,11 @@ export default {
     handleItemClick(key, index) {
       if (this.selectItemKey !== key) {
         this.selectItemKey = key
-        this.$emit('change', key, this.dataMap[key], index)
+        this.$emit('change', key, this.data[this.dataIndexMap[key]], index)
       }
     },
     handleItemCloseClick(key, index) {
-      this.$emit('close', key, this.dataMap[key], index)
+      this.$emit('close', key, this.data[this.dataIndexMap[key]], index)
     },
     handleViewTagCloseClick() {
       this.$emit('closeAll')
@@ -183,11 +185,11 @@ export default {
       this.clientWidth = viewTag.getBoundingClientRect().width
     },
     handleSlideLeftClick() {
-      this.slideX += 104
+      this.slideX += 112
       this.slide()
     },
     handleSlideRightClick() {
-      this.slideX -= 104
+      this.slideX -= 112
       this.slide()
     },
     slide() {
@@ -208,6 +210,26 @@ export default {
         }
       }
       this.slideX = 0
+    },
+    moveToViewport() {
+      const currentActiveLength =
+        112 * (this.dataIndexMap[this.value] + 1) -
+        8 +
+        this.remainingSlideLengthToLeft
+
+      const leftHiddenLength = Math.abs(this.minSlideX)
+
+      const maxLeftLegth = leftHiddenLength + 112
+
+      if (currentActiveLength < maxLeftLegth) {
+        this.slideX += maxLeftLegth - currentActiveLength
+        this.slide()
+      }
+
+      if (currentActiveLength > this.scrollWidth) {
+        this.slideX -= currentActiveLength - this.scrollWidth
+        this.slide()
+      }
     },
   },
 }
