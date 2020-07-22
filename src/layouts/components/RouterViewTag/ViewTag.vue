@@ -22,15 +22,16 @@
               selectItemKey === item[dataPropsComputed.key],
           },
         ]"
-        @click="handleItemClick(item, index)"
+        @click="handleItemClick(item[dataPropsComputed.key], index)"
       >
+        <span class="view-tag__title-prefix"></span>
         <span class="view-tag__title" :title="item[dataPropsComputed.title]">
           {{ item[dataPropsComputed.title] }}
         </span>
         <i
-          v-if="item[dataPropsComputed.closeable]"
+          v-if="!item[dataPropsComputed.affix]"
           class="el-icon-close"
-          @click="handleItemCloseClick(item, index)"
+          @click.stop="handleItemCloseClick(item[dataPropsComputed.key], index)"
         ></i>
       </li>
     </ul>
@@ -71,7 +72,7 @@ export default {
       default: () => ({
         key: 'key',
         title: 'title',
-        closeable: 'closeable',
+        affix: 'affix',
       }),
     },
   },
@@ -85,11 +86,20 @@ export default {
     }
   },
   computed: {
+    dataMap() {
+      return this.data.reduce((map, e) => {
+        let key = e[this.dataPropsComputed.key]
+        if (!Object.prototype.hasOwnProperty.call(map, key)) {
+          map[key] = e
+        }
+        return map
+      }, {})
+    },
     dataPropsComputed() {
       return {
         key: 'key',
         title: 'title',
-        closeable: 'closeable',
+        affix: 'affix',
         ...this.dataProps,
       }
     },
@@ -105,21 +115,38 @@ export default {
       }
     },
     viewTagContainerStyle() {
-      return this.minSlideX === 0 ? { paddingLeft: '0', paddingRight: '0' } : {}
+      return this.minSlideX === 0
+        ? { paddingLeft: '20px', paddingRight: '20px' }
+        : {}
+    },
+  },
+  watch: {
+    value(val) {
+      this.selectItemKey = val
+    },
+    data() {
+      this.$nextTick(() => {
+        this.setViewTagWidth()
+      })
+    },
+    viewTagContainerStyle() {
+      this.$nextTick(() => {
+        this.setViewTagWidth()
+      })
     },
   },
   mounted() {
     this.init()
   },
   methods: {
-    handleItemClick(item, index) {
-      if (this.selectItemKey !== item[this.dataPropsComputed.key]) {
-        this.selectItemKey = item[this.dataPropsComputed.key]
-        this.$emit('change', item[this.dataPropsComputed.key], item, index)
+    handleItemClick(key, index) {
+      if (this.selectItemKey !== key) {
+        this.selectItemKey = key
+        this.$emit('change', key, this.dataMap[key], index)
       }
     },
-    handleItemCloseClick(item, index) {
-      this.$emit('close', item[this.dataPropsComputed.key], item, index)
+    handleItemCloseClick(key, index) {
+      this.$emit('close', key, this.dataMap[key], index)
     },
     init() {
       this.setViewTagWidth()
@@ -146,11 +173,11 @@ export default {
       this.clientWidth = viewTag.getBoundingClientRect().width
     },
     handleSlideLeftClick() {
-      this.slideX += 120
+      this.slideX += 104
       this.slide()
     },
     handleSlideRightClick() {
-      this.slideX -= 120
+      this.slideX -= 104
       this.slide()
     },
     slide() {
@@ -177,10 +204,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$--width-slide: 40px;
-$--color-feature-bg: #dee1e6;
-$--color-feature-hover: #d1d2d3;
-$--color-feature-active: #a1a2a3;
+$--width-slide: 20px;
+$--color-feature-bg: $--color-white;
+$--color-feature-hover: mix($--color-primary, #fff, 20);
+$--color-feature-active: mix($--color-primary, #fff, 40);
+$--color-border: #dfe6ec;
 
 .view-tag-container {
   flex: none;
@@ -193,8 +221,9 @@ $--color-feature-active: #a1a2a3;
 
   position: relative;
 
-  padding: 0 $--width-slide;
+  padding: 4px $--width-slide + 8px;
   background-color: $--color-feature-bg;
+  border-bottom: 1px solid $--color-border;
 }
 
 .view-tag-slide {
@@ -223,10 +252,14 @@ $--color-feature-active: #a1a2a3;
 
 .view-tag-slide--left {
   left: 0;
+  // border-right: 1px solid $--color-border;
+  box-shadow: 2px 0 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 .view-tag-slide--right {
   right: 0;
+  // border-left: 1px solid $--color-border;
+  box-shadow: -2px 0 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 .view-tag {
@@ -244,12 +277,12 @@ $--color-feature-active: #a1a2a3;
 
 .view-tag__item {
   // width: 120px;
-  min-width: 120px;
+  min-width: 104px;
   display: flex;
   align-items: center;
   overflow: hidden;
   position: relative;
-  padding: 8px 28px 8px 16px;
+  padding: 0 28px 0 8px;
   // background-color: #dee1e6;
 
   white-space: nowrap;
@@ -257,8 +290,14 @@ $--color-feature-active: #a1a2a3;
   user-select: none;
   cursor: pointer;
 
+  color: #a0a0a0;
+  border: 1px solid #dfe6ec;
+  border-radius: $--border-radius-small;
+
   &:hover {
-    background-color: #f1f2f3;
+    // background-color: #f1f2f3;
+    color: $--color-primary;
+    border-color: $--color-primary;
 
     .el-icon-close {
       visibility: visible;
@@ -266,28 +305,45 @@ $--color-feature-active: #a1a2a3;
   }
 }
 
-.view-tag__item--selected {
-  color: $--color-primary;
-  background-color: #fff;
+.view-tag__item + .view-tag__item {
+  margin-left: 8px;
 }
 
-.view-tag__item::after {
-  content: '';
-  display: inline-block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  transform: scaleY(0.8);
-  background-color: #8b8e92;
+.view-tag__item--selected {
+  color: $--color-primary;
+  // background-color: #fff;
+  border-color: $--color-primary;
 }
+
+// .view-tag__item::after {
+//   content: '';
+//   display: inline-block;
+//   position: absolute;
+//   right: 0;
+//   top: 0;
+//   width: 1px;
+//   height: 100%;
+//   transform: scaleY(0.8);
+//   background-color: #8b8e92;
+// }
 
 .view-tag__title {
   display: inline-block;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.view-tag__title-prefix {
+  flex: none;
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+
+  margin-right: 6px;
+
+  background-color: currentColor;
 }
 
 .el-icon-close {
