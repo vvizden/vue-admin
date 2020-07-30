@@ -2,6 +2,7 @@
   <el-header class="layout-header">
     <div class="layout-header__item">
       <span class="title">
+        <svg-icon icon-class="app-logo"></svg-icon>
         {{ title }}
       </span>
     </div>
