@@ -8,6 +8,7 @@
         <div class="login-figure__inset"></div>
         <div class="login-figure__form">
           <div class="login-figure__title">
+            <svg-icon icon-class="app-logo"></svg-icon>
             {{ title }}
           </div>
           <el-form
@@ -219,15 +220,19 @@ export default {
 }
 
 .login-figure__title {
-  color: $--color-primary;
+  color: $--color-text-primary;
   font-size: 32px;
-  font-weight: 700;
+  // font-weight: 700;
   text-align: center;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
 
   height: 160px;
   line-height: 160px;
   overflow: hidden;
+
+  .svg-icon {
+    color: $--color-primary;
+  }
 }
 
 .login-figure__inset {
