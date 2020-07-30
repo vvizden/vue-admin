@@ -25,9 +25,15 @@ export function generateMenuRoutes(data) {
       componentPath = ''
     }
 
+    const routeName = ['layouts/', 'IframeView'].some(
+      (e) => componentPath.indexOf(e) !== -1,
+    )
+      ? item.name
+      : componentPath.match(/(?<=views\/.*)[^/]+(?=\/index|$)/i)[0]
+
     let menu = {
       path: item.path,
-      name: item.name,
+      name: routeName,
       redirect: item.redirect,
       component: componentPath && (() => import(`@/${componentPath}.vue`)),
       hidden: item.hidden,
