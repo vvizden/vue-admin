@@ -1,5 +1,5 @@
 import $http from './index'
-import { userUrl } from './url'
+import { userUrl, permissionUrl } from './url'
 
 export function login(data) {
   return $http.post(userUrl.login, data)
@@ -10,5 +10,5 @@ export function logout() {
 }
 
 export function getPermissions(params) {
-  return $http.get(userUrl.permissions, params)
+  return $http.get(permissionUrl.permissions, params)
 }
