@@ -1,5 +1,6 @@
 import ElDialogDrag from './el-dialog-drag'
 import Permission from './permission'
+import TableColsCache from './table-cols-cache'
 
 const VERSION = '0.1.0'
 
@@ -13,6 +14,7 @@ function install(Vue, options = {}) {
 
   Vue.use(ElDialogDrag)
   Vue.use(Permission)
+  Vue.use(TableColsCache)
 }
 
 export default {
@@ -20,4 +22,5 @@ export default {
   install,
   ElDialogDrag,
   Permission,
+  TableColsCache,
 }
