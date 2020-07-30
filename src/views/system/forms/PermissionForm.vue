@@ -79,10 +79,10 @@
     </template>
 
     <template v-else>
-      <el-form-item label="路由路径" prop="url">
+      <el-form-item label="页面路径" prop="url">
         <el-input
           v-model.trim="ruleForm.url"
-          placeholder="请填写路由路径"
+          placeholder="请填写页面路径"
           clearable
         ></el-input>
       </el-form-item>
@@ -120,12 +120,12 @@
         ></el-input-number>
       </el-form-item>
 
-      <el-form-item label="路由菜单" prop="route">
+      <el-form-item label="是否菜单" prop="route">
         <el-switch v-model="ruleForm.route" active-text="是" inactive-text="否">
         </el-switch>
       </el-form-item>
 
-      <el-form-item label="隐藏路由" prop="hidden">
+      <el-form-item label="隐藏菜单" prop="hidden">
         <el-switch
           v-model="ruleForm.hidden"
           active-text="是"
@@ -134,7 +134,7 @@
         </el-switch>
       </el-form-item>
 
-      <el-form-item label="缓存路由" prop="keepAlive">
+      <el-form-item label="缓存页面" prop="keepAlive">
         <el-switch
           v-model="ruleForm.keepAlive"
           active-text="是"
@@ -143,7 +143,7 @@
         </el-switch>
       </el-form-item>
 
-      <el-form-item label="聚合路由" prop="alwaysShow">
+      <el-form-item label="聚合页面" prop="alwaysShow">
         <el-switch
           v-model="ruleForm.alwaysShow"
           active-text="是"
