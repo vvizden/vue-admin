@@ -245,7 +245,7 @@ $--color-border: #dfe6ec;
 .view-tag-container {
   flex: none;
   width: 100%;
-  height: 32px;
+  height: 33px;
   display: flex;
   flex-flow: row nowrap;
   // align-items: center;

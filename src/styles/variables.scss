@@ -3,9 +3,10 @@
 // 小圆角
 $--border-radius-small: 2px !default;
 
-/* theme color */
-$--color-white: #FFFFFF !default;
+// color
+$--color-white: #ffffff !default;
 
+/* theme color */
 // $--color-primary: #1890ff;
 $--color-primary: #4876e7;
 // $--color-success: #13ce66;
@@ -15,7 +16,16 @@ $--color-primary: #4876e7;
 
 // $--button-font-weight: 400;
 
-// // $--color-text-regular: #1f2d3d;
+// $--color-text-primary: #303133 !default;
+$--color-text-primary: #303133 !default;
+$--color-text-regular: #606266 !default;
+$--color-text-secondary: #909399 !default;
+
+$--color-primary-light-9: mix(
+  $--color-white,
+  $--color-primary,
+  90%
+) !default; /* ecf5ff */
 
 // $--border-color-light: #dfe4ed;
 // $--border-color-lighter: #e6ebf5;
@@ -59,6 +69,9 @@ $--transfer-border-radius: $--border-radius-small;
 // Popup
 $--popup-modal-opacity: 0.06;
 
+// Menu
+$--menu-item-hover-fill: $--color-primary-light-9 !default;
+
 /* elment ui */
 
 // base color
@@ -101,7 +114,7 @@ $sideBarCollapseWidth: 56px;
 
 $sideBarBorderRight: 1px solid #dfe6ec;
 
-$sideBarBoxShadow: 0 0 8px 0 rgba(29, 35, 41, 0.28);
+$sideBarBoxShadow: 0 0 4px 0 rgba(29, 35, 41, 0.28);
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

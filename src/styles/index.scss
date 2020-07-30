@@ -193,18 +193,18 @@ input:-internal-autofill-selected {
     vertical-align: top;
     margin-right: 20px;
     margin-bottom: 0;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 
     .el-form-item__label {
-      padding-right: 4px;
+      padding-right: 8px;
     }
 
-    &:last-child {
-      .el-form-item__content {
-        line-height: 1;
-      }
-    }
+    // &:last-child {
+    //   .el-form-item__content {
+    //     line-height: 1;
+    //   }
+    // }
   }
 }
 
