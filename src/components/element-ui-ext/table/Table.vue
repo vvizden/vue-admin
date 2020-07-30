@@ -155,7 +155,7 @@ export default {
       columnsSortMap: null,
       currentColumns: this.columns,
       checkboxVal: null,
-      tableKey: String(Date.now()),
+      tableKey: String(Math.random() * Date.now()),
     }
   },
   computed: {
@@ -226,7 +226,7 @@ export default {
   watch: {
     columnsCheckVal(val) {
       this.currentColumns = filterCols(this.columnsCopy, val)
-      this.tableKey = String(Date.now())
+      this.tableKey = String(Math.random() * Date.now())
     },
   },
   // eslint-disable-next-line
