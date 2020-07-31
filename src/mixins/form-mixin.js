@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash-es'
 
-/* !!!!!! 使用时需要提供 model, ruleFormReset, ruleForm 数据和 manualReset, formToFormData 方法 */
 export default {
   computed: {
     isEditForm() {
@@ -22,6 +21,9 @@ export default {
     },
     // 提交表单
     submitForm(formName) {
+      if (this.beforeSubmitForm) {
+        if (!this.beforeSubmitForm()) return
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const formData = this.formToFormData()
