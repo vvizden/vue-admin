@@ -248,7 +248,7 @@
       style="padding: 24px 64px 16px; border: 1px solid #A5D1FE; text-align: center;"
     >
       <p style="margin: 0 0 32px;">页面不存在，请返回首页或者上一页</p>
-      <el-button type="primary" @click="$router.push('/')">返回首页</el-button>
+      <el-button type="primary" @click="handleToHomeClick">返回首页</el-button>
       <el-button type="primary" plain @click="$router.go(-1)"
         >返回上一页</el-button
       >
@@ -259,5 +259,12 @@
 <script>
 export default {
   name: 'NotFound',
+  methods: {
+    handleToHomeClick() {
+      const firstRoute = this.$store.getters.firstRoute
+      const toPath = firstRoute ? firstRoute.path : '/403'
+      this.$router.push(toPath)
+    },
+  },
 }
 </script>

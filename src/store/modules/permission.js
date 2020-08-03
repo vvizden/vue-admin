@@ -4,7 +4,7 @@ import {
   generateAddRoutes,
   addLeadingSlashCharacter,
 } from '@/utils/route'
-import { SET_MENU_ROUTES } from '../mutation-types'
+import { SET_USER_ADD_MENU_ROUTES, SET_MENU_ROUTES } from '../mutation-types'
 
 const state = {
   menuRoutes: [...constantRoutes],
@@ -12,19 +12,23 @@ const state = {
 }
 
 const mutations = {
-  [SET_MENU_ROUTES]: (state, routes) => {
+  [SET_USER_ADD_MENU_ROUTES]: (state, routes) => {
     state.addMenuRoutes = routes
-    state.menuRoutes = constantRoutes.concat(routes)
+  },
+  [SET_MENU_ROUTES]: (state, routes) => {
+    state.menuRoutes = routes
   },
 }
 
 const actions = {
   generateRoutes({ commit }, routes) {
     return new Promise((resolve) => {
-      const addMenuRoutes = concatAsyncRoutes(
-        addLeadingSlashCharacter(generateMenuRoutes(routes)),
+      const userAddMenuRoutes = addLeadingSlashCharacter(
+        generateMenuRoutes(routes),
       )
-      commit(SET_MENU_ROUTES, addMenuRoutes)
+      commit(SET_USER_ADD_MENU_ROUTES, userAddMenuRoutes)
+      const addMenuRoutes = concatAsyncRoutes(userAddMenuRoutes)
+      commit(SET_MENU_ROUTES, constantRoutes.concat(addMenuRoutes))
       resolve(addLeadingSlashCharacter(generateAddRoutes(addMenuRoutes)))
     })
   },

@@ -29,7 +29,9 @@ router.beforeEach(async (to, from, next) => {
     if (accessToken) {
       if (to.path === '/login') {
         // if is logged in, redirect to the home page
-        next('/')
+        const firstRoute = store.getters.firstRoute
+        const toPath = firstRoute ? firstRoute.path : '/403'
+        next(toPath)
         // NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
       } else {
         // determine whether the user has obtained his menu permissions
@@ -75,9 +77,15 @@ router.beforeEach(async (to, from, next) => {
           // dynamically add accessible routes
           router.addRoutes(addRoutes)
 
-          // hack method to ensure that addRoutes is complete
-          // set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true })
+          if (to.path === '/future-home') {
+            const firstRoute = store.getters.firstRoute
+            const toPath = firstRoute ? firstRoute.path : '/403'
+            next({ path: toPath, replace: true })
+          } else {
+            // hack method to ensure that addRoutes is complete
+            // set the replace: true, so the navigation will not leave a history record
+            next({ ...to, replace: true })
+          }
         }
       }
     } else {

@@ -5,6 +5,8 @@ import {
   DEL_CACHED_VIEW,
   DEL_OTHERS_VISITED_VIEWS,
   DEL_OTHERS_CACHED_VIEWS,
+  DEL_ALL_VISITED_VIEWS,
+  DEL_ALL_CACHED_VIEWS,
   UPDATE_VISITED_VIEW,
 } from '../mutation-types'
 
@@ -64,6 +66,14 @@ const mutations = {
       // if index = -1, there is no cached tags
       state.cachedViewNames = []
     }
+  },
+
+  [DEL_ALL_VISITED_VIEWS]: (state) => {
+    state.visitedViews = []
+  },
+
+  [DEL_ALL_CACHED_VIEWS]: (state) => {
+    state.cachedViewNames = []
   },
 }
 
@@ -153,7 +163,7 @@ const actions = {
   delOthersViews({ dispatch, state }, route) {
     return new Promise((resolve) => {
       dispatch('delOthersVisitedViews', route.name)
-      dispatch('delOtherscachedViewNames', route.meta.componentName)
+      dispatch('delOthersCachedViewNames', route.meta.componentName)
       resolve({
         visitedViews: [...state.visitedViews],
         cachedViewNames: [...state.cachedViewNames],
@@ -174,11 +184,27 @@ const actions = {
     })
   },
 
-  delOtherscachedViewNames({ commit, state }, componentName) {
+  delOthersCachedViewNames({ commit, state }, componentName) {
     return new Promise((resolve) => {
       commit(DEL_OTHERS_CACHED_VIEWS, componentName)
       resolve([...state.cachedViewNames])
     })
+  },
+
+  delAllViews({ dispatch }) {
+    return new Promise((resolve) => {
+      dispatch('delAllVisitedViews')
+      dispatch('delAllCachedViewNames')
+      resolve()
+    })
+  },
+
+  delAllVisitedViews({ commit }) {
+    commit(DEL_ALL_VISITED_VIEWS)
+  },
+
+  delAllCachedViewNames({ commit }) {
+    commit(DEL_ALL_CACHED_VIEWS)
   },
 }
 

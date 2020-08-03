@@ -39,7 +39,7 @@
                   placeholder="密码"
                   name="password"
                   tabindex="2"
-                  autocomplete="new-password"
+                  autocomplete="on"
                   size="medium"
                   clearable
                   @keyup.native="checkCapslock"
@@ -136,6 +136,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
+
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(() => {
@@ -146,7 +147,7 @@ export default {
               }
               this.$router
                 .push({
-                  path: this.redirect || '/',
+                  path: '/future-home',
                   query: this.otherQuery,
                 })
                 .catch(() => {

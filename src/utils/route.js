@@ -46,7 +46,7 @@ export function generateMenuRoutes(data) {
         url: item.meta.url,
         keepAlive: item.meta.keepAlive,
         externalLink: item.meta.internalOrExternal,
-        isRouteMenu: !item.route || item.route !== '0',
+        notRouteMenu: !!item.route && item.route === '0',
       },
     }
 
@@ -64,8 +64,8 @@ export function generateAddRoutes(data) {
   for (let item of data) {
     let copyItem = { ...item }
     let { meta, children } = copyItem
-    let isRouteMenu = meta && meta.isRouteMenu
-    if (!isRouteMenu) {
+    let notRouteMenu = meta && meta.notRouteMenu
+    if (notRouteMenu) {
       if (children && children.length > 0) {
         routes = routes.concat(generateAddRoutes(children))
       }

@@ -62,7 +62,9 @@ export default {
       if (lastView) {
         this.$router.push(lastView.fullPath)
       } else {
-        this.$router.push('/')
+        const firstRoute = this.$store.getters.firstRoute
+        const toPath = firstRoute ? firstRoute.path : '/403'
+        this.$router.push(toPath)
       }
     },
   },

@@ -140,6 +140,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
+
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(() => {
@@ -150,7 +151,7 @@ export default {
               }
               this.$router
                 .push({
-                  path: this.redirect || '/',
+                  path: '/future-home',
                   query: this.otherQuery,
                 })
                 .catch(() => {
