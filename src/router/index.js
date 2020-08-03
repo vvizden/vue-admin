@@ -18,17 +18,13 @@ Vue.use(VueRouter)
 // eslint-disable-next-line
 export function concatAsyncRoutes(routes) {
   return [
-    // {
-    //   path: '/',
-    //   component: AsideLayout,
-    //   redirect: '/home',
-    //   hidden: true,
-    // },
     ...routes,
     {
       path: '*',
-      component: () => import(/* webpackChunkName: "fail" */ '@/views/404'),
-      hidden: true,
+      component: () => import(/* webpackChunkName: "error" */ '@/views/404'),
+      meta: {
+        hidden: true,
+      },
     },
   ]
 }
@@ -41,9 +37,11 @@ export function concatAsyncRoutes(routes) {
 export const constantRoutes = [
   {
     path: '/login',
-    hidden: true,
     component: () =>
       import(/* webpackChunkName: "login" */ '@/views/login/LoginCard'),
+    meta: {
+      hidden: true,
+    },
   },
 ]
 

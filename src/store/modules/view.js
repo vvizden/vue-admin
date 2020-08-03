@@ -106,16 +106,17 @@ const actions = {
   },
 
   addCachedView({ state, commit }, route) {
-    if (state.cachedViewNames.includes(route.name)) return
-    if (!route.meta.noCache) {
-      commit(ADD_CACHED_VIEW, route.name)
+    if (!route.meta.componentName) return
+    if (state.cachedViewNames.includes(route.meta.componentName)) return
+    if (route.meta.keepAlive) {
+      commit(ADD_CACHED_VIEW, route.meta.componentName)
     }
   },
 
-  delView({ dispatch, state }, name) {
+  delView({ dispatch, state }, route) {
     return new Promise((resolve) => {
-      dispatch('delVisitedView', name)
-      dispatch('delCachedView', name)
+      dispatch('delVisitedView', route.name)
+      dispatch('delCachedView', route.meta.componentName)
       resolve({
         visitedViews: [...state.visitedViews],
         cachedViewNames: [...state.cachedViewNames],
@@ -139,9 +140,9 @@ const actions = {
     })
   },
 
-  delCachedView({ commit, state }, name) {
+  delCachedView({ commit, state }, componentName) {
     return new Promise((resolve) => {
-      let index = state.cachedViewNames.indexOf(name)
+      let index = state.cachedViewNames.indexOf(componentName)
       if (index !== -1) {
         commit(DEL_CACHED_VIEW, index)
       }
@@ -149,10 +150,10 @@ const actions = {
     })
   },
 
-  delOthersViews({ dispatch, state }, name) {
+  delOthersViews({ dispatch, state }, route) {
     return new Promise((resolve) => {
-      dispatch('delOthersVisitedViews', name)
-      dispatch('delOtherscachedViewNames', name)
+      dispatch('delOthersVisitedViews', route.name)
+      dispatch('delOtherscachedViewNames', route.meta.componentName)
       resolve({
         visitedViews: [...state.visitedViews],
         cachedViewNames: [...state.cachedViewNames],
@@ -173,9 +174,9 @@ const actions = {
     })
   },
 
-  delOtherscachedViewNames({ commit, state }, name) {
+  delOtherscachedViewNames({ commit, state }, componentName) {
     return new Promise((resolve) => {
-      commit(DEL_OTHERS_CACHED_VIEWS, name)
+      commit(DEL_OTHERS_CACHED_VIEWS, componentName)
       resolve([...state.cachedViewNames])
     })
   },

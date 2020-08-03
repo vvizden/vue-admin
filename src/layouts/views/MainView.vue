@@ -2,7 +2,7 @@
   <el-main>
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViewNames">
-        <router-view :key="$route.path"></router-view>
+        <router-view></router-view>
       </keep-alive>
     </transition>
   </el-main>

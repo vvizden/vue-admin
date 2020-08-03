@@ -12,62 +12,72 @@ export function generateMenuRoutes(data) {
 
     let componentPath = item.component
     if (componentPath && componentPath.trim()) {
-      if (componentPath.indexOf('layouts/') === -1) {
-        if (componentPath.indexOf('views/') === -1) {
-          componentPath = `views/${componentPath}`
-        }
-      } else {
+      if (componentPath.startsWith('layouts/')) {
         if (componentPath.indexOf('layouts/RouteView') !== -1) {
           componentPath = 'layouts/AsideLayout'
+        }
+      } else {
+        if (!componentPath.startsWith('views/')) {
+          componentPath = `views/${componentPath}`
         }
       }
     } else {
       componentPath = ''
     }
 
-    const routeName = ['layouts/', 'IframeView'].some(
-      (e) => componentPath.indexOf(e) !== -1,
-    )
-      ? item.name
-      : componentPath.match(/(?<=views\/.*)[^/]+(?=\/index|$)/i)[0]
+    let componentName = ''
+    if (componentPath.startsWith('views/')) {
+      componentName = componentPath.match(
+        /(?<=views\/.*)[^/]+(?=\/index|$)/i,
+      )[0]
+    }
 
     let menu = {
       path: item.path,
-      name: routeName,
+      name: item.name,
+      component: componentPath ? () => import(`@/${componentPath}.vue`) : null,
       redirect: item.redirect,
-      component: componentPath && (() => import(`@/${componentPath}.vue`)),
-      hidden: item.hidden,
       meta: {
+        hidden: item.hidden,
+        alwaysShow: !!item.alwaysShow,
+        componentName: componentName,
         title: item.meta.title,
         icon: item.meta.icon,
         url: item.meta.url,
-        noCache: !item.meta.keepAlive,
+        keepAlive: item.meta.keepAlive,
         externalLink: item.meta.internalOrExternal,
+        isRouteMenu: !item.route || item.route !== '0',
       },
     }
 
     if (item.children && item.children.length > 0) {
       menu.children = generateMenuRoutes(item.children)
     }
-    //--update-begin----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
-    //判断是否生成路由
-    if (!item.route || item.route !== '0') {
-      routes.push(menu)
-    }
-    //--update-end----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
+
+    routes.push(menu)
   }
   return routes
 }
 
 export function generateAddRoutes(data) {
-  const routes = []
+  let routes = []
   for (let item of data) {
     let copyItem = { ...item }
-    let url = copyItem.meta && copyItem.meta.url
-    let externalLink = copyItem.meta && copyItem.meta.externalLink
+    let { meta, children } = copyItem
+    let isRouteMenu = meta && meta.isRouteMenu
+    if (!isRouteMenu) {
+      if (children && children.length > 0) {
+        routes = routes.concat(generateAddRoutes(children))
+      }
+
+      continue
+    }
+
+    let url = meta && meta.url
+    let externalLink = meta && meta.externalLink
     if (!url || !externalLink) {
-      if (copyItem.children && copyItem.children.length > 0) {
-        copyItem.children = generateAddRoutes(copyItem.children)
+      if (children && children.length > 0) {
+        copyItem.children = generateAddRoutes(children)
       }
       routes.push(copyItem)
     }

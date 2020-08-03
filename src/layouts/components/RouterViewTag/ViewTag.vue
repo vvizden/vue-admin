@@ -45,7 +45,7 @@
     <div
       v-if="data.length > 1"
       class="view-tag-close"
-      @click="handleViewTagCloseClick"
+      @click="handleViewTagCloseClick(item[dataPropsComputed.key], index)"
     >
       <i class="el-icon-close"></i>
     </div>
@@ -157,8 +157,8 @@ export default {
     handleItemCloseClick(key, index) {
       this.$emit('close', key, this.data[this.dataIndexMap[key]], index)
     },
-    handleViewTagCloseClick() {
-      this.$emit('closeAll')
+    handleViewTagCloseClick(key, index) {
+      this.$emit('closeAll', key, this.data[this.dataIndexMap[key]], index)
     },
     init() {
       this.setViewTagWidth()

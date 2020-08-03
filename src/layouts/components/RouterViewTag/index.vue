@@ -43,16 +43,14 @@ export default {
       this.$router.push(item)
     },
     handleViewTagClose(key, item) {
-      this.$store
-        .dispatch('view/delView', item.name)
-        .then(({ visitedViews }) => {
-          if (item.name === this.selectViewTag) {
-            this.toLastedView(visitedViews)
-          }
-        })
+      this.$store.dispatch('view/delView', item).then(({ visitedViews }) => {
+        if (item.name === this.selectViewTag) {
+          this.toLastedView(visitedViews)
+        }
+      })
     },
-    handleViewTagCloseAll() {
-      this.$store.dispatch('view/delOthersViews', this.selectViewTag)
+    handleViewTagCloseAll(key, item) {
+      this.$store.dispatch('view/delOthersViews', item)
     },
     addViewTag(view) {
       if (view.name) {

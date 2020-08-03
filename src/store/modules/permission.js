@@ -25,7 +25,7 @@ const actions = {
         addLeadingSlashCharacter(generateMenuRoutes(routes)),
       )
       commit(SET_MENU_ROUTES, addMenuRoutes)
-      resolve(generateAddRoutes(addMenuRoutes))
+      resolve(addLeadingSlashCharacter(generateAddRoutes(addMenuRoutes)))
     })
   },
 }
