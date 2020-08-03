@@ -24,36 +24,38 @@ export default {
       if (this.beforeSubmitForm) {
         if (!this.beforeSubmitForm()) return
       }
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          const formData = this.formToFormData()
-          let httpPromise
-          this.loading = true
-          if (this.localHttp) {
-            httpPromise = this.localHttp()
-          } else {
-            if (this.isEditForm) {
-              httpPromise = this.$http.put(this.url.edit, formData)
+      this.$nextTick(() => {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let httpPromise
+            this.loading = true
+            if (this.localHttp) {
+              httpPromise = this.localHttp()
             } else {
-              httpPromise = this.$http.post(this.url.create, formData)
-            }
-          }
-          httpPromise
-            .then((res) => {
-              this.$emit('ok')
-              this.$message.success(res.message)
-            })
-            .catch((error) => {
-              if (error) {
-                this.$message.warning(error.message || '操作失败')
+              const formData = this.formToFormData()
+              if (this.isEditForm) {
+                httpPromise = this.$http.put(this.url.edit, formData)
+              } else {
+                httpPromise = this.$http.post(this.url.create, formData)
               }
-            })
-            .finally(() => {
-              this.loading = false
-            })
-        } else {
-          return false
-        }
+            }
+            httpPromise
+              .then((res) => {
+                this.$emit('ok')
+                this.$message.success(res.message)
+              })
+              .catch((error) => {
+                if (error) {
+                  this.$message.warning(error.message || '操作失败')
+                }
+              })
+              .finally(() => {
+                this.loading = false
+              })
+          } else {
+            return false
+          }
+        })
       })
     },
   },
