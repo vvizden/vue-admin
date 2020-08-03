@@ -200,6 +200,10 @@ input:-internal-autofill-selected {
       padding-right: 8px;
     }
 
+    .el-form-item__content {
+      line-height: 1;
+    }
+
     // &:last-child {
     //   .el-form-item__content {
     //     line-height: 1;
