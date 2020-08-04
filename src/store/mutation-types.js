@@ -13,7 +13,6 @@ export const CLEAR_ERROR_LOG = 'CLEAR_ERROR_LOG'
 export const CHANGE_SETTING = 'CHANGE_SETTING'
 
 // permission module
-export const SET_USER_ADD_MENU_ROUTES = 'SET_USER_ADD_MENU_ROUTES'
 export const SET_MENU_ROUTES = 'SET_MENU_ROUTES'
 
 // user module

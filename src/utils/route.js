@@ -3,6 +3,12 @@ import { validURL } from '@/utils/validate'
 export function generateMenuRoutes(data) {
   const routes = []
   for (let item of data) {
+    let path = item.path
+    if (path == null) {
+      continue
+    }
+    path = path.trim()
+
     const URL = (item.meta.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) =>
       eval(s2),
     ) // URL支持{{ window.xxx }}占位符变量
@@ -10,7 +16,7 @@ export function generateMenuRoutes(data) {
       item.meta.url = URL
     }
 
-    let componentPath = item.component
+    let componentPath = item.component ? item.component.trim() : ''
     if (componentPath && componentPath.trim()) {
       if (componentPath.startsWith('layouts/')) {
         if (componentPath.indexOf('layouts/RouteView') !== -1) {
@@ -33,7 +39,7 @@ export function generateMenuRoutes(data) {
     }
 
     let menu = {
-      path: item.path,
+      path: path,
       name: item.name,
       component: componentPath ? () => import(`@/${componentPath}.vue`) : null,
       redirect: item.redirect,
@@ -87,7 +93,7 @@ export function generateAddRoutes(data) {
 
 export function addLeadingSlashCharacter(data) {
   return data.map((e) => {
-    if (e && e.path && e.path.trim() && !e.path.startsWith('/')) {
+    if (!e.path.startsWith('/') && e.path !== '*') {
       e.path = `/${e.path}`
     }
     return e
