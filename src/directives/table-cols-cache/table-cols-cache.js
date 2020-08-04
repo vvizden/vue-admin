@@ -5,12 +5,12 @@ const CACHE_PREFIX = 'tcc'
 
 export default {
   bind(el, binding, vnode) {
-    if (binding.arg) {
+    if (typeof binding.value == 'string' && binding.value) {
       const instance = vnode.componentInstance
       if (instance.columnsCtrl) {
         instance.columnsSortMap = Storage.get(
           `${CACHE_PREFIX}${vnode.context.$options.name || ''}_${
-            binding.arg
+            binding.value
           }_cols_sort_map`,
           null,
         )
@@ -22,7 +22,7 @@ export default {
 
         instance.checkboxVal = Storage.get(
           `${CACHE_PREFIX}${vnode.context.$options.name || ''}_${
-            binding.arg
+            binding.value
           }_cols`,
           null,
         )
@@ -30,7 +30,7 @@ export default {
     }
   },
   unbind(el, binding, vnode) {
-    if (binding.arg) {
+    if (typeof binding.value == 'string' && binding.value) {
       const instance = vnode.componentInstance
       if (instance.columnsCtrl) {
         const columnsSortMap = instance.columnsSortMap
@@ -39,7 +39,7 @@ export default {
         if (columnsSortMap) {
           Storage.set(
             `${CACHE_PREFIX}${vnode.context.$options.name || ''}_${
-              binding.arg
+              binding.value
             }_cols_sort_map`,
             columnsSortMap,
           )
@@ -48,7 +48,7 @@ export default {
         if (checkboxVal) {
           Storage.set(
             `${CACHE_PREFIX}${vnode.context.$options.name || ''}_${
-              binding.arg
+              binding.value
             }_cols`,
             checkboxVal,
           )
