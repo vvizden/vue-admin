@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import { getCurrentTimeDesc } from '@/utils/time'
 import Storage, { REMEMBER_PASSWORD_KEY } from '@/utils/storage'
 import settings from '@/settings'
 
@@ -140,7 +139,6 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(() => {
@@ -162,11 +160,6 @@ export default {
                   //   error,
                   // )
                 })
-              this.$notify.success({
-                title: '欢迎',
-                message: `${getCurrentTimeDesc()}好，欢迎回来`,
-                duration: 2500,
-              })
             })
             .catch((error) => {
               if (error) {
