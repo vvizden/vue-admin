@@ -8,6 +8,15 @@
       label-width="auto"
       class="filter-container"
     >
+      <el-form-item label="任务类名：" prop="jobClassName" class="filter-item">
+        <el-input
+          v-model="filterParams.jobClassName"
+          placeholder="任务类名"
+          clearable
+          style="width: 180px"
+        ></el-input>
+      </el-form-item>
+
       <el-form-item label="任务状态：" prop="status" class="filter-item">
         <el-select
           v-model="filterParams.status"
@@ -18,15 +27,6 @@
           <el-option label="已启动" :value="0"></el-option>
           <el-option label="已停止" :value="-1"></el-option>
         </el-select>
-      </el-form-item>
-
-      <el-form-item label="任务类名：" prop="jobClassName" class="filter-item">
-        <el-input
-          v-model="filterParams.jobClassName"
-          placeholder="任务类名"
-          clearable
-          style="width: 180px"
-        ></el-input>
       </el-form-item>
 
       <!-- 查询和重置 -->
