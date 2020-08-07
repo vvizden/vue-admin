@@ -320,10 +320,10 @@ export default {
       delete clonedData.deptIds
 
       // 去除空串的手机号和邮箱，避免数据库空串的唯一索引错误
-      if (clonedData.phone && clonedData.phone === '') {
+      if (!clonedData.phone || !clonedData.trim()) {
         delete clonedData.phone
       }
-      if (clonedData.email && clonedData.email === '') {
+      if (!clonedData.email || !clonedData.email.trim()) {
         delete clonedData.email
       }
 
