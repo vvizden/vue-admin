@@ -490,9 +490,4 @@ export default {
   font-size: 12px;
   color: $--color-text-secondary;
 }
-
-::v-deep {
-  .el-form-item__content {
-  }
-}
 </style>

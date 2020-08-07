@@ -74,3 +74,15 @@ export const dictItemUrl = {
   delete: '/sys/dictItem/delete',
   deleteBatch: '/sys/dictItem/deleteBatch',
 }
+
+// quartzJob api url
+export const quartzJobUrl = {
+  page: '/sys/quartzJob/list',
+  create: '/sys/quartzJob/add',
+  edit: '/sys/quartzJob/edit',
+  delete: '/sys/quartzJob/delete',
+  deleteBatch: '/sys/quartzJob/deleteBatch',
+  pause: '/sys/quartzJob/pause',
+  resume: '/sys/quartzJob/resume',
+  exportXls: 'sys/quartzJob/exportXls',
+}
