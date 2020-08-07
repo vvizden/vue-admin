@@ -14,7 +14,6 @@
       clearable
       @change="handleInputChange"
       @clear="handleInputClear"
-      @hook:mounted="handleInputMounted"
     >
       <template slot="prepend" v-if="selectIcon.type != null">
         <svg-icon
@@ -90,6 +89,14 @@ export default {
       },
     },
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.$nextTick(() => {
+        const input = this.$refs.referenceInput.$el
+        this.popoverWidth = input.getBoundingClientRect().width
+      })
+    })
+  },
   methods: {
     handleIconPaneClick(type, iconClass) {
       this.localValue = iconClass
@@ -100,10 +107,6 @@ export default {
     },
     handleInputClear() {
       this.selectIcon = {}
-    },
-    handleInputMounted() {
-      const input = this.$refs.referenceInput.$el
-      this.popoverWidth = input.getBoundingClientRect().width
     },
   },
 }
