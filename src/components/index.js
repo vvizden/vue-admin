@@ -3,6 +3,8 @@ import AutoRadio from './auto-radio'
 import AutoSelect from './auto-select'
 import SvgIcon from './svg-icon'
 import IconTitle from './icon-title'
+import IconPane from './icon-pane'
+import IconSelect from './icon-select'
 import Chart from './chart'
 import ElementUIExt from './element-ui-ext'
 
@@ -21,6 +23,8 @@ function install(Vue, options = {}) {
   Vue.use(AutoSelect)
   Vue.use(SvgIcon)
   Vue.use(IconTitle)
+  Vue.use(IconPane)
+  Vue.use(IconSelect)
   Vue.use(Chart)
   Vue.use(ElementUIExt)
 }
@@ -33,6 +37,8 @@ export default {
   AutoSelect,
   SvgIcon,
   IconTitle,
+  IconPane,
+  IconSelect,
   Chart,
   ElementUIExt,
 }

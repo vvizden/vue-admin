@@ -104,11 +104,12 @@
       </el-form-item>
 
       <el-form-item label="菜单图标" prop="icon">
-        <el-input
+        <!-- <el-input
           v-model.trim="ruleForm.icon"
           placeholder="请填写菜单图标"
           clearable
-        ></el-input>
+        ></el-input> -->
+        <v-icon-select v-model.trim="ruleForm.icon" />
       </el-form-item>
 
       <el-form-item label="菜单排序" prop="sortNo">
