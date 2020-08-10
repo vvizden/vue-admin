@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// eslint-disable-next-line
-import { BaseLayout, AsideLayout, MainLayout } from '@/layouts'
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = VueRouter.prototype.push
@@ -12,28 +10,6 @@ VueRouter.prototype.push = function push(location) {
 Vue.use(VueRouter)
 
 /**
- * concat asyncRoutes
- * @param routes
- */
-// eslint-disable-next-line
-export function concatAsyncRoutes(routes) {
-  return [
-    // {
-    //   path: '/',
-    //   component: AsideLayout,
-    //   redirect: '/home',
-    //   hidden: true,
-    // },
-    ...routes,
-    {
-      path: '*',
-      component: () => import(/* webpackChunkName: "fail" */ '@/views/404'),
-      hidden: true,
-    },
-  ]
-}
-
-/**
  * constantRoutes
  * a base page that does not have permission requirements
  * all roles can be accessed
@@ -41,9 +17,18 @@ export function concatAsyncRoutes(routes) {
 export const constantRoutes = [
   {
     path: '/login',
-    hidden: true,
     component: () =>
-      import(/* webpackChunkName: "login" */ '@/views/login/index'),
+      import(/* webpackChunkName: "login" */ '@/views/login/LoginCard'),
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: '/403',
+    component: () => import(/* webpackChunkName: "error" */ '@/views/403'),
+    meta: {
+      hidden: true,
+    },
   },
 ]
 

@@ -3,7 +3,9 @@
     v-model="selectViewTag"
     :data="visitedViews"
     :dataProps="dataProps"
+    @change="handleViewTagChange"
     @close="handleViewTagClose"
+    @closeAll="handleViewTagCloseAll"
   />
 </template>
 
@@ -16,9 +18,9 @@ export default {
   data() {
     return {
       dataProps: {
-        key: 'path',
+        key: 'name',
       },
-      selectViewTag: this.$route.path,
+      selectViewTag: '',
     }
   },
   computed: {
@@ -29,19 +31,40 @@ export default {
   watch: {
     $route(val) {
       this.addViewTag(val)
+      this.selectViewTag = val.name
     },
   },
-  mounted() {},
+  mounted() {
+    this.addViewTag(this.$route)
+    this.selectViewTag = this.$route.name
+  },
   methods: {
-    handleViewTagClose(key) {
-      this.tagData = this.tagData.filter((e) => {
-        return e.key != key
+    handleViewTagChange(key, item) {
+      this.$router.push(item)
+    },
+    handleViewTagClose(key, item) {
+      this.$store.dispatch('view/delView', item).then(({ visitedViews }) => {
+        if (item.name === this.selectViewTag) {
+          this.toLastedView(visitedViews)
+        }
       })
-      this.$store.dispatch('view/delView', this.$route)
+    },
+    handleViewTagCloseAll(key, item) {
+      this.$store.dispatch('view/delOthersViews', item)
     },
     addViewTag(view) {
       if (view.name) {
         this.$store.dispatch('view/addView', view)
+      }
+    },
+    toLastedView(visitedViews) {
+      let lastView = visitedViews[visitedViews.length - 1]
+      if (lastView) {
+        this.$router.push(lastView.fullPath)
+      } else {
+        const firstRoute = this.$store.getters.firstRoute
+        const toPath = firstRoute ? firstRoute.path : '/403'
+        this.$router.push(toPath)
       }
     },
   },

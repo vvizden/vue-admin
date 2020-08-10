@@ -1,6 +1,6 @@
 <template>
   <el-container class="tab-container is-vertical">
-    <!-- <RouterViewTag /> -->
+    <RouterViewTag />
     <slot></slot>
     <!-- <Footer /> -->
   </el-container>
@@ -12,8 +12,8 @@ export default {
   components: {
     // Footer: () =>
     //   import(/* webpackChunkName: "layout" */ './components/Footer'),
-    // RouterViewTag: () =>
-    //   import(/* webpackChunkName: "layout" */ './RouterViewTag'),
+    RouterViewTag: () =>
+      import(/* webpackChunkName: "layout" */ './RouterViewTag'),
   },
 }
 </script>

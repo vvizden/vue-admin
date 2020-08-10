@@ -2,14 +2,14 @@
   <div class="login-container">
     <div class="login-wraper">
       <!-- <div class="login-header">
-        宏电
       </div> -->
 
       <div class="login-figure">
         <div class="login-figure__inset"></div>
         <div class="login-figure__form">
           <div class="login-figure__title">
-            <svg-icon icon-class="app-title" />
+            <svg-icon icon-class="app-logo"></svg-icon>
+            {{ title }}
           </div>
           <el-form
             ref="loginForm"
@@ -81,13 +81,14 @@
 </template>
 
 <script>
-import { getCurrentTimeDesc } from '@/utils/time'
 import Storage, { REMEMBER_PASSWORD_KEY } from '@/utils/storage'
+import settings from '@/settings'
 
 export default {
   name: 'LoginCard',
   data() {
     return {
+      title: settings.title,
       loginForm: Storage.get(REMEMBER_PASSWORD_KEY, {
         username: '',
         password: '',
@@ -148,7 +149,7 @@ export default {
               }
               this.$router
                 .push({
-                  path: this.redirect || '/',
+                  path: '/future-home',
                   query: this.otherQuery,
                 })
                 .catch(() => {
@@ -159,11 +160,6 @@ export default {
                   //   error,
                   // )
                 })
-              this.$notify.success({
-                title: '欢迎',
-                message: `${getCurrentTimeDesc()}好，欢迎回来`,
-                duration: 2500,
-              })
             })
             .catch((error) => {
               if (error) {
@@ -209,39 +205,52 @@ export default {
 }
 
 .login-figure {
-  width: 1100px;
-  height: 560px;
+  width: 1000px;
+  height: 500px;
   display: flex;
 
-  background-color: #fff;
-  border-radius: 4px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 0 8px rgba(0, 0, 0, 0.04);
 }
 
 .login-figure__title {
-  color: $--color-primary;
-  font-size: 200px;
-  font-weight: 700;
+  color: $--color-text-primary;
+  font-size: 32px;
+  // font-weight: 700;
   text-align: center;
-  letter-spacing: 8px;
+  letter-spacing: 2px;
 
-  height: 200px;
-  line-height: 0;
+  height: 160px;
+  line-height: 160px;
   overflow: hidden;
+
+  .svg-icon {
+    color: $--color-primary;
+  }
 }
 
 .login-figure__inset {
-  width: 480px;
+  width: 500px;
 
-  background-image: url('~@/assets/images/login-inset.png');
+  background-color: #fff;
+
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+
+  background-image: url('~@/assets/images/login-feature.png');
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
 }
 
 .login-figure__form {
   flex: auto;
 
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+
   padding: 0 32px;
+  background-color: #fff;
 }
 
 .login-form {

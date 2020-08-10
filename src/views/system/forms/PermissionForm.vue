@@ -79,10 +79,10 @@
     </template>
 
     <template v-else>
-      <el-form-item label="路由路径" prop="url">
+      <el-form-item label="页面路径" prop="url">
         <el-input
           v-model.trim="ruleForm.url"
-          placeholder="请填写路由路径"
+          placeholder="请填写页面路径"
           clearable
         ></el-input>
       </el-form-item>
@@ -104,11 +104,12 @@
       </el-form-item>
 
       <el-form-item label="菜单图标" prop="icon">
-        <el-input
+        <!-- <el-input
           v-model.trim="ruleForm.icon"
           placeholder="请填写菜单图标"
           clearable
-        ></el-input>
+        ></el-input> -->
+        <v-icon-select v-model.trim="ruleForm.icon" />
       </el-form-item>
 
       <el-form-item label="菜单排序" prop="sortNo">
@@ -123,33 +124,45 @@
       <el-form-item label="路由菜单" prop="route">
         <el-switch v-model="ruleForm.route" active-text="是" inactive-text="否">
         </el-switch>
+        <span class="menu-remark">
+          用于支持多级菜单，除一级菜单以外的非叶子菜单节点，请选择否
+        </span>
       </el-form-item>
 
-      <el-form-item label="隐藏路由" prop="hidden">
+      <el-form-item label="隐藏菜单" prop="hidden">
         <el-switch
           v-model="ruleForm.hidden"
           active-text="是"
           inactive-text="否"
         >
         </el-switch>
+        <span class="menu-remark">
+          是否隐藏该菜单项
+        </span>
       </el-form-item>
 
-      <el-form-item label="缓存路由" prop="keepAlive">
+      <el-form-item label="缓存页面" prop="keepAlive">
         <el-switch
           v-model="ruleForm.keepAlive"
           active-text="是"
           inactive-text="否"
         >
         </el-switch>
+        <span class="menu-remark">
+          是否缓存该菜单对应的页面
+        </span>
       </el-form-item>
 
-      <el-form-item label="聚合路由" prop="alwaysShow">
+      <el-form-item label="强制展开" prop="alwaysShow">
         <el-switch
           v-model="ruleForm.alwaysShow"
           active-text="是"
           inactive-text="否"
         >
         </el-switch>
+        <span class="menu-remark">
+          该菜单下有且仅有一项子菜单时，会聚合成叶子菜单，若需要强制展开成父子关系，请选择是
+        </span>
       </el-form-item>
 
       <el-form-item label="打开方式" prop="internalOrExternal">
@@ -160,6 +173,9 @@
           inactive-text="内部"
         >
         </el-switch>
+        <span class="menu-remark">
+          当菜单是链接时，是系统内部还是外部打开
+        </span>
       </el-form-item>
     </template>
 
@@ -222,6 +238,7 @@ export default {
         ],
         name: [
           {
+            required: true,
             validator: (rule, value, cb) => {
               if (!value || !value.trim() || typeof value != 'string') {
                 cb(`请填写${this.nameLabel}`)
@@ -241,7 +258,7 @@ export default {
         url: [
           {
             type: 'string',
-            required: false,
+            required: true,
             whitespace: true,
             message: '请填写路由路径',
             trigger: ['change', 'blur'],
@@ -466,3 +483,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.menu-remark {
+  margin-left: 8px;
+  font-size: 12px;
+  color: $--color-text-secondary;
+}
+</style>

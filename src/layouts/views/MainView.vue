@@ -1,8 +1,8 @@
 <template>
   <el-main>
     <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
-        <router-view :key="$route.path"></router-view>
+      <keep-alive :include="cachedViewNames">
+        <router-view></router-view>
       </keep-alive>
     </transition>
   </el-main>
@@ -12,8 +12,8 @@
 export default {
   name: 'MainView',
   computed: {
-    cachedViews() {
-      return this.$store.state.view.cachedViews
+    cachedViewNames() {
+      return this.$store.state.view.cachedViewNames
     },
   },
 }

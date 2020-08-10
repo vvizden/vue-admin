@@ -84,6 +84,53 @@ function filterCols(array, filters) {
   return result
 }
 
+function shallowCopyArray(array) {
+  const arrayCopy = array.slice()
+  for (const item of arrayCopy) {
+    if (item.children) {
+      item.children = shallowCopyArray(item.children)
+    }
+  }
+  return arrayCopy
+}
+
+function sortColumns(array, sortMap) {
+  if (sortMap == null) return
+
+  array.sort((x, y) => {
+    const xKeySort = sortMap[x.prop]
+    const yKeySort = sortMap[y.prop]
+    if (xKeySort < yKeySort) {
+      return -1
+    }
+
+    if (xKeySort > yKeySort) {
+      return 1
+    }
+
+    return 0
+  })
+
+  for (const item of array) {
+    if (item.children) {
+      sortColumns(item.children, sortMap)
+    }
+  }
+
+  return array
+}
+
+function moveArrayItem(sourceIndex, targetIndex, array) {
+  const [source] = array.splice(sourceIndex, 1)
+  if (targetIndex < sourceIndex) {
+    array.splice(targetIndex, 0, source)
+  }
+
+  if (targetIndex > sourceIndex) {
+    array.splice(targetIndex, 0, source)
+  }
+}
+
 export default {
   name: `${NAME_PREFIX}Table`,
   // inheritAttrs: false,
@@ -104,15 +151,29 @@ export default {
   },
   data() {
     return {
+      columnsCopy: shallowCopyArray(this.columns),
+      columnsSortMap: null,
       currentColumns: this.columns,
       checkboxVal: null,
-      tableKey: String(Date.now()),
+      tableKey: String(Math.random() * Date.now()),
     }
   },
   computed: {
-    columnsCheckGroup() {
-      const result = deepFlatCols(this.columns)
-      return result
+    columnsCheckGroup: {
+      get() {
+        return deepFlatCols(this.columnsCopy)
+      },
+      set(val) {
+        this.columnsSortMap = val.reduce((map, e, index) => {
+          !Object.prototype.hasOwnProperty.call(map, e.key) &&
+            (map[e.key] = index)
+
+          return map
+        }, {})
+
+        this.sortColumns(this.columnsCopy, this.columnsSortMap)
+        this.columnsCheckVal = [...this.columnsCheckVal]
+      },
     },
     defaultColumnsCheckVal() {
       return this.columnsCheckGroup.map((e) => e.key)
@@ -164,8 +225,8 @@ export default {
   },
   watch: {
     columnsCheckVal(val) {
-      this.currentColumns = filterCols(this.columns, val)
-      this.tableKey = String(Date.now())
+      this.currentColumns = filterCols(this.columnsCopy, val)
+      this.tableKey = String(Math.random() * Date.now())
     },
   },
   // eslint-disable-next-line
@@ -187,9 +248,30 @@ export default {
     }
 
     if (this.columnsCtrl) {
-      const colCheckBoxes = this.columnsCheckGroup.map((checkbox) => {
+      const colCheckBoxes = this.columnsCheckGroup.map((checkbox, index) => {
         return (
-          <el-checkbox key={checkbox.key} label={checkbox.key}>
+          <el-checkbox
+            {...{
+              key: checkbox.key,
+              attrs: {
+                draggable: 'true',
+              },
+              props: {
+                label: checkbox.key,
+              },
+              nativeOn: {
+                dragstart: (e) => {
+                  this.handleDragStart(e, index)
+                },
+                dragover: (e) => {
+                  this.handleDragOver(e, index)
+                },
+                drop: (e) => {
+                  this.handleDrop(e, index)
+                },
+              },
+            }}
+          >
             {checkbox.value}
           </el-checkbox>
         )
@@ -230,6 +312,24 @@ export default {
       </div>
     )
   },
+  methods: {
+    sortColumns,
+    handleDragStart(e, index) {
+      e.dataTransfer.setData('text/plain', String(index))
+      e.dataTransfer.dropEffect = 'move'
+    },
+    handleDragOver(e) {
+      e.preventDefault()
+      e.dataTransfer.dropEffect = 'move'
+    },
+    handleDrop(e, index) {
+      e.preventDefault()
+      const sourceIndex = e.dataTransfer.getData('text/plain')
+      const columnsCheckGroup = shallowCopyArray(this.columnsCheckGroup)
+      moveArrayItem(sourceIndex, index, columnsCheckGroup)
+      this.columnsCheckGroup = columnsCheckGroup
+    },
+  },
 }
 </script>
 
@@ -249,11 +349,11 @@ export default {
 
 .el-checkbox-group ::v-deep {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
 
-  .el-checkbox:last-of-type {
-    margin-right: 30px;
+  .el-checkbox {
+    padding: 4px 0;
+    margin: 0;
   }
 }
 </style>

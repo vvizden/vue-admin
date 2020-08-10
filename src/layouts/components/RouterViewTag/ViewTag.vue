@@ -22,15 +22,16 @@
               selectItemKey === item[dataPropsComputed.key],
           },
         ]"
-        @click="handleItemClick(item, index)"
+        @click="handleItemClick(item[dataPropsComputed.key], index)"
       >
+        <span class="view-tag__title-prefix"></span>
         <span class="view-tag__title" :title="item[dataPropsComputed.title]">
           {{ item[dataPropsComputed.title] }}
         </span>
         <i
-          v-if="item[dataPropsComputed.closeable]"
+          v-if="!item[dataPropsComputed.affix]"
           class="el-icon-close"
-          @click="handleItemCloseClick(item, index)"
+          @click.stop="handleItemCloseClick(item[dataPropsComputed.key], index)"
         ></i>
       </li>
     </ul>
@@ -40,6 +41,13 @@
       @click="handleSlideRightClick"
     >
       <i class="el-icon-arrow-right"></i>
+    </div>
+    <div
+      v-if="data.length > 1"
+      class="view-tag-close"
+      @click="handleViewTagCloseClick"
+    >
+      <i class="el-icon-close"></i>
     </div>
   </div>
 </template>
@@ -71,7 +79,7 @@ export default {
       default: () => ({
         key: 'key',
         title: 'title',
-        closeable: 'closeable',
+        affix: 'affix',
       }),
     },
   },
@@ -85,11 +93,20 @@ export default {
     }
   },
   computed: {
+    dataIndexMap() {
+      return this.data.reduce((map, e, index) => {
+        let key = e[this.dataPropsComputed.key]
+        if (!Object.prototype.hasOwnProperty.call(map, key)) {
+          map[key] = index
+        }
+        return map
+      }, {})
+    },
     dataPropsComputed() {
       return {
         key: 'key',
         title: 'title',
-        closeable: 'closeable',
+        affix: 'affix',
         ...this.dataProps,
       }
     },
@@ -105,21 +122,44 @@ export default {
       }
     },
     viewTagContainerStyle() {
-      return this.minSlideX === 0 ? { paddingLeft: '0', paddingRight: '0' } : {}
+      return this.minSlideX === 0
+        ? { paddingLeft: '20px', paddingRight: '20px' }
+        : {}
+    },
+  },
+  watch: {
+    value(val) {
+      this.selectItemKey = val
+      this.moveToViewport()
+    },
+    data() {
+      this.$nextTick(() => {
+        this.setViewTagWidth()
+      })
+    },
+    viewTagContainerStyle() {
+      this.$nextTick(() => {
+        this.setViewTagWidth()
+        this.moveToViewport()
+      })
     },
   },
   mounted() {
     this.init()
   },
   methods: {
-    handleItemClick(item, index) {
-      if (this.selectItemKey !== item[this.dataPropsComputed.key]) {
-        this.selectItemKey = item[this.dataPropsComputed.key]
-        this.$emit('change', item[this.dataPropsComputed.key], item, index)
+    handleItemClick(key, index) {
+      if (this.selectItemKey !== key) {
+        this.selectItemKey = key
+        this.$emit('change', key, this.data[this.dataIndexMap[key]], index)
       }
     },
-    handleItemCloseClick(item, index) {
-      this.$emit('close', item[this.dataPropsComputed.key], item, index)
+    handleItemCloseClick(key, index) {
+      this.$emit('close', key, this.data[this.dataIndexMap[key]], index)
+    },
+    handleViewTagCloseClick() {
+      const index = this.dataIndexMap[this.selectItemKey]
+      this.$emit('closeAll', this.selectItemKey, this.data[index], index)
     },
     init() {
       this.setViewTagWidth()
@@ -146,11 +186,11 @@ export default {
       this.clientWidth = viewTag.getBoundingClientRect().width
     },
     handleSlideLeftClick() {
-      this.slideX += 120
+      this.slideX += 112
       this.slide()
     },
     handleSlideRightClick() {
-      this.slideX -= 120
+      this.slideX -= 112
       this.slide()
     },
     slide() {
@@ -172,20 +212,41 @@ export default {
       }
       this.slideX = 0
     },
+    moveToViewport() {
+      const currentActiveLength =
+        112 * (this.dataIndexMap[this.value] + 1) -
+        8 +
+        this.remainingSlideLengthToLeft
+
+      const leftHiddenLength = Math.abs(this.minSlideX)
+
+      const maxLeftLegth = leftHiddenLength + 112
+
+      if (currentActiveLength < maxLeftLegth) {
+        this.slideX += maxLeftLegth - currentActiveLength
+        this.slide()
+      }
+
+      if (currentActiveLength > this.scrollWidth) {
+        this.slideX -= currentActiveLength - this.scrollWidth
+        this.slide()
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-$--width-slide: 40px;
-$--color-feature-bg: #dee1e6;
-$--color-feature-hover: #d1d2d3;
-$--color-feature-active: #a1a2a3;
+$--width-slide: 20px;
+$--color-feature-bg: $--color-white;
+$--color-feature-hover: mix($--color-primary, #fff, 20);
+$--color-feature-active: mix($--color-primary, #fff, 40);
+$--color-border: #dfe6ec;
 
 .view-tag-container {
   flex: none;
   width: 100%;
-  height: 32px;
+  height: 33px;
   display: flex;
   flex-flow: row nowrap;
   // align-items: center;
@@ -193,11 +254,12 @@ $--color-feature-active: #a1a2a3;
 
   position: relative;
 
-  padding: 0 $--width-slide;
+  padding: 4px $--width-slide * 2 + 8px 4px $--width-slide + 8px;
   background-color: $--color-feature-bg;
+  border-bottom: 1px solid $--color-border;
 }
 
-.view-tag-slide {
+@mixin viewTagAction {
   width: $--width-slide;
   height: 100%;
   display: flex;
@@ -221,12 +283,38 @@ $--color-feature-active: #a1a2a3;
   }
 }
 
+.view-tag-slide {
+  @include viewTagAction;
+}
+
 .view-tag-slide--left {
   left: 0;
+  // border-right: 1px solid $--color-border;
+  box-shadow: 2px 0 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 .view-tag-slide--right {
+  right: $--width-slide;
+  // border-left: 1px solid $--color-border;
+  box-shadow: -2px 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.view-tag-close {
+  @include viewTagAction;
+
   right: 0;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    transform: scaleY(0.6);
+    background-color: $--color-border;
+  }
 }
 
 .view-tag {
@@ -244,12 +332,12 @@ $--color-feature-active: #a1a2a3;
 
 .view-tag__item {
   // width: 120px;
-  min-width: 120px;
+  min-width: 104px;
   display: flex;
   align-items: center;
   overflow: hidden;
   position: relative;
-  padding: 8px 28px 8px 16px;
+  padding: 0 28px 0 8px;
   // background-color: #dee1e6;
 
   white-space: nowrap;
@@ -257,8 +345,14 @@ $--color-feature-active: #a1a2a3;
   user-select: none;
   cursor: pointer;
 
+  color: #a0a0a0;
+  border: 1px solid #dfe6ec;
+  border-radius: $--border-radius-small;
+
   &:hover {
-    background-color: #f1f2f3;
+    // background-color: #f1f2f3;
+    color: $--color-primary;
+    border-color: $--color-primary;
 
     .el-icon-close {
       visibility: visible;
@@ -266,22 +360,27 @@ $--color-feature-active: #a1a2a3;
   }
 }
 
-.view-tag__item--selected {
-  color: $--color-primary;
-  background-color: #fff;
+.view-tag__item + .view-tag__item {
+  margin-left: 8px;
 }
 
-.view-tag__item::after {
-  content: '';
-  display: inline-block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  transform: scaleY(0.8);
-  background-color: #8b8e92;
+.view-tag__item--selected {
+  color: $--color-primary;
+  // background-color: #fff;
+  border-color: $--color-primary;
 }
+
+// .view-tag__item::after {
+//   content: '';
+//   display: inline-block;
+//   position: absolute;
+//   right: 0;
+//   top: 0;
+//   width: 1px;
+//   height: 100%;
+//   transform: scaleY(0.8);
+//   background-color: #8b8e92;
+// }
 
 .view-tag__title {
   display: inline-block;
@@ -290,7 +389,19 @@ $--color-feature-active: #a1a2a3;
   text-overflow: ellipsis;
 }
 
-.el-icon-close {
+.view-tag__title-prefix {
+  flex: none;
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+
+  margin-right: 6px;
+
+  background-color: currentColor;
+}
+
+.view-tag__item > .el-icon-close {
   position: absolute;
   right: 8px;
   top: 50%;

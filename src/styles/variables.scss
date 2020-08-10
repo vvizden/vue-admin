@@ -3,23 +3,35 @@
 // 小圆角
 $--border-radius-small: 2px !default;
 
+// color
+$--color-white: #ffffff !default;
+
 /* theme color */
 // $--color-primary: #1890ff;
 $--color-primary: #4876e7;
-$--color-success: #13ce66;
-$--color-warning: #ffba00;
-$--color-danger: #ff4949;
-$--color-info: #1e1e1e;
+// $--color-success: #13ce66;
+// $--color-warning: #ffba00;
+// $--color-danger: #ff4949;
+// $--color-info: #1e1e1e;
 
-$--button-font-weight: 400;
+// $--button-font-weight: 400;
 
-// $--color-text-regular: #1f2d3d;
+// $--color-text-primary: #303133 !default;
+$--color-text-primary: #303133 !default;
+$--color-text-regular: #606266 !default;
+$--color-text-secondary: #909399 !default;
 
-$--border-color-light: #dfe4ed;
-$--border-color-lighter: #e6ebf5;
+$--color-primary-light-9: mix(
+  $--color-white,
+  $--color-primary,
+  90%
+) !default; /* ecf5ff */
 
-// Table
-$--table-border: 1px solid #dfe6ec;
+// $--border-color-light: #dfe4ed;
+// $--border-color-lighter: #e6ebf5;
+
+// // Table
+// $--table-border: 1px solid #dfe6ec;
 
 // Alert
 $--alert-border-radius: $--border-radius-small;
@@ -56,6 +68,9 @@ $--transfer-border-radius: $--border-radius-small;
 
 // Popup
 $--popup-modal-opacity: 0.06;
+
+// Menu
+$--menu-item-hover-fill: $--color-primary-light-9 !default;
 
 /* elment ui */
 
@@ -99,7 +114,7 @@ $sideBarCollapseWidth: 56px;
 
 $sideBarBorderRight: 1px solid #dfe6ec;
 
-$sideBarBoxShadow: 0 0 8px 0 rgba(29, 35, 41, 0.28);
+$sideBarBoxShadow: 0 0 4px 0 rgba(29, 35, 41, 0.28);
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

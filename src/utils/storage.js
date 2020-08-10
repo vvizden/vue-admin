@@ -13,9 +13,9 @@ export const SIDEBAR_COLLAPSE_KEY = 'sidebar_is_collapse'
 // element_ui_size key
 export const ELEMENT_UI_SIZE_KEY = 'element_ui_size'
 // dict key
-export const DICT_KEY = 'dict_key'
+export const DICT_KEY = 'dict_all'
 // remember password key
-export const REMEMBER_PASSWORD_KEY = 'remember_password_key'
+export const REMEMBER_PASSWORD_KEY = 'remember_password'
 
 Vue.use(Storage, {
   // key prefix

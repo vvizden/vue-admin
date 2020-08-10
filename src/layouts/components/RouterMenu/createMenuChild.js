@@ -3,7 +3,7 @@ import { isExternal } from '@/utils/validate'
 import Item from './Item'
 
 export function createMenuChild(item, basePath) {
-  if (item.hidden) return null
+  if (item.meta.hidden) return null
 
   const showSunMenu = showSubMenuOrItem(item, basePath)
 
@@ -86,7 +86,7 @@ function createElMenuItem(item, basePath) {
 
 // 返回 true，说明item是subMenu, 返回 false 或 object 说明是替换父级展示的菜单
 function showSubMenuOrItem(item) {
-  if (item.alwaysShow) {
+  if (item.meta.alwaysShow) {
     return true
   }
 
@@ -94,7 +94,7 @@ function showSubMenuOrItem(item) {
     if (item.children.length === 0) {
       return true
     } else {
-      const childrenShown = item.children.filter((e) => !e.hidden)
+      const childrenShown = item.children.filter((e) => !e.meta.hidden)
       if (childrenShown.length === 0) {
         return true
       } else if (childrenShown.length === 1) {

@@ -3,6 +3,12 @@ import { validURL } from '@/utils/validate'
 export function generateMenuRoutes(data) {
   const routes = []
   for (let item of data) {
+    let path = item.path
+    if (path == null) {
+      continue
+    }
+    path = path.trim()
+
     const URL = (item.meta.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) =>
       eval(s2),
     ) // URL支持{{ window.xxx }}占位符变量
@@ -10,58 +16,74 @@ export function generateMenuRoutes(data) {
       item.meta.url = URL
     }
 
-    let componentPath = item.component
+    let componentPath = item.component ? item.component.trim() : ''
     if (componentPath && componentPath.trim()) {
-      if (componentPath.indexOf('layouts/') === -1) {
-        if (componentPath.indexOf('views/') === -1) {
-          componentPath = `views/${componentPath}`
-        }
-      } else {
+      if (componentPath.startsWith('layouts/')) {
         if (componentPath.indexOf('layouts/RouteView') !== -1) {
           componentPath = 'layouts/AsideLayout'
+        }
+      } else {
+        if (!componentPath.startsWith('views/')) {
+          componentPath = `views/${componentPath}`
         }
       }
     } else {
       componentPath = ''
     }
 
+    let componentName = ''
+    if (componentPath.startsWith('views/')) {
+      componentName = componentPath.match(
+        /(?<=views\/.*)[^/]+(?=\/index|$)/i,
+      )[0]
+    }
+
     let menu = {
-      path: item.path,
+      path: path,
       name: item.name,
+      component: componentPath ? () => import(`@/${componentPath}.vue`) : null,
       redirect: item.redirect,
-      component: componentPath && (() => import(`@/${componentPath}.vue`)),
-      hidden: item.hidden,
       meta: {
+        hidden: item.hidden,
+        alwaysShow: !!item.alwaysShow,
+        componentName: componentName,
         title: item.meta.title,
         icon: item.meta.icon,
         url: item.meta.url,
-        noCache: !item.meta.keepAlive,
+        keepAlive: item.meta.keepAlive,
         externalLink: item.meta.internalOrExternal,
+        notRouteMenu: !!item.route && item.route === '0',
       },
     }
 
     if (item.children && item.children.length > 0) {
       menu.children = generateMenuRoutes(item.children)
     }
-    //--update-begin----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
-    //判断是否生成路由
-    if (!item.route || item.route !== '0') {
-      routes.push(menu)
-    }
-    //--update-end----author:scott---date:20190320------for:根据后台菜单配置，判断是否路由菜单字段，动态选择是否生成路由（为了支持参数URL菜单）------
+
+    routes.push(menu)
   }
   return routes
 }
 
 export function generateAddRoutes(data) {
-  const routes = []
+  let routes = []
   for (let item of data) {
     let copyItem = { ...item }
-    let url = copyItem.meta && copyItem.meta.url
-    let externalLink = copyItem.meta && copyItem.meta.externalLink
+    let { meta, children } = copyItem
+    let notRouteMenu = meta && meta.notRouteMenu
+    if (notRouteMenu) {
+      if (children && children.length > 0) {
+        routes = routes.concat(generateAddRoutes(children))
+      }
+
+      continue
+    }
+
+    let url = meta && meta.url
+    let externalLink = meta && meta.externalLink
     if (!url || !externalLink) {
-      if (copyItem.children && copyItem.children.length > 0) {
-        copyItem.children = generateAddRoutes(copyItem.children)
+      if (children && children.length > 0) {
+        copyItem.children = generateAddRoutes(children)
       }
       routes.push(copyItem)
     }
@@ -71,7 +93,7 @@ export function generateAddRoutes(data) {
 
 export function addLeadingSlashCharacter(data) {
   return data.map((e) => {
-    if (e && e.path && e.path.trim() && !e.path.startsWith('/')) {
+    if (!e.path.startsWith('/') && e.path !== '*') {
       e.path = `/${e.path}`
     }
     return e

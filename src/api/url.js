@@ -11,7 +11,6 @@ export const userUrl = {
   userDepts: '/sys/user/userDepartList',
   login: '/sys/login',
   logout: '/sys/logout',
-  permissions: '/sys/permission/getUserPermissionByToken',
 }
 
 // 角色 api url
@@ -46,6 +45,7 @@ export const systemUrl = {
 export const permissionUrl = {
   list: '/sys/permission/list',
   treeList: '/sys/permission/queryTreeList',
+  permissions: '/sys/permission/getUserPermissionByToken',
   permissionList: '/sys/permission/queryRolePermission',
   create: '/sys/permission/add',
   saveRolePermission: '/sys/permission/saveRolePermission',
@@ -66,11 +66,23 @@ export const dictUrl = {
   exportXls: '/sys/dict/exportXls',
 }
 
-// 数据字典 api url
+// 数据字典配置项 api url
 export const dictItemUrl = {
   page: '/sys/dictItem/list',
   create: '/sys/dictItem/add',
   edit: '/sys/dictItem/edit',
   delete: '/sys/dictItem/delete',
   deleteBatch: '/sys/dictItem/deleteBatch',
+}
+
+// quartzJob api url
+export const quartzJobUrl = {
+  page: '/sys/quartzJob/list',
+  create: '/sys/quartzJob/add',
+  edit: '/sys/quartzJob/edit',
+  delete: '/sys/quartzJob/delete',
+  deleteBatch: '/sys/quartzJob/deleteBatch',
+  pause: '/sys/quartzJob/pause',
+  resume: '/sys/quartzJob/resume',
+  exportXls: 'sys/quartzJob/exportXls',
 }

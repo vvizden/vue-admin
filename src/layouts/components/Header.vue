@@ -2,6 +2,7 @@
   <el-header class="layout-header">
     <div class="layout-header__item">
       <span class="title">
+        <svg-icon icon-class="app-logo"></svg-icon>
         {{ title }}
       </span>
     </div>
@@ -40,7 +41,8 @@ export default {
 
   .title {
     color: #fff;
-    font-size: 18px;
+    font-size: 24px;
+    letter-spacing: 2px;
   }
 
   .right-item {

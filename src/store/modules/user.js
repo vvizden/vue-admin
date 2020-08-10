@@ -48,11 +48,12 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  logout({ commit, dispatch, state }) {
     return logout(state.token).then(() => {
       commit(SET_TOKEN, '')
       commit(SET_INFO, {})
       commit(`app/${SET_DICT}`, {}, { root: true })
+      dispatch(`view/delAllViews`, {}, { root: true })
       commit(SET_PERSSIONS, {})
       removeToken()
       Storage.remove(USER_INFO_KEY)
@@ -87,11 +88,12 @@ const actions = {
   },
 
   // remove token
-  resetToken({ commit }) {
+  resetToken({ commit, dispatch }) {
     return new Promise((resolve) => {
       commit(SET_TOKEN, '')
       commit(SET_INFO, {})
       commit(`app/${SET_DICT}`, {}, { root: true })
+      dispatch(`view/delAllViews`, {}, { root: true })
       commit(SET_PERSSIONS, {})
       removeToken()
       Storage.remove(USER_INFO_KEY)

@@ -15,6 +15,8 @@ module.exports = {
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
   publicPath: '/',
+  lintOnSave: process.env.NODE_ENV === 'development',
+  productionSourceMap: false,
   devServer: {
     port: 3001,
     open: true,
@@ -35,6 +37,9 @@ module.exports = {
     },
   },
   chainWebpack(config) {
+    // when there are many pages, it will cause too many meaningless requests
+    config.plugins.delete('prefetch')
+
     // set svg-sprite-loader
     config.module
       .rule('svg')
