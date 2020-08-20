@@ -3,7 +3,7 @@ import { isExternal } from '@/utils/validate'
 import Item from './Item'
 
 export function createMenuChild(item, basePath) {
-  if (item.meta.hidden) return null
+  if (item.meta && item.meta.hidden) return null
 
   const showSunMenu = showSubMenuOrItem(item, basePath)
 
@@ -50,7 +50,7 @@ function createElMenuItem(item, basePath) {
   const h = this.$createElement
 
   const path = resolvePath(item.path, basePath)
-  const externalLink = item.meta.externalLink
+  const externalLink = item.meta ? item.meta.externalLink : false
 
   const scopedSlots = {
     // eslint-disable-next-line
@@ -86,7 +86,7 @@ function createElMenuItem(item, basePath) {
 
 // 返回 true，说明item是subMenu, 返回 false 或 object 说明是替换父级展示的菜单
 function showSubMenuOrItem(item) {
-  if (item.meta.alwaysShow) {
+  if (item.meta && item.meta.alwaysShow) {
     return true
   }
 
@@ -94,7 +94,9 @@ function showSubMenuOrItem(item) {
     if (item.children.length === 0) {
       return true
     } else {
-      const childrenShown = item.children.filter((e) => !e.meta.hidden)
+      const childrenShown = item.children.filter(
+        (e) => !e.meta || !e.meta.hidden,
+      )
       if (childrenShown.length === 0) {
         return true
       } else if (childrenShown.length === 1) {

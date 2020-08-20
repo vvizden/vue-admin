@@ -175,6 +175,8 @@ input:-internal-autofill-selected {
   overflow: auto;
   display: flex;
   flex-flow: column nowrap;
+
+  background-color: #fff;
 }
 
 .pagination-container {
