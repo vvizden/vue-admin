@@ -106,14 +106,7 @@ export default {
       this.loading = true
       this.$http
         .delete(this.url.deleteBatch, {
-          ids: this.selectedRows
-            .map((e) => {
-              if (this.getRowKey) {
-                return e[this.getRowKey(e)]
-              }
-              return e[this.rowKey]
-            })
-            .join(','),
+          ids: this.selectedRowKeys.join(','),
         })
         .then((res) => {
           this.selectedRows = []
