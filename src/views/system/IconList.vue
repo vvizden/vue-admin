@@ -19,9 +19,26 @@ export default {
         iconClass,
       }
 
-      navigator.clipboard.writeText(iconClass).then(() => {
-        this.$message.success(`${iconClass} 已复制到剪贴板`)
-      })
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(iconClass).then(() => {
+          this.$message.success(`${iconClass} 已复制到剪贴板`)
+        })
+      } else {
+        const input = document.createElement('input')
+        document.body.appendChild(input)
+        input.value = iconClass
+        input.focus()
+        input.select()
+
+        const result = document.execCommand('copy')
+        if (result === 'unsuccessful') {
+          console.error('Failed to copy text.')
+        } else {
+          this.$message.success(`${iconClass} 已复制到剪贴板`)
+        }
+
+        document.body.removeChild(input)
+      }
     },
   },
 }
