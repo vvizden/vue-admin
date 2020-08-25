@@ -85,6 +85,8 @@ export function generateAddRoutes(data) {
       if (children && children.length > 0) {
         copyItem.children = generateAddRoutes(children)
       }
+      copyItem.path = copyItem.path.replace(/\?.*$/, '')
+      copyItem.props = (route) => ({ ...route.query })
       routes.push(copyItem)
     }
   }
