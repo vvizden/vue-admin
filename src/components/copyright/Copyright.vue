@@ -2,9 +2,7 @@
   <div class="copyright">
     <p class="copyright__content">
       Copyright @ 2020
-      <a class="copyright__link" href="http://www.hongdian.com" target="_blank"
-        >深圳市宏电技术股份有限公司</a
-      >
+      <a class="copyright__link" href="#" target="_blank">Your Company</a>
       版权所有
     </p>
   </div>
