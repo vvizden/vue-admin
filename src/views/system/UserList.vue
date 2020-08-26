@@ -14,8 +14,8 @@
           clearable
           style="width: 140px"
         >
-          <el-option label="男" value="1"> </el-option>
-          <el-option label="女" value="2"> </el-option>
+          <el-option label="男" value="1"></el-option>
+          <el-option label="女" value="2"></el-option>
         </el-select>
       </el-form-item>
 
@@ -26,8 +26,8 @@
           clearable
           style="width: 140px"
         >
-          <el-option label="正常" :value="1"> </el-option>
-          <el-option label="冻结" :value="2"> </el-option>
+          <el-option label="正常" :value="1"></el-option>
+          <el-option label="冻结" :value="2"></el-option>
         </el-select>
       </el-form-item>
 
@@ -59,17 +59,16 @@
       </el-form-item>
 
       <el-form-item class="filter-item">
-        <el-button type="primary" icon="el-icon-search" @click="loadData">
-          查询
-        </el-button>
+        <el-button type="primary" icon="el-icon-search" @click="loadData"
+          >查询</el-button
+        >
         <el-button
           type="primary"
           plain
           icon="el-icon-refresh-left"
           @click="handleResetClick('filterForm')"
+          >重置</el-button
         >
-          重置
-        </el-button>
       </el-form-item>
     </el-form>
 
@@ -84,6 +83,7 @@
       highlight-current-row
       height="100%"
       class="table-border--hidden"
+      v-table-cols-cache="'UserList'"
       :columns-ctrl="columnsCtrl"
       @selection-change="handleSelectionChange"
     >
@@ -94,20 +94,19 @@
             type="primary"
             icon="el-icon-circle-plus-outline"
             @click="handleCreateClick"
+            >创建</el-button
           >
-            创建
-          </el-button>
 
           <el-button
             type="primary"
             plain
             icon="el-icon-download"
             @click="exportXls('用户列表')"
+            >导出</el-button
           >
-            导出
-          </el-button>
 
           <el-popconfirm
+            v-permission="['user:del:batch']"
             cancelButtonType="default"
             title="确定删除吗？"
             style="margin-left: 10px;"
@@ -119,9 +118,8 @@
               type="primary"
               plain
               icon="el-icon-delete"
+              >批量删除</el-button
             >
-              批量删除
-            </el-button>
           </el-popconfirm>
         </div>
       </template>
@@ -134,23 +132,74 @@
           style="vertical-align: middle;"
         ></el-avatar>
       </template>
+      <!-- 自定义操作列内容，需要配合 scopedSlots: true -->
       <template #action="{ row }">
         <el-button
+          v-permission="['user:edit']"
           type="text"
           icon="el-icon-edit-outline"
           @click.stop="handleEditClick(row)"
           >编辑</el-button
         >
-        <el-divider direction="vertical" />
-        <el-popconfirm
-          cancelButtonType="default"
-          title="确定删除吗？"
-          @onConfirm="handleDeleteClick(row)"
+
+        <el-divider
+          v-if="
+            checkPermission([
+              'user:edit',
+              'user:menu:auth',
+              'user:password:reset',
+              'user:del',
+            ])
+          "
+          direction="vertical"
+        />
+
+        <el-dropdown
+          v-if="
+            checkPermission([
+              'user:menu:auth',
+              'user:password:reset',
+              'user:del',
+            ])
+          "
+          :hide-on-click="false"
         >
-          <el-button slot="reference" type="text" icon="el-icon-delete"
-            >删除</el-button
-          >
-        </el-popconfirm>
+          <el-button type="text">
+            更多
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-permission="['user:menu:auth']">
+              <el-button
+                type="text"
+                icon="el-icon-menu"
+                @click="handleAuthClick(row)"
+                >授权</el-button
+              >
+            </el-dropdown-item>
+            <el-dropdown-item v-permission="['user:password:reset']">
+              <el-button
+                type="text"
+                icon="el-icon-key"
+                @click="handleResetPasswordClick(row)"
+                >重置密码</el-button
+              >
+            </el-dropdown-item>
+            <el-popconfirm
+              v-permission="['user:del']"
+              :visible-arrow="false"
+              placement="left-end"
+              cancelButtonType="default"
+              title="确定删除吗？"
+              @onConfirm="handleDeleteClick(row)"
+            >
+              <el-dropdown-item slot="reference">
+                <el-button type="text" icon="el-icon-delete">删除</el-button>
+              </el-dropdown-item>
+            </el-popconfirm>
+          </el-dropdown-menu>
+        </el-dropdown>
       </template>
     </v-table>
 
@@ -173,20 +222,120 @@
         <UserForm :model="editRow" @ok="handleFormOk" />
       </v-scroll-container>
     </el-dialog>
+
+    <!-- 弹窗授权 -->
+    <el-dialog
+      v-el-dialog-drag
+      title="授权"
+      top="6vh"
+      width="700px"
+      :visible.sync="authContainerVisible"
+      @closed="handleAuthContainerClosed"
+    >
+      <v-scroll-container
+        style="height: 500px;"
+        class="dialog-inner"
+        v-if="authContainerInnerVisible"
+      >
+        <!-- 授权组件，存放于同级forms目录下 -->
+        <StUserRole :model="authRow" @ok="handleRoleAuthFormOk" />
+      </v-scroll-container>
+    </el-dialog>
+
+    <ResetPasswordModal
+      :visible.sync="resetPasswordModalVisible"
+      :model="resetPasswordModel"
+      @ok="handleResetPasswordOk"
+    />
   </div>
 </template>
 
 <script>
 import { PageTableMixin, CurdMixin, ExportMixin } from '@/mixins'
 import { userUrl } from '@/api/url'
+import { checkPermission } from '@/utils/permission'
 
 export default {
   name: 'UserList',
   mixins: [PageTableMixin, CurdMixin, ExportMixin],
   components: {
     UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
+    StUserRole: () =>
+      import(/* webpackChunkName: "system" */ './forms/StUserRole'),
+    ResetPasswordModal: () =>
+      import(
+        /* webpackChunkName: "system" */ './components/ResetPasswordModal'
+      ),
   },
   data() {
+    const columns = [
+      {
+        label: '多选',
+        prop: 'selection',
+        type: 'selection',
+        align: 'center',
+      },
+      {
+        label: '用户账号',
+        prop: 'username',
+        align: 'center',
+      },
+      {
+        label: '用户姓名',
+        prop: 'realname',
+        align: 'center',
+      },
+      {
+        label: '头像',
+        prop: 'avatar',
+        align: 'center',
+        scopedSlots: true,
+      },
+
+      {
+        label: '性别',
+        prop: 'sex_dictText',
+        align: 'center',
+      },
+      {
+        label: '生日',
+        prop: 'birthday',
+        align: 'center',
+      },
+      {
+        label: '手机号码',
+        prop: 'phone',
+        align: 'center',
+      },
+      {
+        label: '部门',
+        prop: 'orgCode',
+        align: 'center',
+      },
+      {
+        label: '状态',
+        prop: 'status_dictText',
+        align: 'center',
+      },
+    ]
+
+    if (
+      checkPermission([
+        'user:edit',
+        'user:menu:auth',
+        'user:password:reset',
+        'user:del',
+      ])
+    ) {
+      columns.push({
+        label: '操作',
+        prop: 'action',
+        align: 'center',
+        width: '140px',
+        scopedSlots: true,
+      })
+    }
+
     return {
       // 接口url
       url: {
@@ -197,63 +346,7 @@ export default {
       },
       // begin ----> table
       // 表格列
-      columns: [
-        {
-          label: '多选',
-          prop: 'selection',
-          type: 'selection',
-          align: 'center',
-        },
-        {
-          label: '用户账号',
-          prop: 'username',
-          align: 'center',
-        },
-        {
-          label: '用户姓名',
-          prop: 'realname',
-          align: 'center',
-        },
-        {
-          label: '头像',
-          prop: 'avatar',
-          align: 'center',
-          scopedSlots: true,
-        },
-
-        {
-          label: '性别',
-          prop: 'sex_dictText',
-          align: 'center',
-        },
-        {
-          label: '生日',
-          prop: 'birthday',
-          align: 'center',
-        },
-        {
-          label: '手机号码',
-          prop: 'phone',
-          align: 'center',
-        },
-        {
-          label: '部门',
-          prop: 'orgCode',
-          align: 'center',
-        },
-        {
-          label: '状态',
-          prop: 'status_dictText',
-          align: 'center',
-        },
-        {
-          label: '操作',
-          prop: 'action',
-          align: 'center',
-          width: '140px',
-          scopedSlots: true,
-        },
-      ],
+      columns: columns,
       // 排序条件
       sortord: {
         column: 'createTime',
@@ -273,10 +366,40 @@ export default {
         },
       },
       // end <---- table
+      authContainerVisible: false,
+      authContainerInnerVisible: true,
+      authRow: {},
+      resetPasswordModalVisible: false,
+      resetPasswordModel: {},
     }
   },
   mounted() {
     this.loadData()
+  },
+  methods: {
+    checkPermission,
+    handleAuthClick(row) {
+      this.authRow = row
+      this.authContainerInnerVisible = true
+      this.$nextTick(() => {
+        this.authContainerVisible = true
+      })
+    },
+    handleResetPasswordClick(row) {
+      this.resetPasswordModel = {
+        username: row.username,
+      }
+      this.resetPasswordModalVisible = true
+    },
+    handleResetPasswordOk() {
+      this.resetPasswordModalVisible = false
+    },
+    handleAuthContainerClosed() {
+      this.authContainerInnerVisible = false
+    },
+    handleRoleAuthFormOk() {
+      this.authContainerVisible = false
+    },
   },
 }
 </script>

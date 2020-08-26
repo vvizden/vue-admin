@@ -135,7 +135,7 @@ export default {
     this.loadData().then(() => {
       this.$refs.deptTree
         .getTreeInstance()
-        .setCurrentKey(this.deptTreeData[0] ? this.deptTreeData[0] : null)
+        .setCurrentKey(this.deptTreeData[0] ? this.deptTreeData[0].value : null)
 
       this.editRow = this.deptTreeData[0] ? this.deptTreeData[0] : {}
       this.infoTitle = `${this.editRow.departName} 基本信息`

@@ -77,7 +77,47 @@
           >编辑</el-button
         >
         <el-divider direction="vertical" />
+
+        <el-dropdown v-if="row.menuType !== 2" :hide-on-click="false">
+          <el-button type="text">
+            更多<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <el-button
+                type="text"
+                icon="el-icon-edit-outline"
+                @click.stop="handleCreateClickProxy(row, 1)"
+                >创建子菜单</el-button
+              >
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button
+                type="text"
+                icon="el-icon-edit-outline"
+                @click.stop="handleCreateClickProxy(row, 2)"
+                >创建按钮/权限</el-button
+              >
+            </el-dropdown-item>
+            <el-popconfirm
+              :visible-arrow="false"
+              placement="left-end"
+              cancelButtonType="default"
+              title="确定删除吗？"
+              @onConfirm="handleDeleteClick(row)"
+            >
+              <el-dropdown-item slot="reference">
+                <el-button type="text" icon="el-icon-delete">
+                  删除
+                </el-button>
+              </el-dropdown-item>
+            </el-popconfirm>
+          </el-dropdown-menu>
+        </el-dropdown>
+
         <el-popconfirm
+          v-else
           cancelButtonType="default"
           title="确定删除吗？"
           @onConfirm="handleDeleteClick(row)"
@@ -144,9 +184,9 @@ export default {
           align: 'left',
           formatter: function(row, column, value) {
             if (value == 0) {
-              return '菜单'
+              return '一级菜单'
             } else if (value == 1) {
-              return '菜单'
+              return '子菜单'
             } else if (value == 2) {
               return '按钮/权限'
             } else {
@@ -180,7 +220,7 @@ export default {
           label: '操作',
           prop: 'action',
           align: 'center',
-          width: '140px',
+          width: '160px',
           scopedSlots: true,
         },
       ],
@@ -196,6 +236,14 @@ export default {
   },
   mounted() {
     this.loadData()
+  },
+  methods: {
+    handleCreateClickProxy(row, menuType) {
+      this.handleCreateClick({
+        parentId: row.id,
+        menuType: menuType,
+      })
+    },
   },
 }
 </script>

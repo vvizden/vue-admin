@@ -1,6 +1,6 @@
 function getFirstRoute(data) {
   for (const route of data) {
-    if (route.meta && !route.meta.notRouteMenu && !route.meta.hidden) {
+    if (!route.meta || (!route.meta.notRouteMenu && !route.meta.hidden)) {
       if (route.children && route.children.length > 0) {
         return getFirstRoute(route.children)
       }
