@@ -29,6 +29,8 @@ writing...
 
 ## 快速开始
 
+本仓库系前端项目，后端项目请前往 [jeecg-boot](https://github.com/zhangdaiscott/jeecg-boot/) 自行下载。
+
 ```bash
 # 下载
 git clone https://github.com/vvizden/vue-admin
