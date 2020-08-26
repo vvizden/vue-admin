@@ -4,6 +4,7 @@ export const userUrl = {
   create: '/sys/user/add',
   edit: '/sys/user/edit',
   updatePassword: '/sys/user/updatePassword',
+  resetPassword: '/sys/user/changePassword',
   delete: '/sys/user/delete',
   deleteBatch: '/sys/user/deleteBatch',
   exportXls: '/sys/user/exportXls',
