@@ -6,7 +6,7 @@ vue, element-ui, springboot 后台管理系统精简整合方案，UI风格简�
 
 ## 为什么造轮子
 
-团队对 jeect-boot 服务端的技术栈比较熟悉，但 jeect-boot 前端工程是基于 ant design vue 组件库搭建的，出于团队规模和开发体验考虑，选择了 element-ui 组件库。又因，个人并没有在网上找到合适的，jeecg-boot 服务端技术栈 + element-ui-vue 前后分离的后台管理系统的整套方案。最重要的一点，vue-element-admin 以及相关的 stars 排名靠前的后台管理系统的 UI 风格，并不受个人青睐，而且某些后台管理系统集成了一些，个人认为对于最小配置来说是 "多余" 的功能或技术，故造此轮子。
+团队对 jeect-boot 服务端的技术栈比较熟悉，但 jeect-boot 前端工程是基于 ant design vue 组件库搭建的，出于团队能力和开发体验考虑，选择了 element-ui 组件库。又因，个人并没有在网上找到合适的，jeecg-boot 服务端技术栈 + element-ui-vue 前后分离的后台管理系统的整套方案。最重要的一点，vue-element-admin 以及相关的 stars 排名靠前的后台管理系统的 UI 风格，并不受个人青睐，而且某些后台管理系统集成了一些，个人认为对于最小配置来说是 "多余" 的功能或技术，故造此轮子。
 
 ## 特色
 
