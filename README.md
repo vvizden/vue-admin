@@ -25,7 +25,100 @@ vue, element-ui, springboot 后台管理系统精简整合方案，UI风格简�
 
 ## 项目目录
 
-writing...
+```txt
+📦vue-admin
+ ┣ 📂docs
+ ┃ ┣ 📜开发指南.md
+ ┃ ┗ 📜组件指南.md
+ ┣ 📂public
+ ┃ ┣ 📜favicon.ico
+ ┃ ┗ 📜index.html
+ ┣ 📂src
+ ┃ ┣ 📂api
+ ┃ ┣ 📂assets
+ ┃ ┃ ┗ 📂images
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂auto-radio
+ ┃ ┃ ┣ 📂auto-select
+ ┃ ┃ ┣ 📂chart
+ ┃ ┃ ┣ 📂const
+ ┃ ┃ ┣ 📂copyright
+ ┃ ┃ ┣ 📂element-ui-ext
+ ┃ ┃ ┃ ┣ 📂pagination
+ ┃ ┃ ┃ ┣ 📂scroll-container
+ ┃ ┃ ┃ ┣ 📂table
+ ┃ ┃ ┃ ┣ 📂tree
+ ┃ ┃ ┃ ┗ 📜index.js
+ ┃ ┃ ┣ 📂icon-pane
+ ┃ ┃ ┣ 📂icon-select
+ ┃ ┃ ┣ 📂icon-title
+ ┃ ┃ ┣ 📂svg-icon
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂directives
+ ┃ ┃ ┣ 📂el-dialog-drag
+ ┃ ┃ ┣ 📂permission
+ ┃ ┃ ┣ 📂table-cols-cache
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂filters
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂icons
+ ┃ ┃ ┣ 📂svg
+ ┃ ┃ ┃ ┣ 📜home.svg
+ ┃ ┃ ┃ ┗ 📜setting.svg
+ ┃ ┃ ┣ 📜index.js
+ ┃ ┃ ┗ 📜svgo.yml
+ ┃ ┣ 📂layouts
+ ┃ ┣ 📂mixins
+ ┃ ┣ 📂router
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂store
+ ┃ ┃ ┣ 📂modules
+ ┃ ┃ ┃ ┣ 📜app.js
+ ┃ ┃ ┃ ┣ 📜permission.js
+ ┃ ┃ ┃ ┣ 📜user.js
+ ┃ ┃ ┃ ┗ 📜view.js
+ ┃ ┃ ┣ 📜getters.js
+ ┃ ┃ ┣ 📜index.js
+ ┃ ┃ ┗ 📜mutation-types.js
+ ┃ ┣ 📂styles
+ ┃ ┣ 📂utils
+ ┃ ┣ 📂views
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┣ 📂system
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┣ 📂forms
+ ┃ ┃ ┃ ┣ 📜DepartList.vue
+ ┃ ┃ ┃ ┣ 📜DictItemList.vue
+ ┃ ┃ ┃ ┣ 📜DictList.vue
+ ┃ ┃ ┃ ┣ 📜IconList.vue
+ ┃ ┃ ┃ ┣ 📜PermissionList.vue
+ ┃ ┃ ┃ ┣ 📜QuartzJobList.vue
+ ┃ ┃ ┃ ┣ 📜RoleUserList.vue
+ ┃ ┃ ┃ ┗ 📜UserList.vue
+ ┃ ┃ ┣ 📜403.vue
+ ┃ ┃ ┣ 📜404.vue
+ ┃ ┃ ┗ 📜IframeView.vue
+ ┃ ┣ 📜App.vue
+ ┃ ┣ 📜main.js
+ ┃ ┣ 📜permission.js
+ ┃ ┗ 📜settings.js
+ ┣ 📂tests
+ ┃ ┗ 📂unit
+ ┃ ┃ ┗ 📜example.spec.js
+ ┣ 📜.browserslistrc
+ ┣ 📜.env
+ ┣ 📜.eslintignore
+ ┣ 📜.eslintrc.js
+ ┣ 📜.gitignore
+ ┣ 📜.prettierrc.js
+ ┣ 📜babel.config.js
+ ┣ 📜jest.config.js
+ ┣ 📜LICENSE
+ ┣ 📜package-lock.json
+ ┣ 📜package.json
+ ┣ 📜README.md
+ ┗ 📜vue.config.js
+ ```
 
 ## 快速开始
 
