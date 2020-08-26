@@ -2,7 +2,7 @@
 
 ## 项目介绍
 
-vue, element-ui, springboot后台管理系统整合方案，UI风格简约雅致，适合快速开发企业级应用。前后端分离项目，前端参考 PanJiaChen 的 [vue-element-ui](https://github.com/PanJiaChen/vue-element-admin/)，后端对接 java 语言的开源项目[jeecg-boot](https://github.com/zhangdaiscott/jeecg-boot/)。精致版本，目前只包含登陆，用户管理，角色管理，组织机构，菜单管理，数据字典等基础系统功能。
+vue, element-ui, springboot 后台管理系统整合方案，UI风格简约雅致，适合快速开发企业级应用。前后端分离项目，前端参考 PanJiaChen 的 [vue-element-ui](https://github.com/PanJiaChen/vue-element-admin/)，后端对接 java 语言的开源项目 [jeecg-boot](https://github.com/zhangdaiscott/jeecg-boot/)。精致版本，目前只包含登陆，用户管理，角色管理，组织机构，菜单管理，数据字典等基础系统功能。
 
 ## 为什么造轮子
 
