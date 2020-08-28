@@ -16,6 +16,13 @@ Vue.use(VueRouter)
  */
 export const constantRoutes = [
   {
+    path: '/',
+    redirect: '/future-home',
+    meta: {
+      hidden: true,
+    },
+  },
+  {
     path: '/login',
     component: () =>
       import(/* webpackChunkName: "login" */ '@/views/login/LoginCard'),
