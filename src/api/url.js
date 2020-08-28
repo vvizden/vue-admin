@@ -26,14 +26,14 @@ export const roleUrl = {
 
 // 组织机构 api url
 export const deptUrl = {
-  deptTree: '/sysdepart/sysDepart/queryIdTree',
-  treeList: '/sysdepart/sysDepart/queryTreeList',
-  simpleTreeList: '/sysdepart/sysDepart/queryIdTree',
-  create: '/sysdepart/sysDepart/add',
-  edit: '/sysdepart/sysDepart/edit',
-  delete: '/sysdepart/sysDepart/delete',
-  deleteBatch: '/sysdepart/sysDepart/deleteBatch',
-  exportXls: '/sysdepart/sysDepart/exportXls',
+  deptTree: '/sys/sysDepart/queryIdTree',
+  treeList: '/sys/sysDepart/queryTreeList',
+  simpleTreeList: '/sys/sysDepart/queryIdTree',
+  create: '/sys/sysDepart/add',
+  edit: '/sys/sysDepart/edit',
+  delete: '/sys/sysDepart/delete',
+  deleteBatch: '/sys/sysDepart/deleteBatch',
+  exportXls: '/sys/sysDepart/exportXls',
 }
 
 // 系统 api url
