@@ -11,7 +11,7 @@
  Target Server Version : 50730
  File Encoding         : 65001
 
- Date: 28/08/2020 10:22:31
+ Date: 28/08/2020 14:59:10
 */
 
 SET NAMES utf8mb4;
@@ -95,7 +95,7 @@ INSERT INTO `sys_permission` VALUES ('1265162119913824258', 'd7d6e2e4e2934f2c938
 INSERT INTO `sys_permission` VALUES ('1280350452934307841', 'd7d6e2e4e2934f2c9385a623fd98c6f3', '租户管理', '/isys/tenant', 'system/TenantList', NULL, '', 1, NULL, '1', 10.00, 0, '', 0, 1, 0, 1, NULL, 'admin', '2020-07-07 11:58:30', 'admin', '2020-08-28 09:13:47', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1280464606292099074', '2a470fc0c3954d9dbb61de6d80846549', '图片裁剪', '/jeecg/ImagCropper', 'jeecg/ImagCropper', NULL, NULL, 1, NULL, '1', 9.00, 0, NULL, 1, 1, 0, 0, NULL, 'admin', '2020-07-07 19:32:06', NULL, NULL, 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1299157879332691969', '', '系统图标', '/icons', 'layouts/RouteView', NULL, '', 0, NULL, '0', 1.00, 0, 'el-icon-star-off', 1, 0, 0, 0, NULL, 'admin', '2020-08-28 09:32:30', 'admin', '2020-08-28 09:39:22', 0, 0, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('1299159555569508354', '1299157879332691969', '系统图标', '/icons', 'system/IconList', NULL, '', 1, NULL, '0', 1.00, 0, 'el-icon-star-off', 1, 1, 0, 0, NULL, 'admin', '2020-08-28 09:39:10', NULL, NULL, 0, 0, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1299159555569508354', '1299157879332691969', '系统图标', '/icon-list', 'system/IconList', NULL, '', 1, NULL, '0', 1.00, 0, 'el-icon-star-off', 1, 1, 0, 0, NULL, 'admin', '2020-08-28 09:39:10', 'admin', '2020-08-28 14:58:05', 0, 0, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('1299162748521177090', '3f915b2769fc80648e92d04e84ca059d', '删除按钮', NULL, NULL, NULL, NULL, 2, 'user:del', '1', 1.00, 0, NULL, 0, 1, 0, 0, NULL, 'admin', '2020-08-28 09:51:51', NULL, NULL, 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1299162888753537025', '3f915b2769fc80648e92d04e84ca059d', '批量删除', NULL, NULL, NULL, NULL, 2, 'user:del:batch', '1', 1.00, 0, NULL, 0, 1, 0, 0, NULL, 'admin', '2020-08-28 09:52:25', NULL, NULL, 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1299162959142346753', '3f915b2769fc80648e92d04e84ca059d', '重置密码', NULL, NULL, NULL, NULL, 2, 'user:password:reset', '1', 1.00, 0, NULL, 0, 1, 0, 0, NULL, 'admin', '2020-08-28 09:52:41', NULL, NULL, 0, 0, '1', 0);
