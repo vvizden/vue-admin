@@ -170,14 +170,6 @@
           </el-button>
 
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-permission="['user:menu:auth']">
-              <el-button
-                type="text"
-                icon="el-icon-menu"
-                @click="handleAuthClick(row)"
-                >授权</el-button
-              >
-            </el-dropdown-item>
             <el-dropdown-item v-permission="['user:password:reset']">
               <el-button
                 type="text"
@@ -223,25 +215,6 @@
       </v-scroll-container>
     </el-dialog>
 
-    <!-- 弹窗授权 -->
-    <el-dialog
-      v-el-dialog-drag
-      title="授权"
-      top="6vh"
-      width="700px"
-      :visible.sync="authContainerVisible"
-      @closed="handleAuthContainerClosed"
-    >
-      <v-scroll-container
-        style="height: 500px;"
-        class="dialog-inner"
-        v-if="authContainerInnerVisible"
-      >
-        <!-- 授权组件，存放于同级forms目录下 -->
-        <StUserRole :model="authRow" @ok="handleRoleAuthFormOk" />
-      </v-scroll-container>
-    </el-dialog>
-
     <ResetPasswordModal
       :visible.sync="resetPasswordModalVisible"
       :model="resetPasswordModel"
@@ -260,8 +233,6 @@ export default {
   mixins: [PageTableMixin, CurdMixin, ExportMixin],
   components: {
     UserForm: () => import(/* webpackChunkName: "system" */ './forms/UserForm'),
-    StUserRole: () =>
-      import(/* webpackChunkName: "system" */ './forms/StUserRole'),
     ResetPasswordModal: () =>
       import(
         /* webpackChunkName: "system" */ './components/ResetPasswordModal'
@@ -319,14 +290,7 @@ export default {
       },
     ]
 
-    if (
-      checkPermission([
-        'user:edit',
-        'user:menu:auth',
-        'user:password:reset',
-        'user:del',
-      ])
-    ) {
+    if (checkPermission(['user:edit', 'user:password:reset', 'user:del'])) {
       columns.push({
         label: '操作',
         prop: 'action',
@@ -366,9 +330,6 @@ export default {
         },
       },
       // end <---- table
-      authContainerVisible: false,
-      authContainerInnerVisible: true,
-      authRow: {},
       resetPasswordModalVisible: false,
       resetPasswordModel: {},
     }
@@ -378,13 +339,6 @@ export default {
   },
   methods: {
     checkPermission,
-    handleAuthClick(row) {
-      this.authRow = row
-      this.authContainerInnerVisible = true
-      this.$nextTick(() => {
-        this.authContainerVisible = true
-      })
-    },
     handleResetPasswordClick(row) {
       this.resetPasswordModel = {
         username: row.username,
@@ -393,12 +347,6 @@ export default {
     },
     handleResetPasswordOk() {
       this.resetPasswordModalVisible = false
-    },
-    handleAuthContainerClosed() {
-      this.authContainerInnerVisible = false
-    },
-    handleRoleAuthFormOk() {
-      this.authContainerVisible = false
     },
   },
 }
