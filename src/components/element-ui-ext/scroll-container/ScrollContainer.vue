@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-wrapper">
     <el-scrollbar class="scroll-container">
-      <div class="scroll-inner">
+      <div class="scroll-inner" :style="contentStyle">
         <slot></slot>
       </div>
     </el-scrollbar>
@@ -13,6 +13,12 @@ import { NAME_PREFIX } from '../../const/common'
 
 export default {
   name: `${NAME_PREFIX}ScrollContainer`,
+  props: {
+    contentStyle: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
 }
 </script>
 

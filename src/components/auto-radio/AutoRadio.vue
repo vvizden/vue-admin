@@ -64,7 +64,7 @@ export default {
     loadOptions() {
       if (this.dictCode) {
         if (this.dict && !this.dictCode.includes(',')) {
-          this.options = this.optionsFilter(this.dict[this.dictCode])
+          this.options = this.optionsFilter(this.dict[this.dictCode] || [])
         } else {
           this.$http
             .get(`${dictUrl.listByCode}/${this.dictCode}`)

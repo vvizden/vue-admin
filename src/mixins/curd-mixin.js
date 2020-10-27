@@ -17,7 +17,7 @@ export default {
       // begin ---->  dialog
       formContainerTitle: '创建',
       formContainerVisible: false,
-      formContainerInnerVisible: true,
+      formContainerInnerVisible: false,
       // begin <----  dialog
     }
   },
@@ -25,7 +25,7 @@ export default {
     selectedRowKeys() {
       return this.selectedRows.map((e) => {
         if (this.getRowKey) {
-          return e[this.getRowKey(e)]
+          return this.getRowKey(e)
         }
         return e[this.rowKey]
       })
@@ -45,23 +45,45 @@ export default {
       this.loadData()
     },
 
+    // 设置容器内容元素可见，可控制多个内容元素，参数是容器开启或关闭状态
+    setFormContainerInnerVisible(visible) {
+      this.formContainerInnerVisible = visible
+    },
+
     // 点击创建按钮
-    handleCreateClick(row = {}) {
-      this.editRow = row instanceof Event ? {} : row
-      this.formContainerInnerVisible = true
-      this.formContainerTitle = '创建'
+    handleCreateClick(row = {}, title = '创建') {
+      if (typeof row != 'string') {
+        this.editRow = row instanceof Event ? {} : row
+        this.formContainerTitle = title
+      } else {
+        this.editRow = {}
+        this.formContainerTitle = row
+      }
+
+      this.currentFormContainerInner = 'default'
+      this.setFormContainerInnerVisible(true)
       this.$nextTick(() => {
         this.formContainerVisible = true
       })
     },
 
     // 点击编辑按钮
-    handleEditClick(row) {
-      if (row instanceof Event)
-        throw new Error('handleEditClick params must be the edit row object!')
-      this.editRow = row
-      this.formContainerInnerVisible = true
-      this.formContainerTitle = '编辑'
+    handleEditClick(row, title = '编辑') {
+      if (typeof row != 'string') {
+        if (row instanceof Event)
+          throw new Error(
+            'handleEditClick first param must be the edit row object!',
+          )
+        this.editRow = row
+        this.formContainerTitle = title
+      } else {
+        throw new Error(
+          'handleEditClick first param must be the edit row object!',
+        )
+      }
+
+      this.currentFormContainerInner = 'default'
+      this.setFormContainerInnerVisible(true)
       this.$nextTick(() => {
         this.formContainerVisible = true
       })
@@ -137,7 +159,7 @@ export default {
 
     // 表单容器关闭动画结束时的回调
     handleFormContainerClosed() {
-      this.formContainerInnerVisible = false
+      this.setFormContainerInnerVisible(false)
     },
 
     // 多选改变
