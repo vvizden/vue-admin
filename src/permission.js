@@ -41,7 +41,13 @@ router.beforeEach(async (to, from, next) => {
           store.getters.menuPermissions &&
           store.getters.menuPermissions.length > 0
         if (hasMenuPermissions) {
-          next()
+          if (to.path === '/') {
+            const firstRoute = store.getters.firstRoute
+            const toPath = firstRoute ? firstRoute.path : '/403'
+            next(toPath)
+          } else {
+            next()
+          }
         } else {
           let addRoutes = []
           try {

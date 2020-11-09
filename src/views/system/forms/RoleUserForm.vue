@@ -85,7 +85,7 @@ export default {
             trigger: 'blur',
           },
           {
-            pattern: /[^\u4E00-\u9FA5]/g,
+            pattern: /^[^\u4E00-\u9FA5]+$/,
             message: '角色编码不可输入汉字',
             trigger: ['change', 'blur'],
           },

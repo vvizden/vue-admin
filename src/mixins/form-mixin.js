@@ -41,7 +41,7 @@ export default {
             }
             httpPromise
               .then((res) => {
-                this.$emit('ok')
+                this.submitFormOk(res)
                 this.$message.success(res.message)
               })
               .catch((error) => {
@@ -57,6 +57,10 @@ export default {
           }
         })
       })
+    },
+
+    submitFormOk() {
+      this.$emit('ok')
     },
   },
 }

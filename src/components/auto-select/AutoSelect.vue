@@ -5,6 +5,15 @@ import { mapState } from 'vuex'
 import { dictUrl } from '@/api/url'
 import { cloneDeep } from 'lodash-es'
 
+function getOptionProps() {
+  return {
+    key: 'key',
+    value: 'value',
+    label: 'label',
+    disabled: 'disabled',
+  }
+}
+
 export default {
   name: `${NAME_PREFIX}AutoSelect`,
   model: {
@@ -15,6 +24,18 @@ export default {
     dictCode: {
       type: String,
       required: false,
+    },
+    api: {
+      type: String,
+      required: false,
+    },
+    apiParams: {
+      type: Object,
+      required: false,
+    },
+    optionProps: {
+      type: Object,
+      default: () => getOptionProps(),
     },
     optionsFilter: {
       type: Function,
@@ -36,6 +57,10 @@ export default {
     localProps() {
       const props = { ...this.$props }
       delete props.dictCode
+      delete props.api
+      delete props.apiParams
+      delete props.optionProps
+      delete props.optionsFilter
       for (const [k, v] of Object.entries(props)) {
         if (v == null && k !== 'value') {
           delete props[k]
@@ -51,6 +76,9 @@ export default {
         },
       }
     },
+    localOptionProps() {
+      return Object.assign(getOptionProps(), this.optionProps)
+    },
   },
   created() {
     this.loadOptions()
@@ -59,14 +87,26 @@ export default {
     loadOptions() {
       if (this.dictCode) {
         if (this.dict && !this.dictCode.includes(',')) {
-          this.options = this.optionsFilter(this.dict[this.dictCode])
+          this.options = this.optionsFilter(this.dict[this.dictCode] || []).map(
+            (e) => {
+              e.label = e.text
+              return e
+            },
+          )
         } else {
           this.$http
             .get(`${dictUrl.listByCode}/${this.dictCode}`)
             .then((res) => {
-              this.options = this.optionsFilter(res.result || [])
+              this.options = this.optionsFilter(res.result || []).map((e) => {
+                e.label = e.text
+                return e
+              })
             })
         }
+      } else if (this.api) {
+        this.$http.get(this.api, this.apiParams || {}).then((res) => {
+          this.options = this.optionsFilter(res.result || [])
+        })
       }
     },
   },
@@ -74,11 +114,13 @@ export default {
     let optionVNodes = this.options.map((e) => {
       return (
         <el-option
-          key={e.value}
-          value={e.value}
-          label={e.text}
-          disabled={e.disabled}
-        ></el-option>
+          key={e[this.localOptionProps.key] || e[this.localOptionProps.value]}
+          value={e[this.localOptionProps.value]}
+          label={e[this.localOptionProps.label]}
+          disabled={e[this.localOptionProps.disabled]}
+        >
+          {this.$scopedSlots.option && this.$scopedSlots.option(e)}
+        </el-option>
       )
     })
 
